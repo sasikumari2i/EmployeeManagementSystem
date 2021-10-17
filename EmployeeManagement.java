@@ -14,7 +14,7 @@ public class EmployeeManagement {
     
     public static void main(String[] args) {        
        	EmployeeView employeeView  = new EmployeeView();	
-        employeeView.getMainMenu(); 
+        employeeView.getMainMenu()
     }
  
 }
