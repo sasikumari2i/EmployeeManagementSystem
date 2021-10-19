@@ -69,7 +69,7 @@ public class EmployeeServices {
      */
     public boolean getEmployeeSalaryValidated(float employeeSalary) {
         String stringEmployeeSalary = String.valueOf(employeeSalary);
-        String pattern = "^[0-9]{1,6}([\\.][\\d]{0,5})?";
+        String pattern = "^[0-9]{1,6}([\\.][0-9]{0,3})?";
         return stringEmployeeSalary.matches(pattern);
     }
 
@@ -202,7 +202,8 @@ public class EmployeeServices {
      * @return employeeDTO of the Employee through EmployeeMapper class
      */
     public EmployeeDTO viewEmployeeById(int employeeId) {
-        return EmployeeMapper.convertEmployeeToDTO(employeeDetails.get(employeeId));
+        return EmployeeMapper.convertEmployeeToDTO(employeeDetails
+                                                   .get(employeeId));
     }
 
     /**
@@ -213,7 +214,8 @@ public class EmployeeServices {
     public List<EmployeeDTO> viewEmployee() {
         List<EmployeeDTO> viewList = new ArrayList<>();
         for(Integer key : employeeDetails.keySet()) {
-            viewList.add(EmployeeMapper.convertEmployeeToDTO(employeeDetails.get(key)));
+            viewList.add(EmployeeMapper.convertEmployeeToDTO(employeeDetails
+                                                             .get(key)));
         }
         return viewList;      
     }

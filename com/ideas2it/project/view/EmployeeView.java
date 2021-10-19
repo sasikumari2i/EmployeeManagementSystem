@@ -44,7 +44,7 @@ public class EmployeeView {
                 break;
                 case 4 : updateEmployee();
                 break;
-                default :     
+                default : System.out.println("Choose from the given numbers");    
                 break;
             }
         }
@@ -84,17 +84,15 @@ public class EmployeeView {
         
         System.out.println("Enter Employee Id");
         StringBuilder displayString = new StringBuilder("Employee ID can have");
-        displayString.append(" only upto 4 digits, only positive numbers");
+        displayString.append(" only upto 4 digits,greater than zero");
         System.out.println(displayString);
         while(!isValid) {
             try {
                 employeeId  = Integer.parseInt(inputReader.nextLine());
                 isValid = controller.getEmployeeIdValidated(employeeId);
-                if(!isValid) {
-                    System.out.println("Invalid, only 4 numbers allowed");
-                } else if (1 > employeeId) {
+                if((!isValid) || (0 >= employeeId)) {
+                    System.out.println("Invalid Id, try again");
                     isValid = false;
-                    System.out.println("Invalid, allows only positive numbers");
                 }
             } catch(NumberFormatException e) {
                 System.out.println("Enter only numbers");

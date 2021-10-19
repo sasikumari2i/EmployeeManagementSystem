@@ -16,7 +16,7 @@ import java.util.List;
  * @author	Sasikumar Raju
  */
 public class EmployeeController {
-    EmployeeServices services = new EmployeeServices();
+    EmployeeServices employeeServices = new EmployeeServices();
 
     /**
      * To check whether the given choice is valid, from EmployeeServices class
@@ -25,7 +25,7 @@ public class EmployeeController {
      * @return boolean
      */
     public boolean getChoiceValidated(int inputChoice) {
-        return services.getChoiceValidated(inputChoice);
+        return employeeServices.getChoiceValidated(inputChoice);
     }
 
     /**
@@ -35,7 +35,7 @@ public class EmployeeController {
      * @return boolean
      */
     public boolean getEmployeeIdValidated(int employeeId) {
-        return services.getEmployeeIdValidated(employeeId);     
+        return employeeServices.getEmployeeIdValidated(employeeId);     
     }
 
     /**
@@ -45,7 +45,7 @@ public class EmployeeController {
      * @return boolean
      */
     public boolean getEmployeeNameValidated(String employeeName) {
-        return services.getEmployeeNameValidated(employeeName);      
+        return employeeServices.getEmployeeNameValidated(employeeName);      
     }
     
     /**
@@ -56,7 +56,7 @@ public class EmployeeController {
      * @return boolean
      */
     public boolean getEmployeeSalaryValidated(float employeeSalary) {
-        return services.getEmployeeSalaryValidated(employeeSalary);     
+        return employeeServices.getEmployeeSalaryValidated(employeeSalary);     
     }
 
     /**
@@ -66,7 +66,7 @@ public class EmployeeController {
      * @return boolean
      */
     public boolean getEmployeeEmailValidated(String employeeEmail) {
-        return services.getEmployeeEmailValidated(employeeEmail);     
+        return employeeServices.getEmployeeEmailValidated(employeeEmail);     
     }   
 
     /**
@@ -77,7 +77,7 @@ public class EmployeeController {
      * @return boolean
      */
     public boolean getEmployeeContactValidated(long employeeContact) {
-        return services.getEmployeeContactValidated(employeeContact);     
+        return employeeServices.getEmployeeContactValidated(employeeContact);     
     }
 
     /**
@@ -86,7 +86,7 @@ public class EmployeeController {
      * @return boolean
      */
     public boolean isRecordsAvailable() {
-        return services.isRecordsAvailable();
+        return employeeServices.isRecordsAvailable();
     }
 
     /**
@@ -96,7 +96,7 @@ public class EmployeeController {
      * @return boolean
      */
     public boolean checkEmployeeId(int employeeId) {
-        return services.checkEmployeeId(employeeId);
+        return employeeServices.checkEmployeeId(employeeId);
     }
 
     /**
@@ -106,7 +106,7 @@ public class EmployeeController {
      * @return boolean
      */
     public boolean isEmailDuplicate(String employeeEmail) {
-        return services.isEmailDuplicate(employeeEmail);
+        return employeeServices.isEmailDuplicate(employeeEmail);
     }
 
     /**
@@ -116,7 +116,7 @@ public class EmployeeController {
      * @return boolean
      */
     public boolean isContactDuplicate(long employeeContact) {
-        return services.isContactDuplicate(employeeContact);
+        return employeeServices.isContactDuplicate(employeeContact);
     }
 
     /**
@@ -126,7 +126,7 @@ public class EmployeeController {
      * @param employeeDTO, Details of the user
      */
     public void createEmployee(int employeeId, EmployeeDTO employeeDTO) {
-        services.createEmployee(employeeId, employeeDTO);
+        employeeServices.createEmployee(employeeId, employeeDTO);
     }    
 
     /**
@@ -135,7 +135,7 @@ public class EmployeeController {
      * @return List<EmployeeDTO>, list of employees
      */
     public List<EmployeeDTO> viewEmployee() {
-        return services.viewEmployee();
+        return employeeServices.viewEmployee();
     }
     
     /**
@@ -145,19 +145,19 @@ public class EmployeeController {
      * @return EmployeeDTO, Single employee
      */
     public EmployeeDTO viewEmployeeById(int employeeId) {
-        return services.viewEmployeeById(employeeId);
+        return employeeServices.viewEmployeeById(employeeId);
     }
     
     
     public void deleteEmployeeById(int employeeId) {
-        services.deleteEmployeeById(employeeId);
+        employeeServices.deleteEmployeeById(employeeId);
     }
 
     /**
      * Deletes All the Records
      */
     public void deleteAllEmployee() {
-        services.deleteAllEmployee();
+        employeeServices.deleteAllEmployee();
     }
     
     /**
@@ -167,7 +167,7 @@ public class EmployeeController {
      * @param employeeDTO, EmployeeDTO object containing all records
      */
     public void updateAllDetails(int employeeId, EmployeeDTO employeeDTO) {
-        services.updateAllDetails(employeeId, employeeDTO);
+        employeeServices.updateAllDetails(employeeId, employeeDTO);
     }
 
     /**
@@ -177,7 +177,7 @@ public class EmployeeController {
      * @param employeeName
      */   
     public void updateEmployeeName(int employeeId, String employeeName) {
-        services.updateEmployeeName(employeeId, employeeName);
+        employeeServices.updateEmployeeName(employeeId, employeeName);
     }
     
     /**
@@ -187,7 +187,7 @@ public class EmployeeController {
      * @param employeeSalary
      */
     public void updateEmployeeSalary(int employeeId, float employeeSalary) {
-        services.updateEmployeeSalary(employeeId, employeeSalary);
+        employeeServices.updateEmployeeSalary(employeeId, employeeSalary);
     }
 
     /**
@@ -197,7 +197,7 @@ public class EmployeeController {
      * @param employeeEmail
      */
     public void updateEmployeeEmail(int employeeId, String employeeEmail) {
-        services.updateEmployeeEmail(employeeId, employeeEmail);
+        employeeServices.updateEmployeeEmail(employeeId, employeeEmail);
     }
 
     /**
@@ -207,7 +207,7 @@ public class EmployeeController {
      * @param employeeDob, Date of Birth to be updated
      */
     public void updateEmployeeDob(int employeeId, LocalDate employeeDob) {
-        services.updateEmployeeDOB(employeeId, employeeDob);
+        employeeServices.updateEmployeeDOB(employeeId, employeeDob);
     }
 
     /**
@@ -217,7 +217,7 @@ public class EmployeeController {
      * @param employeeContact
      */
     public void updateEmployeeContact(int employeeId, long employeeContact) {
-        services.updateEmployeeContact(employeeId, employeeContact);
+        employeeServices.updateEmployeeContact(employeeId, employeeContact);
     }
 
 }
