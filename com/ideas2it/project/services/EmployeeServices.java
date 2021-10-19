@@ -68,9 +68,8 @@ public class EmployeeServices {
      * @param  employeeSalary
      */
     public boolean getEmployeeSalaryValidated(float employeeSalary) {
-        String stringEmployeeSalary = String.valueOf(employeeSalary);
-        String pattern = "^[0-9]{1,6}([\\.][0-9]{0,3})?";
-        return stringEmployeeSalary.matches(pattern);
+        String stringSalary = String.valueOf(employeeSalary);
+        return stringSalary.matches("^[0-9]{1,6}([\\.][0-9]{0,3})?$");
     }
 
     /**

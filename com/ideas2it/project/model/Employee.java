@@ -138,7 +138,7 @@ public class Employee {
         display.append(" ID : " + this.id);
         display.append(" Name : " + this.name);
         display.append(" DOB : " + this.dob);
-        display.append(" Salary : " + this.salary);
+        display.append(" Salary : " + String.format("%.2f", this.salary));
         display.append(" Email : " + this.email);
         display.append(" Contact : " + this.contact);
         

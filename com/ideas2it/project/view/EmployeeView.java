@@ -132,7 +132,6 @@ public class EmployeeView {
     public float getEmployeeSalary() {
         boolean isValid = false;
         float employeeSalary = 0;
- 
         System.out.println("Enter Employee Salary");
         while(!isValid) {
             try {
