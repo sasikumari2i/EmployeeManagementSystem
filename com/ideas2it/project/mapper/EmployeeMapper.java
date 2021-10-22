@@ -7,7 +7,7 @@ import com.ideas2it.project.dto.EmployeeDTO;
 import com.ideas2it.project.model.Employee;
 
 /**
- * To Map between service and control layers for converting DTO objects to 
+ * Maps between service and control layers for converting DTO objects to 
  * model objects and vice versa
  *
  * @version	1.0

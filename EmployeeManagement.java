@@ -4,7 +4,7 @@
 import com.ideas2it.project.view.EmployeeView;
 
 /**
- * Employee Management System main method class
+ *  Manages the employee details
  * 
  * @version	1.0
  * @date	14 Oct 2021

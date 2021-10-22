@@ -3,15 +3,16 @@
  */
 package com.ideas2it.project.view;
 
-import com.ideas2it.project.dto.EmployeeDTO;
 import com.ideas2it.project.controller.EmployeeController;
-import java.util.Scanner;
-import java.time.LocalDate;
+import com.ideas2it.project.dto.EmployeeDTO;
+
+import java.lang.ArrayIndexOutOfBoundsException;
 import java.lang.NumberFormatException;
 import java.time.format.DateTimeParseException;
-import java.lang.ArrayIndexOutOfBoundsException;
+import java.time.LocalDate;
 import java.time.Period;
 import java.util.List;
+import java.util.Scanner;
 
 /**
  * User Interface for getting inputs and printing the appropriate outputs
@@ -21,8 +22,8 @@ import java.util.List;
  * @author	Sasikumar Raju
  */
 public class EmployeeView {
-    EmployeeController controller = new EmployeeController();
-    Scanner inputReader = new Scanner(System.in);
+    private EmployeeController controller = new EmployeeController();
+    private Scanner inputReader = new Scanner(System.in);
 
     /**
      * Displays the main menu and switches to the required option
@@ -55,7 +56,7 @@ public class EmployeeView {
      *
      * @return inputChoice, Validated choice number 
      */
-    public int getInputChoice() {
+    private int getInputChoice() {
         int inputChoice = 0;
         boolean isValid = false;
         
@@ -78,7 +79,7 @@ public class EmployeeView {
      *
      * @return employeeId, Validated Employee ID 
      */
-    public int getEmployeeId() {
+    private int getEmployeeId() {
         boolean isValid = false;
         int employeeId = 0;
         
@@ -106,7 +107,7 @@ public class EmployeeView {
      *
      * @return employeeName, Validated Employee Name 
      */
-    public String getEmployeeName() {
+    private String getEmployeeName() {
         boolean isValid = false;
         String employeeName = null;
         
@@ -129,9 +130,10 @@ public class EmployeeView {
      *
      * @return employeeSalary, Validated Employee Salary 
      */
-    public float getEmployeeSalary() {
+    private float getEmployeeSalary() {
         boolean isValid = false;
         float employeeSalary = 0;
+
         System.out.println("Enter Employee Salary");
         while(!isValid) {
             try {
@@ -152,7 +154,7 @@ public class EmployeeView {
      *
      * @return employeeEmail, Validated Employee Email 
      */
-    public String getEmployeeEmail() {
+    private String getEmployeeEmail() {
         boolean isValid = false;
         String employeeEmail = null;
 
@@ -183,7 +185,7 @@ public class EmployeeView {
      *
      * @return employeeContact, Validated Employee Contact Number 
      */
-    public long getEmployeeContact() {
+    private long getEmployeeContact() {
         boolean isValid = false;
         long employeeContact = 0;
         
@@ -219,7 +221,7 @@ public class EmployeeView {
      *
      * @return dob, Validated Date of Birth
      */
-    public LocalDate getDateOfBirth() {
+    private LocalDate getDateOfBirth() {
         LocalDate dob = null;
         boolean isCorrectDob = true;
         String[] dateArray;
@@ -253,7 +255,7 @@ public class EmployeeView {
      * 
      * @return boolean 
      */
-    public boolean isRecordsAvailable() {
+    private boolean isRecordsAvailable() {
         return controller.isRecordsAvailable();
     }
 
@@ -262,7 +264,7 @@ public class EmployeeView {
      *
      * @return boolean 
      */
-    public boolean isContactDuplicate(long employeeContact) {
+    private boolean isContactDuplicate(long employeeContact) {
         return controller.isContactDuplicate(employeeContact);
     }   
    
@@ -271,14 +273,14 @@ public class EmployeeView {
      *
      * @return boole
      */
-    public boolean isEmailDuplicate(String employeeEmail) {
+    private boolean isEmailDuplicate(String employeeEmail) {
         return controller.isEmailDuplicate(employeeEmail);
     }
 
     /**
-     * Creates new Employee using controller class using given details 
+     * Creates new Employee 
      */
-    public void createEmployee() {
+    private void createEmployee() {
         int employeeId = getEmployeeId();
         if(controller.checkEmployeeId(employeeId)) {
             System.out.println("Employee ID already available, Try another");
@@ -298,7 +300,7 @@ public class EmployeeView {
     /**
      * Displays View Employee Main Menu
      */
-    public void viewEmployee() {
+    private void viewEmployee() {
         if(isRecordsAvailable()) {
             System.out.println("No records found");
         } else {
@@ -440,7 +442,7 @@ public class EmployeeView {
      *
      * @param employeeId
      */
-    public void updateAllDetails(int employeeId) {
+    private void updateAllDetails(int employeeId) {
         EmployeeDTO employeeDTO = new EmployeeDTO();
    
         employeeDTO.setName(getEmployeeName());
@@ -456,7 +458,7 @@ public class EmployeeView {
      *
      * @param employeeId
      */
-    public void updateEmployeeName(int employeeId) {
+    private void updateEmployeeName(int employeeId) {
         String employeeName = getEmployeeName();
         controller.updateEmployeeName(employeeId, employeeName);        
     }
@@ -466,7 +468,7 @@ public class EmployeeView {
      *
      * @param employeeId
      */
-    public void updateEmployeeSalary(int employeeId) {
+    private void updateEmployeeSalary(int employeeId) {
         float employeeSalary = getEmployeeSalary();
         controller.updateEmployeeSalary(employeeId, employeeSalary);        
     }
@@ -476,7 +478,7 @@ public class EmployeeView {
      *
      * @param employeeId
      */ 
-    public void updateEmployeeEmail(int employeeId) {
+    private void updateEmployeeEmail(int employeeId) {
         String employeeEmail = getEmployeeEmail();
         controller.updateEmployeeEmail(employeeId, employeeEmail);        
     }
@@ -486,7 +488,7 @@ public class EmployeeView {
      *
      * @param employeeId
      */
-    public void updateEmployeeContact(int employeeId) {
+    private void updateEmployeeContact(int employeeId) {
         long employeeContact = getEmployeeContact();
         controller.updateEmployeeContact(employeeId, employeeContact);        
     }
@@ -496,7 +498,7 @@ public class EmployeeView {
      *
      * @param employeeId
      */
-    public void updateEmployeeDob(int employeeId) {
+    private void updateEmployeeDob(int employeeId) {
         LocalDate employeeDob = getDateOfBirth();
         controller.updateEmployeeDob(employeeId, employeeDob);        
     }

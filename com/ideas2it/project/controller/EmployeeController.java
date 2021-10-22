@@ -5,18 +5,19 @@ package com.ideas2it.project.controller;
 
 import com.ideas2it.project.dto.EmployeeDTO;
 import com.ideas2it.project.services.EmployeeServices;
+
 import java.time.LocalDate;
 import java.util.List;
 
 /**
- * Manipulates the data between view and service model
+ * Manipulates the data between view and service layer
  *
  * @version	1.0
  * @date	14 Oct 2021
  * @author	Sasikumar Raju
  */
 public class EmployeeController {
-    EmployeeServices employeeServices = new EmployeeServices();
+    private EmployeeServices employeeServices = new EmployeeServices();
 
     /**
      * To check whether the given choice is valid, from EmployeeServices class

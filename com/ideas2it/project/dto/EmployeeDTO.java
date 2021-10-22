@@ -4,6 +4,7 @@
 package com.ideas2it.project.dto;
 
 import com.ideas2it.project.controller.EmployeeController;
+
 import java.time.LocalDate;
 
 /**
@@ -22,126 +23,84 @@ public class EmployeeDTO {
     private LocalDate dob;
 
     /**
-     * Return Employee ID 
-     *
-     * @return id, Employee ID
+     * Employee Id getter and setter
      */ 
     public int getId() {
         return id;
     }
 
-    /**
-     * Set Employee ID 
-     *
-     * @param id, Employee ID
-     */
     public void setId(int id) {
         this.id = id;
     }
 
     /**
-     * Return Employee Salary 
-     *
-     * @return salary, Employee Salary
+     *  
+     * Employee Salary getter and setter
      */ 
     public double getSalary() {
         return salary;
     }
 
-    /**
-     * Set Employee Salary 
-     *
-     * @param salary, Employee Salary
-     */
     public void setSalary(double salary) {
         this.salary = salary;
     }
 
     /**
-     * Return Employee Date of Birth 
-     *
-     * @return dob, Employee Date of Birth
-     */ 
+     * Employee Date of birth getter and setter
+     */
     public LocalDate getDob() {   
        return dob;
     }
 
-    /**
-     * Set Employee Date of Birth 
-     *
-     * @param dob, Employee Date of Birth
-     */
     public void setDob(LocalDate dob) {
         this.dob = dob;
     }
 
     /**
-     * Return Employee Name 
-     *
-     * @return name, Employee Name
+     * Employee Name getter and setter
      */ 
     public String getName() {
         return name;
     }
 
-    /**
-     * Set Employee Name 
-     *
-     * @param name, Employee Name
-     */
     public void setName(String name) {
         this.name = name;
     }
 
     /**
-     * Return Employee Email 
-     *
-     * @return email, Employee Email
-     */ 
+     * Employee Email getter and setter
+     */
     public String getEmail() {
         return email;
     }
 
-    /**
-     * Set Employee Email 
-     *
-     * @param email, Employee Email
-     */
     public void setEmail(String email) {
         this.email = email;
     }
 
     /**
-     * Return Employee Contact 
-     *
-     * @return contact, Employee Contact
+     * Employee Contact getter and setter
      */ 
     public long getContact() {
         return contact;
     }
     
-    /**
-     * Set Employee Contact 
-     *
-     * @param contact, Employee Contact
-     */
     public void setContact(long contact) {
         this.contact = contact;
     }
     
     /**
-     * Return All details 
+     * Overrides toString method to display the details 
      *
      * @return display, String to be displayed
      */ 
     public String toString() {
         StringBuilder display = new StringBuilder();
-        display.append(" ID : " + this.id);
-        display.append(" Name : " + this.name);
-        display.append(" DOB : " + this.dob);
-        display.append(" Salary : " + String.format("%.2f", this.salary));
-        display.append(" Email : " + this.email);
-        display.append(" Contact : " + this.contact);
+        display.append(" ID : " + this.id).append(" Name : " + this.name)
+               .append(" DOB : " + this.dob) 
+               .append(" Salary : " + String.format("%.3f", this.salary))
+               .append(" Email : " + this.email)
+               .append(" Contact : " + this.contact);
         
         return display.toString();
     }
