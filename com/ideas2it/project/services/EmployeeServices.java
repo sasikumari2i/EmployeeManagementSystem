@@ -3,11 +3,9 @@
  */
 package com.ideas2it.project.services;
 
-import com.ideas2it.project.dto.EmployeeDTO;
-import com.ideas2it.project.mapper.EmployeeMapper;
-import com.ideas2it.project.model.Employee;
-
 import java.text.ParseException;
+import java.time.LocalDate;
+import java.time.Period;
 import java.time.LocalDate;
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
@@ -16,11 +14,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.ArrayList;
 
+import com.ideas2it.project.dto.EmployeeDTO;
+import com.ideas2it.project.mapper.EmployeeMapper;
+import com.ideas2it.project.model.Employee;
+
 /**
  * Performs the business logic for the Employee Management System
  *
  * @version	1.0
- * @date	14 Oct 2021
  * @author	Sasikumar Raju
  */
 public class EmployeeServices {
@@ -48,7 +49,7 @@ public class EmployeeServices {
     public boolean getEmployeeIdValidated(int employeeId) {
         String stringEmployeeId = String.valueOf(employeeId);
         String pattern = "^[0-9]{1,4}";
-        return stringEmployeeId.matches(pattern);
+        return (stringEmployeeId.matches(pattern)) && (0 < employeeId);
     }
 
     /**
@@ -82,7 +83,8 @@ public class EmployeeServices {
     public boolean getEmployeeEmailValidated(String employeeEmail) {
         String pattern = "[a-zA-Z0-9_\\.\\-]{3,}+[@][a-z]"
                                      + "+([\\.][a-z]{2,3})+";
-        return employeeEmail.matches(pattern); 
+        return employeeEmail.matches(pattern) 
+                             && (!isEmailDuplicate(employeeEmail)); 
     }
 
     /**
@@ -94,7 +96,19 @@ public class EmployeeServices {
     public boolean getEmployeeContactValidated(long employeeContact) {
         String stringEmployeeContact = String.valueOf(employeeContact);
         String pattern = "[6-9][0-9]{9}";
-        return stringEmployeeContact.matches(pattern);
+        return stringEmployeeContact.matches(pattern) 
+                                    && (!isContactDuplicate(employeeContact));
+    }
+
+    /**
+     * To validate the given Employee Contact in correct format using regex
+     *
+     * @return boolean valid or not 
+     * @param  employeeContact
+     */
+    public boolean getValidatedDOB(LocalDate dob) {
+        Period period = Period.between(dob, LocalDate.now());
+        return ((period.getYears() < 60) && (period.getYears() > 18));
     }
     
     /**
@@ -172,8 +186,9 @@ public class EmployeeServices {
     /**
      * Delete all the Records
      */
-    public void deleteAllEmployee() {
+    public boolean deleteAllEmployee() {
         employeeDetails.clear();
+        return employeeDetails.isEmpty();
     }
 
     /**
@@ -181,8 +196,9 @@ public class EmployeeServices {
      * 
      * @param employeeId, ID of the user
      */
-    public void deleteEmployeeById(int employeeId) {
+    public boolean deleteEmployeeById(int employeeId) {
         employeeDetails.remove(employeeId);
+        return employeeDetails.containsKey(employeeId);
     }
 
     /**
@@ -235,9 +251,9 @@ public class EmployeeServices {
      * @param employeeId, Id of the user to be updated
      * @param employeeDTO, EmployeeDTO containing Employee details
      */
-    public void createEmployee(int employeeId, EmployeeDTO employeeDTO) {
-        employeeDetails.put(employeeId,
-                            EmployeeMapper.convertDTOToEmployee(employeeDTO));
+    public void createEmployee(EmployeeDTO employeeDTO) {
+        employeeDetails.put(employeeDTO.getId(), EmployeeMapper
+                           .convertDTOToEmployee(employeeDTO));
     }
   
     /**

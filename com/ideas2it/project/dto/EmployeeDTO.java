@@ -3,15 +3,14 @@
  */
 package com.ideas2it.project.dto;
 
-import com.ideas2it.project.controller.EmployeeController;
-
 import java.time.LocalDate;
+
+import com.ideas2it.project.controller.EmployeeController;
 
 /**
  * Data Transfer Object for the Employee Management System
  * 
  * @version	1.0
- * @date	14 Oct 2021
  * @author	Sasikumar Raju
  */
 public class EmployeeDTO {

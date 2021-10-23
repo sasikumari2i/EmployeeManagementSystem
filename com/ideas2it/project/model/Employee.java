@@ -9,7 +9,6 @@ import java.time.LocalDate;
  * Employee Management System model class
  * 
  * @version	1.0
- * @date	01 Oct 2021
  * @author	Sasikumar Raju
  */
 public class Employee {

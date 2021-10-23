@@ -3,17 +3,16 @@
  */
 package com.ideas2it.project.controller;
 
-import com.ideas2it.project.dto.EmployeeDTO;
-import com.ideas2it.project.services.EmployeeServices;
-
 import java.time.LocalDate;
 import java.util.List;
+
+import com.ideas2it.project.dto.EmployeeDTO;
+import com.ideas2it.project.services.EmployeeServices;
 
 /**
  * Manipulates the data between view and service layer
  *
  * @version	1.0
- * @date	14 Oct 2021
  * @author	Sasikumar Raju
  */
 public class EmployeeController {
@@ -82,6 +81,17 @@ public class EmployeeController {
     }
 
     /**
+     * To check whether the given Employee Date of Birth is valid,
+     * from EmployeeServices
+     *
+     * @param dateString, Employee dob as String to be validated
+     * @return boolean
+     */
+    public boolean getValidatedDOB(LocalDate dob) {
+        return employeeServices.getValidatedDOB(dob);     
+    }
+
+    /**
      * To check whether records available from EmployeeServices
      *
      * @return boolean
@@ -126,8 +136,8 @@ public class EmployeeController {
      * @param employeeId, Employee ID given from the new user
      * @param employeeDTO, Details of the user
      */
-    public void createEmployee(int employeeId, EmployeeDTO employeeDTO) {
-        employeeServices.createEmployee(employeeId, employeeDTO);
+    public void createEmployee(EmployeeDTO employeeDTO) {
+        employeeServices.createEmployee(employeeDTO);
     }    
 
     /**
@@ -150,15 +160,15 @@ public class EmployeeController {
     }
     
     
-    public void deleteEmployeeById(int employeeId) {
-        employeeServices.deleteEmployeeById(employeeId);
+    public boolean deleteEmployeeById(int employeeId) {
+        return employeeServices.deleteEmployeeById(employeeId);
     }
 
     /**
      * Deletes All the Records
      */
-    public void deleteAllEmployee() {
-        employeeServices.deleteAllEmployee();
+    public boolean deleteAllEmployee() {
+        return employeeServices.deleteAllEmployee(); 
     }
     
     /**
