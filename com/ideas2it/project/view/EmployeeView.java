@@ -294,7 +294,7 @@ public class EmployeeView {
      */
     private void createEmployee() {
         int employeeId = getEmployeeId();
-        if(employeeController.checkEmployeeId(employeeId)) {
+        if(employeeController.containsEmployee(employeeId)) {
             System.out.println("Employee ID already available, Try another");
             createEmployee();
         } else {
@@ -347,7 +347,7 @@ public class EmployeeView {
      */
     private void viewEmployeeById() {
         int employeeId = getEmployeeId();
-        if(employeeController.checkEmployeeId(employeeId)) {
+        if(employeeController.containsEmployee(employeeId)) {
             System.out.println(employeeController.viewEmployeeById(employeeId));
         } else {
             System.out.println("Employee Id not Available, Try Again");
@@ -391,7 +391,7 @@ public class EmployeeView {
      */
     private void deleteEmployeeById() {
         int employeeId = getEmployeeId();
-        if(employeeController.checkEmployeeId(employeeId)) {
+        if(employeeController.containsEmployee(employeeId)) {
             boolean isEmployeeDeleted = employeeController.deleteEmployeeById
                                                   (employeeId);
             System.out.println(isEmployeeDeleted ? "User not deleted"
@@ -406,36 +406,40 @@ public class EmployeeView {
      * Displays Update Employee Main Menu
      */
     private void updateEmployee() {
-        if(isRecordsAvailable()) {
-            System.out.println("No records found");
-        } else {
-            int employeeId = getEmployeeId();
-            if(employeeController.checkEmployeeId(employeeId)) {
-                StringBuilder stringBuilder = new StringBuilder("1.Update All"); 
-                stringBuilder.append(" 2.Name 3.Salary 4.Email 5.DOB 6.");
-                stringBuilder.append("Contact 7.Main Menu or Any other number"); 
-                System.out.println(stringBuilder.append(" to Back Menu"));
-
-                int inputChoice = getInputChoice();
-                switch(inputChoice) {
-                    case 1 : updateAllDetails(employeeId);
-                             break;
-                    case 2 : updateEmployeeName(employeeId);
-                             break;
-                    case 3 : updateEmployeeSalary(employeeId);
-                             break;
-                    case 4 : updateEmployeeEmail(employeeId);
-                             break;
-                    case 5 : updateEmployeeDob(employeeId);
-                             break;
-                    case 6 : updateEmployeeContact(employeeId);
-                             break;
-                    case 7 : break;
-                    default : updateEmployee(); 
-                              break;
-                }
+        boolean isValidChoice = false;
+        while(!isValidChoice) {
+            if(isRecordsAvailable()) {
+                System.out.println("No records found");
+                isValidChoice = true;
             } else {
-                goToMenu();    
+                int employeeId = getEmployeeId();
+                if(employeeController.containsEmployee(employeeId)) {
+                    StringBuilder stringBuilder = new StringBuilder("1.Update"); 
+                    stringBuilder.append(" All 2.Name 3.Salary 4.Email 5.DOB ");
+                    stringBuilder.append("6.Contact 7.Main Menu or Any other"); 
+                    System.out.println(stringBuilder.append(" to Back Menu"));
+
+                    int inputChoice = getInputChoice();
+                    switch(inputChoice) {
+                        case 1 : updateAllDetails(employeeId);
+                                 break;
+                        case 2 : updateEmployeeName(employeeId);
+                                 break;
+                        case 3 : updateEmployeeSalary(employeeId);
+                                 break;
+                        case 4 : updateEmployeeEmail(employeeId);
+                                 break;
+                        case 5 : updateEmployeeDob(employeeId);
+                                 break;
+                        case 6 : updateEmployeeContact(employeeId);
+                                 break;
+                        case 7 : break;
+                        default : isValidChoice = true; 
+                                  break;
+                    }
+                } else {
+                    goToMenu();    
+                }
             }
         }    
     }
@@ -445,7 +449,7 @@ public class EmployeeView {
      * other number given 
      */
     private void goToMenu() {
-        StringBuilder displayString = new StringBuilder("Number invalid! ");
+        StringBuilder displayString = new StringBuilder("Id invalid! ");
         displayString.append("Enter 1.Update or Any other Number for Home");
         System.out.println(displayString);
 
@@ -463,8 +467,8 @@ public class EmployeeView {
      * @param employeeId
      */
     private void updateAllDetails(int employeeId) {
-        EmployeeDTO employeeDTO = new EmployeeDTO();
-   
+        EmployeeDTO employeeDTO = employeeController.viewEmployeeById
+                                                     (employeeId);
         employeeDTO.setName(getEmployeeName());
         employeeDTO.setSalary(getEmployeeSalary());
         employeeDTO.setDob(getDateOfBirth());
@@ -479,9 +483,10 @@ public class EmployeeView {
      * @param employeeId
      */
     private void updateEmployeeName(int employeeId) {
-        EmployeeDTO employeeDTO = new EmployeeDTO();
-        String employeeName = getEmployeeName();
-        employeeController.updateEmployeeName(employeeId, employeeName);        
+        EmployeeDTO employeeDTO = employeeController.viewEmployeeById
+                                                     (employeeId);
+        employeeDTO.setName(getEmployeeName());
+        employeeController.updateAllDetails(employeeId, employeeDTO);        
     }
 
     /**
@@ -490,8 +495,10 @@ public class EmployeeView {
      * @param employeeId
      */
     private void updateEmployeeSalary(int employeeId) {
-        float employeeSalary = getEmployeeSalary();
-        employeeController.updateEmployeeSalary(employeeId, employeeSalary);        
+        EmployeeDTO employeeDTO = employeeController.viewEmployeeById
+                                                     (employeeId);
+        employeeDTO.setSalary(getEmployeeSalary());
+        employeeController.updateAllDetails(employeeId, employeeDTO);        
     }
 
     /**
@@ -500,8 +507,10 @@ public class EmployeeView {
      * @param employeeId
      */ 
     private void updateEmployeeEmail(int employeeId) {
-        String employeeEmail = getEmployeeEmail();
-        employeeController.updateEmployeeEmail(employeeId, employeeEmail);        
+        EmployeeDTO employeeDTO = employeeController.viewEmployeeById
+                                                     (employeeId);
+        employeeDTO.setEmail(getEmployeeEmail());
+        employeeController.updateAllDetails(employeeId, employeeDTO);        
     }
 
     /**
@@ -510,8 +519,10 @@ public class EmployeeView {
      * @param employeeId
      */
     private void updateEmployeeContact(int employeeId) {
-        long employeeContact = getEmployeeContact();
-        employeeController.updateEmployeeContact(employeeId, employeeContact);        
+        EmployeeDTO employeeDTO = employeeController.viewEmployeeById
+                                                     (employeeId);
+        employeeDTO.setContact(getEmployeeContact());
+        employeeController.updateAllDetails(employeeId, employeeDTO);        
     }
     
     /**
@@ -520,8 +531,10 @@ public class EmployeeView {
      * @param employeeId
      */
     private void updateEmployeeDob(int employeeId) {
-        LocalDate employeeDob = getDateOfBirth();
-        employeeController.updateEmployeeDob(employeeId, employeeDob);        
+        EmployeeDTO employeeDTO = employeeController.viewEmployeeById
+                                                     (employeeId);
+        employeeDTO.setDob(getDateOfBirth());
+        employeeController.updateAllDetails(employeeId, employeeDTO);        
     }
 }
 

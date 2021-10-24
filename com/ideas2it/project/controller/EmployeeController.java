@@ -7,7 +7,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 import com.ideas2it.project.dto.EmployeeDTO;
-import com.ideas2it.project.services.EmployeeServices;
+import com.ideas2it.project.service.EmployeeService;
 
 /**
  * Manipulates the data between view and service layer
@@ -16,118 +16,118 @@ import com.ideas2it.project.services.EmployeeServices;
  * @author	Sasikumar Raju
  */
 public class EmployeeController {
-    private EmployeeServices employeeServices = new EmployeeServices();
+    private EmployeeService employeeService = new EmployeeService();
 
     /**
-     * To check whether the given choice is valid, from EmployeeServices class
+     * To check whether the given choice is valid, from EmployeeService class
      *
      * @param inputChoice, the choice given from EmployeeView
      * @return boolean
      */
     public boolean getChoiceValidated(int inputChoice) {
-        return employeeServices.getChoiceValidated(inputChoice);
+        return employeeService.getChoiceValidated(inputChoice);
     }
 
     /**
-     * To check whether the given EmployeeId is valid, from EmployeeServices
+     * To check whether the given EmployeeId is valid, from EmployeeService
      *
      * @param employeeId, Employee ID to be validated
      * @return boolean
      */
     public boolean getEmployeeIdValidated(int employeeId) {
-        return employeeServices.getEmployeeIdValidated(employeeId);     
+        return employeeService.getEmployeeIdValidated(employeeId);     
     }
 
     /**
-     * To check whether the given Employee Name is valid from EmployeeServices
+     * To check whether the given Employee Name is valid from EmployeeService
      *
      * @param employeeName, Employee Name to be validated
      * @return boolean
      */
     public boolean getEmployeeNameValidated(String employeeName) {
-        return employeeServices.getEmployeeNameValidated(employeeName);      
+        return employeeService.getEmployeeNameValidated(employeeName);      
     }
     
     /**
      * To check whether the given Employee Salary is valid, from 
-     * EmployeeServices
+     * EmployeeService
      * 
      * @param employeeSalary, Employee Salary to be validated
      * @return boolean
      */
     public boolean getEmployeeSalaryValidated(float employeeSalary) {
-        return employeeServices.getEmployeeSalaryValidated(employeeSalary);     
+        return employeeService.getEmployeeSalaryValidated(employeeSalary);     
     }
 
     /**
-     * To check whether the given Employee Email is valid, from EmployeeServices
+     * To check whether the given Employee Email is valid, from EmployeeService
      *
      * @param employeeEmail, Employee Email to be validated
      * @return boolean
      */
     public boolean getEmployeeEmailValidated(String employeeEmail) {
-        return employeeServices.getEmployeeEmailValidated(employeeEmail);     
+        return employeeService.getEmployeeEmailValidated(employeeEmail);     
     }   
 
     /**
      * To check whether the given Employee Contact Number is valid,
-     * from EmployeeServices
+     * from EmployeeService
      *
      * @param employeeContact, Employee Contact to be validated
      * @return boolean
      */
     public boolean getEmployeeContactValidated(long employeeContact) {
-        return employeeServices.getEmployeeContactValidated(employeeContact);     
+        return employeeService.getEmployeeContactValidated(employeeContact);     
     }
 
     /**
      * To check whether the given Employee Date of Birth is valid,
-     * from EmployeeServices
+     * from EmployeeService
      *
      * @param dateString, Employee dob as String to be validated
      * @return boolean
      */
     public boolean getValidatedDOB(LocalDate dob) {
-        return employeeServices.getValidatedDOB(dob);     
+        return employeeService.getValidatedDOB(dob);     
     }
 
     /**
-     * To check whether records available from EmployeeServices
+     * To check whether records available from EmployeeService
      *
      * @return boolean
      */
     public boolean isRecordsAvailable() {
-        return employeeServices.isRecordsAvailable();
+        return employeeService.isRecordsAvailable();
     }
 
     /**
-     * To check whether Employee Id is available from EmployeeServices
+     * To check whether Employee Id is available from EmployeeService
      *
      * @param employeeId, Employee ID to be checked
      * @return boolean
      */
-    public boolean checkEmployeeId(int employeeId) {
-        return employeeServices.checkEmployeeId(employeeId);
+    public boolean containsEmployee(int employeeId) {
+        return employeeService.containsEmployee(employeeId);
     }
 
     /**
-     * To check whether Employee Email is duplicate from EmployeeServices
+     * To check whether Employee Email is duplicate from EmployeeService
      *
      * @param employeeEmail, Employee Email to be checked
      * @return boolean
      */
     public boolean isEmailDuplicate(String employeeEmail) {
-        return employeeServices.isEmailDuplicate(employeeEmail);
+        return employeeService.isEmailDuplicate(employeeEmail);
     }
 
     /**
-     * To check whether Employee Phone number is duplicate from EmployeeServices
+     * To check whether Employee Phone number is duplicate from EmployeeService
      *
      * @param employeeContact, Employee Contact to be checked
      * @return boolean
      */
     public boolean isContactDuplicate(long employeeContact) {
-        return employeeServices.isContactDuplicate(employeeContact);
+        return employeeService.isContactDuplicate(employeeContact);
     }
 
     /**
@@ -137,38 +137,38 @@ public class EmployeeController {
      * @param employeeDTO, Details of the user
      */
     public void createEmployee(EmployeeDTO employeeDTO) {
-        employeeServices.createEmployee(employeeDTO);
+        employeeService.createEmployee(employeeDTO);
     }    
 
     /**
-     * View All the employee List from the EmployeeServices
+     * View All the employee List from the EmployeeService
      *
      * @return List<EmployeeDTO>, list of employees
      */
     public List<EmployeeDTO> viewEmployee() {
-        return employeeServices.viewEmployee();
+        return employeeService.viewEmployee();
     }
     
     /**
-     * View Employee details of the given ID from the EmployeeServices
+     * View Employee details of the given ID from the EmployeeService
      *
      * @param employeeId, Employee ID of the user to be viewed
      * @return EmployeeDTO, Single employee
      */
     public EmployeeDTO viewEmployeeById(int employeeId) {
-        return employeeServices.viewEmployeeById(employeeId);
+        return employeeService.viewEmployeeById(employeeId);
     }
     
     
     public boolean deleteEmployeeById(int employeeId) {
-        return employeeServices.deleteEmployeeById(employeeId);
+        return employeeService.deleteEmployeeById(employeeId);
     }
 
     /**
      * Deletes All the Records
      */
     public boolean deleteAllEmployee() {
-        return employeeServices.deleteAllEmployee(); 
+        return employeeService.deleteAllEmployee(); 
     }
     
     /**
@@ -178,59 +178,8 @@ public class EmployeeController {
      * @param employeeDTO, EmployeeDTO object containing all records
      */
     public void updateAllDetails(int employeeId, EmployeeDTO employeeDTO) {
-        employeeServices.updateAllDetails(employeeId, employeeDTO);
+        employeeService.updateAllDetails(employeeId, employeeDTO);
     }
-
-    /**
-     * Update Employee Name for an Employee
-     *
-     * @param employeeId, Employee ID to be updated
-     * @param employeeName
-     */   
-    public void updateEmployeeName(int employeeId, String employeeName) {
-        employeeServices.updateEmployeeName(employeeId, employeeName);
-    }
-    
-    /**
-     * Update Employee Salary for an Employee
-     *
-     * @param employeeId, Employee ID to be updated
-     * @param employeeSalary
-     */
-    public void updateEmployeeSalary(int employeeId, float employeeSalary) {
-        employeeServices.updateEmployeeSalary(employeeId, employeeSalary);
-    }
-
-    /**
-     * Update Employee Email for an Employee
-     *
-     * @param employeeId, Employee ID to be updated
-     * @param employeeEmail
-     */
-    public void updateEmployeeEmail(int employeeId, String employeeEmail) {
-        employeeServices.updateEmployeeEmail(employeeId, employeeEmail);
-    }
-
-    /**
-     * Update Employee DOB for an Employee
-     *
-     * @param employeeId, Employee ID to be updated
-     * @param employeeDob, Date of Birth to be updated
-     */
-    public void updateEmployeeDob(int employeeId, LocalDate employeeDob) {
-        employeeServices.updateEmployeeDOB(employeeId, employeeDob);
-    }
-
-    /**
-     * Update Employee Contact for an Employee
-     *
-     * @param employeeId, Employee ID to be updated
-     * @param employeeContact
-     */
-    public void updateEmployeeContact(int employeeId, long employeeContact) {
-        employeeServices.updateEmployeeContact(employeeId, employeeContact);
-    }
-
 }
 
 
