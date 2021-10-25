@@ -136,8 +136,8 @@ public class EmployeeController {
      * @param employeeId, Employee ID given from the new user
      * @param employeeDTO, Details of the user
      */
-    public void createEmployee(EmployeeDTO employeeDTO) {
-        employeeService.createEmployee(employeeDTO);
+    public boolean createEmployee(EmployeeDTO employeeDTO) {
+        return employeeService.createEmployee(employeeDTO);
     }    
 
     /**

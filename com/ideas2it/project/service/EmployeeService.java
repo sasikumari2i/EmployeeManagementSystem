@@ -191,9 +191,9 @@ public class EmployeeService {
      * @param employeeId, Id of the user to be updated
      * @param employeeDTO, EmployeeDTO containing Employee details
      */
-    public void createEmployee(EmployeeDTO employeeDTO) {
-        employeeDetails.put(employeeDTO.getId(), EmployeeMapper
-                           .convertDTOToEmployee(employeeDTO));
+    public boolean createEmployee(EmployeeDTO employeeDTO) {
+        return (null == employeeDetails.put(employeeDTO.getId(), EmployeeMapper
+                           .convertDTOToEmployee(employeeDTO)));
     }
   
     /**
