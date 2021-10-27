@@ -25,10 +25,10 @@ public class EmployeeView {
     private Scanner inputReader = new Scanner(System.in);
 
     /**
-     * Displays the main menu and switches to the required option
+     * Displays the main menu and switches to the required menu
      */
     public void showMainMenu() {
-        boolean isCorrectStart = true;
+        boolean isExit = true;
         int inputChoice = 0;
         
         System.out.println("-----Welcome!!!-----");
@@ -44,17 +44,17 @@ public class EmployeeView {
                          break;
                 case 4 : updateEmployee();
                          break;
-                case 5 : isCorrectStart = false;
+                case 5 : isExit = false;
                          System.out.println("Thank you!!!");
                          break;
                 default : System.out.println("Choose from the given numbers");    
                           break;
             }
-        } while(isCorrectStart);
+        } while(isExit);
     }
     
     /**
-     * Validates the choice number given 
+     * Validates the choice number given by the user 
      *
      * @return inputChoice, Validated choice number 
      */
@@ -65,8 +65,8 @@ public class EmployeeView {
         while(!isValidChoice) {
             try {
                 inputChoice = Integer.parseInt(inputReader.nextLine());
-                isValidChoice = employeeController.getChoiceValidated
-                                                   (inputChoice);
+                isValidChoice = employeeController
+                                .getChoiceValidated(inputChoice);
                 if(!isValidChoice) {
                     System.out.println("Enter a valid option");
                 }
@@ -87,8 +87,8 @@ public class EmployeeView {
         int employeeId = 0;
         
         System.out.println("Enter Employee Id");
-        StringBuilder displayString = new StringBuilder("Employee ID can have");
-        displayString.append(" only upto 4 digits,greater than zero");
+        StringBuilder displayString = new StringBuilder("Employee ID can have")
+                               .append(" only upto 4 digits,greater than zero");
         System.out.println(displayString);
         while(!isValidId) {
             try {
@@ -107,7 +107,7 @@ public class EmployeeView {
     }
     
     /**
-     * Validates the given Employee Name from user 
+     * Validates the given Employee Name by user 
      *
      * @return employeeName, Validated Employee Name 
      */
@@ -116,14 +116,14 @@ public class EmployeeView {
         String employeeName = null;
         
         System.out.println("Enter Employee Name");
-        StringBuilder displayString = new StringBuilder("Does not allow ");
-        displayString.append("special characters or digits");
+        StringBuilder displayString = new StringBuilder("Does not allow ")
+                                        .append("special characters or digits");
         System.out.println(displayString);
 
         while(!isValidName) {
             employeeName  = inputReader.nextLine();
-            isValidName = employeeController.getEmployeeNameValidated
-                                            (employeeName);
+            isValidName = employeeController
+                          .getEmployeeNameValidated(employeeName);
             if(!isValidName) {
                 System.out.println("Enter a valid name");
             }
@@ -144,8 +144,8 @@ public class EmployeeView {
         while(!isValidSalary) {
             try {
                 employeeSalary = Float.parseFloat(inputReader.nextLine());
-                isValidSalary = employeeController.getEmployeeSalaryValidated
-                                          (employeeSalary);
+                isValidSalary = employeeController
+                                .getEmployeeSalaryValidated(employeeSalary);
                 if(!isValidSalary) {
                     System.out.println("Enter a valid salary");
                 }
@@ -164,20 +164,20 @@ public class EmployeeView {
     private String getEmployeeEmail() {
         boolean isValidEmail = false;
         String employeeEmail = null;
-
+        
+        StringBuilder errorMsg = new StringBuilder("Email is already available")
+                                     .append(" or invalid format, Try another");
         System.out.println("Enter Employee Email");
-        StringBuilder displayString = new StringBuilder("Only Standard format");
-        displayString.append(" is acceptable,only(-_.) only these 3 ");
-        displayString.append("characters are allowed");
+        StringBuilder displayString = new StringBuilder("Only Standard format")
+                               .append(" is acceptable,only(-_.) only these 3 ")
+                               .append("characters are allowed");
         System.out.println(displayString);
  
         while(!isValidEmail) {
             employeeEmail = inputReader.nextLine();
-            isValidEmail = employeeController.getEmployeeEmailValidated
-                                             (employeeEmail);
+            isValidEmail = employeeController
+                           .getEmployeeEmailValidated(employeeEmail);
             if(!isValidEmail) {
-                StringBuilder errorMsg = new StringBuilder("Email is already");
-                errorMsg.append(" available or invalid format, Try another");
                 System.out.println(errorMsg);    
             }
         }
@@ -193,10 +193,13 @@ public class EmployeeView {
         boolean isValidContact = false;
         long employeeContact = 0;
         
+        StringBuilder errorMsg = new StringBuilder("Phone number already ")
+                                           .append("available or Invalid ")
+                                           .append("format , try another");
         System.out.println("Enter Employee Phone Number");
-        StringBuilder displayString = new StringBuilder("Phone number starts");
-        displayString.append(" only between 6-9, no special cases, no white");
-        displayString.append(" spaces allowed and should be unique");
+        StringBuilder displayString = new StringBuilder("Phone number starts")
+                       .append(" only between 6-9, no special cases, no white")
+                       .append(" spaces allowed and should be unique");
         System.out.println(displayString);
 
         while(!isValidContact) {
@@ -205,9 +208,6 @@ public class EmployeeView {
                 isValidContact = employeeController
                                  .getEmployeeContactValidated(employeeContact); 
                 if(!isValidContact) {
-                    StringBuilder errorMsg = new StringBuilder("Phone number ");
-                    errorMsg.append("already available or Invalid ")
-                            .append("format) , try another");
                     System.out.println(errorMsg);
                 } 
             } catch(NumberFormatException e) {
@@ -224,22 +224,22 @@ public class EmployeeView {
      */
     private LocalDate getDateOfBirth() {
         LocalDate dob = null;
-        boolean isCorrectDob = false;
+        boolean isValidDob = false;
         String[] dateArray;
-        String dateString = null;
+        String stringDate = null;
 
         System.out.println("Enter DOB : dd-MM-yyyy");
-        while (!isCorrectDob) { 
+        while (!isValidDob) { 
             System.out.println("Only above 18 yrs and below 60 yrs");
             try {
-                dateString = inputReader.nextLine();
-                dateArray = dateString.split("-");
-                dateString = String.join("-", dateArray[2], dateArray[1]
+                stringDate = inputReader.nextLine();
+                dateArray = stringDate.split("-");
+                stringDate = String.join("-", dateArray[2], dateArray[1]
                                                           , dateArray[0]);
-                dob = LocalDate.parse(dateString);
+                dob = LocalDate.parse(stringDate);
                 if(employeeController.getValidatedDOB(dob)) {
                     
-                    isCorrectDob = true;
+                    isValidDob = true;
                 } else {
                     System.out.println("Enter a valid dob");
                 }    
@@ -255,34 +255,15 @@ public class EmployeeView {
     /**
      * Checks whether the Employee Records available or empty
      * 
-     * @return boolean 
+     * @return boolean, true if records available  
      */
     private boolean isRecordsAvailable() {
         return employeeController.isRecordsAvailable();
     }
 
     /**
-     * Checks whether the Contact Number is unique
-     *
-     * @return boolean 
-     * @param employeeContact, Contact number of the employee
-     */
-    private boolean isContactDuplicate(long employeeContact) {
-        return employeeController.isContactDuplicate(employeeContact);
-    }   
-   
-    /**
-     * Checks whether the Email is unique 
-     *
-     * @return boolean
-     * @param employeeEmail, email Id of the employee
-     */
-    private boolean isEmailDuplicate(String employeeEmail) {
-        return employeeController.isEmailDuplicate(employeeEmail);
-    }
-
-    /**
-     * Creates new Employee 
+     * Gets and validates the employee details from user and Creates a new 
+     *  Employee
      */
     private void createEmployee() {
         boolean isValidId = false;
@@ -313,6 +294,7 @@ public class EmployeeView {
      */
     private void viewEmployee() {
         boolean isValidChoice = false;
+
         while(!isValidChoice) {
             isValidChoice = true; 
             if(isRecordsAvailable()) {
@@ -394,7 +376,7 @@ public class EmployeeView {
     }
     
     /**
-     * Delete the details of the given Employee Id
+     * Deletes the details of the given Employee Id
      */
     private void deleteEmployeeById() {
         int employeeId = getEmployeeId();
@@ -469,7 +451,7 @@ public class EmployeeView {
     }
 
     /**
-     * To update all details of an Employee
+     * Updates all details of an Employee
      *
      * @param employeeId
      */
@@ -485,7 +467,7 @@ public class EmployeeView {
     }
     
     /**
-     * To update the Name of an Employee
+     * Updates the Name of an Employee
      *
      * @param employeeId
      */
@@ -497,7 +479,7 @@ public class EmployeeView {
     }
 
     /**
-     * To update the Salary of an Employee
+     * Updates the Salary of an Employee
      *
      * @param employeeId
      */
@@ -509,7 +491,7 @@ public class EmployeeView {
     }
 
     /**
-     * To update the Email ID of an Employee
+     * Updates the Email ID of an Employee
      *
      * @param employeeId
      */ 
@@ -521,7 +503,7 @@ public class EmployeeView {
     }
 
     /**
-     * To update the Contact Number of an Employee
+     * Updates the Contact Number of an Employee
      *
      * @param employeeId
      */
@@ -533,7 +515,7 @@ public class EmployeeView {
     }
     
     /**
-     * To update the Date of Birth of an Employee
+     * Updates the Date of Birth of an Employee
      *
      * @param employeeId
      */

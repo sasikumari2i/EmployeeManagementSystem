@@ -13,14 +13,14 @@ import java.time.LocalDate;
  */
 public class Employee {
     private int id;
-    private String name;
-    private double salary;
-    private String email;
     private long contact;
+    private float salary;
+    private String name;
+    private String email;
     private LocalDate dob;
 
     /**
-     * Employee Id getter and setter
+     * Employee getters and setters
      */ 
     public int getId() {
         return id;
@@ -30,20 +30,14 @@ public class Employee {
         this.id = id;
     }
 
-    /**
-     * Employee Salary getter and setter
-     */
-    public double getSalary() {
+    public float getSalary() {
         return salary;
     }
 
-    public void setSalary(double salary) {
+    public void setSalary(float salary) {
         this.salary = salary;
     }
-
-    /**
-     * Employee Date of Birth getter and setter
-     */ 
+ 
     public LocalDate getDob() {   
        return dob;
     }
@@ -51,10 +45,7 @@ public class Employee {
     public void setDob(LocalDate dob) {
         this.dob = dob;
     }
-
-    /**
-     * Employee Name getter and setter
-     */ 
+ 
     public String getName() {
         return name;
     }
@@ -62,10 +53,7 @@ public class Employee {
     public void setName(String name) {
         this.name = name;
     }
-
-    /**
-     * Employee Email getter and setter
-     */ 
+ 
     public String getEmail() {
         return email;
     }
@@ -73,10 +61,7 @@ public class Employee {
     public void setEmail(String email) {
         this.email = email;
     }
-
-    /**
-     * Employee Contact getter and setter
-     */ 
+ 
     public long getContact() {
         return contact;
     }
@@ -92,12 +77,12 @@ public class Employee {
      */ 
     public String toString() {
         StringBuilder display = new StringBuilder();
-        display.append(" ID : " + this.id)
-               .append(" Name : " + this.name)
-               .append(" DOB : " + this.dob)
-               .append(" Salary : " + String.format("%.3f", this.salary))
-               .append(" Email : " + this.email)
-               .append(" Contact : " + this.contact);
+        display.append(" ID : ").append(this.id)
+               .append(" Name : ").append(this.name)
+               .append(" DOB : ").append(this.dob)
+               .append(" Salary : ").append(String.format("%.3f", this.salary))
+               .append(" Email : ").append(this.email)
+               .append(" Contact : ").append(this.contact);
         
         return display.toString();
     }

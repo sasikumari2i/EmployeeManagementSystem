@@ -17,9 +17,9 @@ import com.ideas2it.project.model.Employee;
 public class EmployeeMapper {
  
     /**
-     * To convert Employee object to DTO by creating new DTO instance
+     * Converts Employee to DTO
      *
-     * @param employee, Employee object to be converted
+     * @param employee, Employee to be converted
      * @return employeeDTO, DTO object
      */   
     public static EmployeeDTO convertEmployeeToDTO(Employee employee) {
@@ -35,9 +35,9 @@ public class EmployeeMapper {
     }
 
     /**
-     * To convert DTO to Employee object by creating new Employee instance
+     * Converts DTO to Employee
      *
-     * @param employeeDTO, EmployeeDTO instance to be converted
+     * @param employeeDTO, EmployeeDTO to be converted
      * @return employee, Employee class 
      */       
     public static Employee convertDTOToEmployee(EmployeeDTO employeeDTO) {
@@ -53,11 +53,11 @@ public class EmployeeMapper {
     }
     
     /**
-     * To convert DTO to Employee object for the given details
+     * Convert DTO to Employee sfor the given details
      *
-     * @param employee, Employee instance to be converted
+     * @param employee, Employee to be converted
      * @param employeeDTO, EmployeeDTO
-     * @return employee, Employee class
+     * @return employee, Employee
      */
     public static Employee updateDTOToEmployee(Employee employee, 
                                                EmployeeDTO employeeDTO) {

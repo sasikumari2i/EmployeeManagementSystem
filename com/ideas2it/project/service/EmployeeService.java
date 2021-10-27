@@ -26,12 +26,12 @@ import com.ideas2it.project.model.Employee;
  */
 public class EmployeeService {
 
-    private Map<Integer, Employee> employeeDetails = new HashMap<>();
+    private Map<Integer, Employee> employees = new HashMap<>();
     
     /**
      * To validate the given Choice in correct format using regex
      *
-     * @return boolean valid or not 
+     * @return boolean, true if choice is valid  
      * @param  inputChoice
      */
     public boolean getChoiceValidated(int inputChoice) {
@@ -43,7 +43,7 @@ public class EmployeeService {
     /**
      * To validate the given Employee ID in correct format using regex
      *
-     * @return boolean valid or not 
+     * @return boolean, true if Id is valid 
      * @param  employeeId
      */
     public boolean getEmployeeIdValidated(int employeeId) {
@@ -55,7 +55,7 @@ public class EmployeeService {
     /**
      * To validate the given Employee Name in correct format using regex
      *
-     * @return boolean valid or not 
+     * @return boolean, true if Name is valid 
      * @param  employeeName
      */
     public boolean getEmployeeNameValidated(String employeeName) {
@@ -66,7 +66,7 @@ public class EmployeeService {
     /**
      * To validate the given Employee Salary in correct format using regex
      *
-     * @return boolean valid or not 
+     * @return boolean, true if salary is valid 
      * @param  employeeSalary
      */
     public boolean getEmployeeSalaryValidated(float employeeSalary) {
@@ -77,7 +77,7 @@ public class EmployeeService {
     /**
      * To validate the given Employee Email in correct format using regex
      *
-     * @return boolean valid or not 
+     * @return boolean, true if email is valid 
      * @param  employeeEmail
      */
     public boolean getEmployeeEmailValidated(String employeeEmail) {
@@ -90,7 +90,7 @@ public class EmployeeService {
     /**
      * To validate the given Employee Contact in correct format using regex
      *
-     * @return boolean valid or not 
+     * @return boolean, true if Phone number is valid 
      * @param  employeeContact
      */
     public boolean getEmployeeContactValidated(long employeeContact) {
@@ -103,7 +103,7 @@ public class EmployeeService {
     /**
      * To validate the given Employee Contact in correct format using regex
      *
-     * @return boolean valid or not 
+     * @return boolean, true if date of birth is valid 
      * @param  employeeContact
      */
     public boolean getValidatedDOB(LocalDate dob) {
@@ -118,37 +118,39 @@ public class EmployeeService {
      * @param employeeDTO, EmployeeDTO containing the employee details
      */    
     public void updateAllDetails(int employeeId, EmployeeDTO employeeDTO) {
-        Employee employee = employeeDetails.get(employeeId);
-        employeeDetails.replace(employeeId, EmployeeMapper
+        Employee employee = employees.get(employeeId);
+        employees.replace(employeeId, EmployeeMapper
                                 .updateDTOToEmployee(employee, employeeDTO));
     }
 
     /**
      * Delete all the Records
+     * @return boolean, true if no employee records available
      */
     public boolean deleteAllEmployee() {
-        employeeDetails.clear();
-        return employeeDetails.isEmpty();
+        employees.clear();
+        return employees.isEmpty();
     }
 
     /**
      * Delete the Records of given Employee Id
      * 
      * @param employeeId, ID of the user
+     * @return boolean, true if employee detail is available 
      */
     public boolean deleteEmployeeById(int employeeId) {
-        employeeDetails.remove(employeeId);
-        return employeeDetails.containsKey(employeeId);
+        employees.remove(employeeId);
+        return employees.containsKey(employeeId);
     }
 
     /**
      * Check the Records whether it contains given Employee Id
      * 
      * @param employeeId, ID of the user
-     * @return boolean available
+     * @return boolean, true if employee detail is available
      */
     public boolean containsEmployee(int employeeId) {
-        return employeeDetails.containsKey(employeeId);
+        return employees.containsKey(employeeId);
     }
 
     /**
@@ -158,7 +160,7 @@ public class EmployeeService {
      * @return employeeDTO of the Employee through EmployeeMapper class
      */
     public EmployeeDTO viewEmployeeById(int employeeId) {
-        return EmployeeMapper.convertEmployeeToDTO(employeeDetails
+        return EmployeeMapper.convertEmployeeToDTO(employees
                                                    .get(employeeId));
     }
 
@@ -169,8 +171,8 @@ public class EmployeeService {
      */
     public List<EmployeeDTO> viewEmployee() {
         List<EmployeeDTO> viewList = new ArrayList<>();
-        for(Integer key : employeeDetails.keySet()) {
-            viewList.add(EmployeeMapper.convertEmployeeToDTO(employeeDetails
+        for(Integer key : employees.keySet()) {
+            viewList.add(EmployeeMapper.convertEmployeeToDTO(employees
                                                              .get(key)));
         }
         return viewList;      
@@ -179,10 +181,10 @@ public class EmployeeService {
     /**
      * Check whether any Records available.
      *  
-     * @return boolean, Records avaiable 
+     * @return boolean, true if no employee records are available 
      */
     public boolean isRecordsAvailable() {
-        return employeeDetails.keySet().isEmpty();
+        return employees.keySet().isEmpty();
     }
 
     /**
@@ -190,22 +192,23 @@ public class EmployeeService {
      *
      * @param employeeId, Id of the user to be updated
      * @param employeeDTO, EmployeeDTO containing Employee details
+     * @return boolean, true if null is return from employees
      */
     public boolean createEmployee(EmployeeDTO employeeDTO) {
-        return (null == employeeDetails.put(employeeDTO.getId(), EmployeeMapper
+        return (null == employees.put(employeeDTO.getId(), EmployeeMapper
                            .convertDTOToEmployee(employeeDTO)));
     }
   
     /**
      * To check whether the given Employee Email is unique
      *
-     * @return boolean unique or not 
+     * @return boolean, true if email is already available 
      * @param  email
      */ 
     public boolean isEmailDuplicate(String email) {
         int duplicate = 0; 
-        for (Integer key : employeeDetails.keySet()) {
-            Employee employee =  employeeDetails.get(key);
+        for (Integer key : employees.keySet()) {
+            Employee employee =  employees.get(key);
             if(employee.getEmail().equals(email)) {
                 duplicate++;
             }
@@ -216,13 +219,13 @@ public class EmployeeService {
     /**
      * To check whether the given Employee Contact Number is unique
      *
-     * @return boolean unique or not 
+     * @return boolean true if phone number is already available 
      * @param  contact
      */
     public boolean isContactDuplicate(long contact) {
         int duplicate = 0;
-        for (Integer key : employeeDetails.keySet()) {
-            Employee employee =  employeeDetails.get(key);
+        for (Integer key : employees.keySet()) {
+            Employee employee =  employees.get(key);
             if(employee.getContact() == contact) {
                     duplicate++;
             }
