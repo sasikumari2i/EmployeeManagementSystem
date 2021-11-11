@@ -13,6 +13,7 @@ import java.util.Scanner;
 
 import com.ideas2it.project.controller.EmployeeController;
 import com.ideas2it.project.model.dto.EmployeeDTO;
+import com.ideas2it.project.model.dto.EmployeeAddressDTO;
 import com.ideas2it.project.model.EmployeeAddress;
 
 /**
@@ -283,6 +284,7 @@ public class EmployeeView {
                 employeeDTO.setDob(getDateOfBirth());
                 employeeDTO.setEmail(getEmployeeEmail());
                 employeeDTO.setContact(getEmployeeContact());
+                employeeDTO.setAddress(createEmployeeAddress());
                 System.out.println(employeeController
                                   .createEmployee(employeeDTO)
                                   ? "Employee created successfully!!" 
@@ -290,6 +292,100 @@ public class EmployeeView {
             }
             isValidId = true;
         }
+    }
+    public EmployeeAddressDTO createEmployeeAddress() {
+        EmployeeAddressDTO addressDTO = new EmployeeAddressDTO();
+        
+        addressDTO.setDoorNo(getDoorNo());
+        addressDTO.setLandMark(getLandMark());
+        addressDTO.setStreet(getStreet());
+        addressDTO.setCity(getCity());
+        addressDTO.setPincode(getPincode());
+        return addressDTO;
+    }
+
+    /**
+     * Validates the given city of the user
+     *
+     * @return city, Validated city
+     */
+    private String getDoorNo() {
+        boolean isValidDoorNo = false;
+        String doorNo = null;
+
+        System.out.println("Enter Door Number");
+        while (!isValidDoorNo) { 
+            doorNo = inputReader.nextLine();
+            isValidDoorNo = employeeController.getDoorNoValidated(doorNo);
+            if(!isValidDoorNo) {
+                System.out.println("Please enter a valid door no");
+            }  
+        }
+        return doorNo;
+    }
+
+    private String getLandMark() {
+        boolean isValidLandMark = false;
+        String landMark = null;
+
+        System.out.println("Enter Land Mark");
+        while (!isValidLandMark) { 
+            landMark = inputReader.nextLine();
+            isValidLandMark = employeeController.getLandMarkValidated(landMark);
+            if(!isValidLandMark) {
+                System.out.println("Please enter a valid Land Mark");
+            }  
+        }
+        return landMark;
+    }
+
+    private String getStreet() {
+        boolean isValidStreet = false;
+        String street = null;
+
+        System.out.println("Enter Street");
+        while (!isValidStreet) { 
+            street = inputReader.nextLine();
+            isValidStreet = employeeController.getStreetValidated(street);
+            if(!isValidStreet) {
+                System.out.println("Please enter a valid Street");
+            }  
+        }
+        return street;
+    }
+
+    private String getCity() {
+        boolean isValidCity = false;
+        String city = null;
+
+        System.out.println("Enter City");
+        while (!isValidCity) { 
+            city = inputReader.nextLine();
+            isValidCity = employeeController.getCityValidated(city);
+            if(!isValidCity) {
+                 System.out.println("Please enter a valid City");
+            }  
+        }
+        return city;
+    }
+
+    private long getPincode() {
+        boolean isValidPincode = false;
+        long pincode = 0;
+
+        System.out.println("Enter Pincode");
+        while (!isValidPincode) { 
+            try {
+                pincode = Long.parseLong(inputReader.nextLine());
+                isValidPincode = employeeController.getPincodeValidated(pincode);
+                if(!isValidPincode) {
+                     System.out.println("Please enter a valid Pincode");
+                }  
+            } catch(NumberFormatException e) {
+                System.out.println("Enter only valid Pincode");
+            } 
+        }
+        return pincode;
     }
   
     /**

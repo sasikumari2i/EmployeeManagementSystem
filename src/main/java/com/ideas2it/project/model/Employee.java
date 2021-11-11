@@ -4,7 +4,7 @@
 package com.ideas2it.project.model;
 
 import java.time.LocalDate;
-import com.ideas2it.project.model.Employee;
+import com.ideas2it.project.model.EmployeeAddress;
 	
 /**
  * Employee Management System model class
@@ -71,6 +71,14 @@ public class Employee {
     public void setContact(long contact) {
         this.contact = contact;
     }
+
+    public EmployeeAddress getAddress() {
+        return address;
+    }
+  
+    public void setAddress(EmployeeAddress address) {
+        this.address = address;
+    }
     
     /**
      * Overrides toString method to display the details 
@@ -84,7 +92,8 @@ public class Employee {
                .append(" DOB : ").append(this.dob)
                .append(" Salary : ").append(String.format("%.3f", this.salary))
                .append(" Email : ").append(this.email)
-               .append(" Contact : ").append(this.contact);
+               .append(" Contact : ").append(this.contact)
+               .append(" Address : ").append(this.address);
         
         return display.toString();
     }

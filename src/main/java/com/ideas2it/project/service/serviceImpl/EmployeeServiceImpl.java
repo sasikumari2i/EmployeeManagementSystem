@@ -18,6 +18,7 @@ import com.ideas2it.project.dao.daoImpl.DataAccessObjectImpl;
 import com.ideas2it.project.model.dto.EmployeeDTO;
 import com.ideas2it.project.utils.EmployeeMapper;
 import com.ideas2it.project.model.Employee;
+import com.ideas2it.project.model.EmployeeAddress;
 import com.ideas2it.project.service.EmployeeService;
 
 /**
@@ -112,7 +113,33 @@ public class EmployeeServiceImpl implements EmployeeService {
         Period period = Period.between(dob, LocalDate.now());
         return ((period.getYears() < 60) && (period.getYears() > 18));
     }
+
+    public boolean getDoorNoValidated(String doorNo) {
+        //String pattern = "[0-9A-Z]";
+        return true;//(doorNo.matches(pattern));
+    }
+
+    public boolean getLandMarkValidated(String landMark) {
+        String pattern = "[0-9A-Za-z]{1,20}+([ ][0-9a-zA-Z]{1,20}+)*";
+        return (landMark.matches(pattern));
+    }
+
+    public boolean getStreetValidated(String street) {
+        String pattern = "[0-9A-Za-z]{1,20}+([ ][0-9a-zA-Z]{1,20}+)*";
+        return (street.matches(pattern));
+    }
     
+    public boolean getCityValidated(String city) {
+        String pattern = "[0-9A-Za-z]{1,20}+([ ][0-9a-zA-Z]{1,20}+)*";
+        return (city.matches(pattern));
+    }
+
+    public boolean getPincodeValidated(long pincode) {
+        String stringPincode = String.valueOf(pincode);
+        String pattern = "[0-9]{1,6}";
+        return (stringPincode.matches(pattern));
+    }
+
     /**
      * To update all details of an Employee
      *
@@ -194,7 +221,8 @@ public class EmployeeServiceImpl implements EmployeeService {
      */
     public boolean createEmployee(EmployeeDTO employeeDTO) {
         Employee employee = EmployeeMapper.convertDTOToEmployee(employeeDTO);
-        return (null == dao.createEmployee(employee));
+        EmployeeAddress address = EmployeeMapper.convertAddressDTOToEmployeeAddress(employeeDTO.getAddress());
+        return (null == dao.createEmployee(employee, address));
     }
 }
 

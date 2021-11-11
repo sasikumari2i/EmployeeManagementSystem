@@ -6,6 +6,7 @@ package com.ideas2it.project.dao;
 import java.util.List;
 
 import com.ideas2it.project.model.Employee;
+import com.ideas2it.project.model.EmployeeAddress;
 import com.ideas2it.project.utils.DatabaseConnection;
 
 /**
@@ -22,7 +23,7 @@ public interface DataAccessObject {
      * @return Employee, returns the inserted employee 
      * @param  Employee, employee record to be inserted
      */   
-    public Employee createEmployee(Employee employee);
+    public Employee createEmployee(Employee employee, EmployeeAddress address);
 
     /**
      * Update the employee details of an employee

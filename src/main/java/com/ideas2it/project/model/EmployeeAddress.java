@@ -9,7 +9,7 @@ package com.ideas2it.project.model;
  * @version	1.0
  * @author	Sasikumar Raju
  */
-public class EmployeeAddress {
+public class EmployeeAddress {	
     private String doorNo;
     private String landMark;
     private String street;

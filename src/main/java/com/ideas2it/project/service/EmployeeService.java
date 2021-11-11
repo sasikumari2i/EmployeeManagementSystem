@@ -79,7 +79,17 @@ public interface EmployeeService {
      * @param  employeeContact
      */
     public boolean getValidatedDOB(LocalDate dob);
+
+    public boolean getDoorNoValidated(String doorNo);
     
+    public boolean getLandMarkValidated(String landMark);
+
+    public boolean getStreetValidated(String street);
+    
+    public boolean getCityValidated(String city);
+
+    public boolean getPincodeValidated(long pincode);                
+
     /**
      * To update all details of an Employee
      *

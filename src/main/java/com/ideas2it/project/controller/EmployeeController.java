@@ -91,6 +91,27 @@ public class EmployeeController {
         return employeeService.getValidatedDOB(dob);     
     }
 
+
+    public boolean getDoorNoValidated(String doorNo) {
+        return employeeService.getDoorNoValidated(doorNo);
+    }
+
+    public boolean getLandMarkValidated(String landMark) {
+        return employeeService.getLandMarkValidated(landMark);
+    }
+
+    public boolean getStreetValidated(String street) {
+        return employeeService.getStreetValidated(street);
+    }
+
+    public boolean getCityValidated(String city) {
+        return employeeService.getCityValidated(city);
+    }
+
+    public boolean getPincodeValidated(long pincode) {
+        return employeeService.getPincodeValidated(pincode);
+    }
+
     /**
      * To check whether records available from EmployeeService
      *

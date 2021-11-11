@@ -5,6 +5,8 @@ package com.ideas2it.project.utils;
 
 import com.ideas2it.project.model.dto.EmployeeDTO; 
 import com.ideas2it.project.model.Employee;
+import com.ideas2it.project.model.dto.EmployeeAddressDTO; 
+import com.ideas2it.project.model.EmployeeAddress;
 
 /**
  * Maps between service and control layers for converting DTO objects to 
@@ -49,7 +51,19 @@ public class EmployeeMapper {
         employee.setContact(employeeDTO.getContact());
         employee.setSalary(employeeDTO.getSalary());
         employee.setDob(employeeDTO.getDob());
+        //EmployeeAddress address = employee.setAddress(convertAddressDTOToEmployeeAddress(employeeDTO.getAddress()));
         return employee;
+    }
+
+    public static EmployeeAddress convertAddressDTOToEmployeeAddress(EmployeeAddressDTO employeeAddressDTO) {
+        EmployeeAddress employeeAddress = new EmployeeAddress();
+    
+        employeeAddress.setDoorNo(employeeAddressDTO.getDoorNo());
+        employeeAddress.setLandMark(employeeAddressDTO.getLandMark());
+        employeeAddress.setCity(employeeAddressDTO.getCity());
+        employeeAddress.setStreet(employeeAddressDTO.getStreet());
+        employeeAddress.setPincode(employeeAddressDTO.getPincode());
+        return employeeAddress;     
     }
 }
 

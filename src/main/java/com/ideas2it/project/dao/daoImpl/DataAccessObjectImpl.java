@@ -15,6 +15,7 @@ import java.util.List;
 
 import com.ideas2it.project.dao.DataAccessObject;
 import com.ideas2it.project.model.Employee;
+import com.ideas2it.project.model.EmployeeAddress;
 import com.ideas2it.project.utils.DatabaseConnection;
 
 /**
@@ -26,6 +27,7 @@ import com.ideas2it.project.utils.DatabaseConnection;
 public class DataAccessObjectImpl implements DataAccessObject {
    
     private Connection connection = null;
+    //private EmployeeAddress address = new EmployeeAddress();
    
     /**
      * Inserts new employee details to the database
@@ -33,9 +35,12 @@ public class DataAccessObjectImpl implements DataAccessObject {
      * @return Employee, returns the inserted employee 
      * @param  Employee, employee record to be inserted
      */
-    public Employee createEmployee(Employee employee) {
-        PreparedStatement statement = null; 
-        String insertQuery = "insert into employee values (?,?,?,?,?,?)"; 
+    public Employee createEmployee(Employee employee, EmployeeAddress address) {
+        PreparedStatement statement = null;
+        PreparedStatement addressStatement = null;
+         
+        String insertQuery = "insert into employee values (?,?,?,?,?,?)";
+        String insertAddressQuery = "insert into address values (?,?,?,?,?,?)"; 
         try{
             connection = DatabaseConnection.getConnection();
             statement = connection.prepareStatement(insertQuery);
@@ -46,9 +51,16 @@ public class DataAccessObjectImpl implements DataAccessObject {
             statement.setString(4,employee.getName());
             statement.setString(5,employee.getEmail());
             statement.setDate(6,date);
-            if(0 != statement.executeUpdate()) {
-                employee = null;
-            }
+            addressStatement = connection.prepareStatement(insertAddressQuery);
+            addressStatement.setInt(1,employee.getId());
+            addressStatement.setString(2,address.getDoorNo());
+            addressStatement.setString(3,address.getLandMark());
+            addressStatement.setString(4,address.getStreet());
+            addressStatement.setString(5,address.getCity());
+            addressStatement.setLong(6,address.getPincode());
+                if(0 != statement.executeUpdate() && 0 != addressStatement.executeUpdate()) {
+                    employee = null;
+                }
         } catch(Exception e) { 
             System.out.println(e);
         } finally {
@@ -69,7 +81,7 @@ public class DataAccessObjectImpl implements DataAccessObject {
         }
         return employee;
     }
-
+    
     /**
      * Update the employee details of an employee
      *

@@ -6,6 +6,8 @@ package com.ideas2it.project.model.dto;
 import java.time.LocalDate;
 
 import com.ideas2it.project.controller.EmployeeController;
+import com.ideas2it.project.model.dto.EmployeeAddressDTO;
+import com.ideas2it.project.model.EmployeeAddress;
 
 /**
  * Data Transfer Object for the Employee Management System
@@ -20,6 +22,7 @@ public class EmployeeDTO {
     private String name;
     private String email;
     private LocalDate dob;
+    private EmployeeAddressDTO address;
 
     /**
      * EmployeeDTO getters and setters
@@ -70,6 +73,14 @@ public class EmployeeDTO {
     
     public void setContact(long contact) {
         this.contact = contact;
+    }
+
+    public EmployeeAddressDTO getAddress() {
+        return address;
+    }
+    
+    public void setAddress(EmployeeAddressDTO address) {
+        this.address = address;
     }
     
     /**
