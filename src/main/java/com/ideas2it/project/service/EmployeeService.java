@@ -5,22 +5,29 @@ package com.ideas2it.project.service;
 
 import java.text.ParseException;
 import java.time.LocalDate;
-import java.time.Period;
 import java.time.LocalDate;
-import java.util.regex.Pattern;
-import java.util.regex.Matcher;
-import java.util.Map;
-import java.util.HashMap;
-import java.util.List;
+import java.time.Period;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
+import com.ideas2it.project.dao.daoImpl.EmployeeDAOImpl;
+import com.ideas2it.project.model.Address;
 import com.ideas2it.project.model.dto.EmployeeDTO;
+import com.ideas2it.project.model.dto.AddressDTO;
+import com.ideas2it.project.model.Employee;
+import com.ideas2it.project.utils.EmployeeMapper;
+
+
 
 /**
- * Inteface to provide business logic for the Employee Management System
+ * Interface to perform business logic for the employee management system
  *
  * @version	1.0
- * @author	Sasikumar Raju
+ * @author	Sasikumar 
  */
 public interface EmployeeService {
 
@@ -30,15 +37,15 @@ public interface EmployeeService {
      * @return boolean, true if choice is valid  
      * @param  inputChoice
      */
-    public boolean getChoiceValidated(int inputChoice);  
-   
+    public boolean getChoiceValidated(int inputChoice); 
+
     /**
      * To validate the given Employee ID in correct format using regex
      *
      * @return boolean, true if Id is valid 
      * @param  employeeId
      */
-    public boolean getEmployeeIdValidated(int employeeId);
+    public boolean getEmployeeIdValidated(int employeeId); 
 
     /**
      * To validate the given Employee Name in correct format using regex
@@ -46,7 +53,7 @@ public interface EmployeeService {
      * @return boolean, true if Name is valid 
      * @param  employeeName
      */
-    public boolean getEmployeeNameValidated(String employeeName);
+    public boolean getEmployeeNameValidated(String employeeName); 
 
     /**
      * To validate the given Employee Salary in correct format using regex
@@ -54,7 +61,7 @@ public interface EmployeeService {
      * @return boolean, true if salary is valid 
      * @param  employeeSalary
      */
-    public boolean getEmployeeSalaryValidated(float employeeSalary);
+    public boolean getEmployeeSalaryValidated(float employeeSalary); 
 
     /**
      * To validate the given Employee Email in correct format using regex
@@ -62,7 +69,7 @@ public interface EmployeeService {
      * @return boolean, true if email is valid 
      * @param  employeeEmail
      */
-    public boolean getEmployeeEmailValidated(String employeeEmail);
+    public boolean getEmployeeEmailValidated(String employeeEmail); 
 
     /**
      * To validate the given Employee Contact in correct format using regex
@@ -70,7 +77,7 @@ public interface EmployeeService {
      * @return boolean, true if Phone number is valid 
      * @param  employeeContact
      */
-    public boolean getEmployeeContactValidated(long employeeContact);
+    public boolean getEmployeeContactValidated(long employeeContact); 
 
     /**
      * To validate the given Employee Contact in correct format using regex
@@ -78,24 +85,47 @@ public interface EmployeeService {
      * @return boolean, true if date of birth is valid 
      * @param  employeeContact
      */
-    public boolean getValidatedDOB(LocalDate dob);
+    public boolean getValidatedDOB(LocalDate dob); 
 
-    public boolean getDoorNoValidated(String doorNo);
-    
-    public boolean getLandMarkValidated(String landMark);
+    /**
+     * To validate the given Door number in correct format using regex
+     *
+     * @return boolean, true if door number is valid 
+     * @param doorNo, door number given by the user
+     */
+    public boolean getDoorNoValidated(String doorNo); 
 
-    public boolean getStreetValidated(String street);
-    
-    public boolean getCityValidated(String city);
+    /**
+     * To validate the given city,street,landmark in correct format using regex
+     *
+     * @return boolean, true if each are valid 
+     * @param  address, common for city,street,landmark
+     */
+    public boolean getAddressValidated(String address); 
 
-    public boolean getPincodeValidated(long pincode);                
+    /**
+     * To validate the given Pincode in correct format using regex
+     *
+     * @return boolean, true if pincode is valid 
+     * @param  pincode pincode given by the user
+     */
+    public boolean getPincodeValidated(long pincode); 
 
     /**
      * To update all details of an Employee
      *
-     * @param employeeDTO, EmployeeDTO containing the employee details
+     * @param addressDTO, AddressDTO containing the employee details
+     * @return boolean, true if records are updated 
      */    
-    public boolean updateAllDetails(EmployeeDTO employeeDTO);
+    public boolean updateAllDetails(AddressDTO addressDTO);
+
+    /**
+     * Gets the list of addresses for the given user
+     *
+     * @param employeeId, Employee id given by the user
+     * @return addressList, List of address for the given employee
+     */
+    public List<AddressDTO> getAddressById(int employeeId);
 
     /**
      * Delete all the Records
@@ -107,9 +137,17 @@ public interface EmployeeService {
      * Delete the Records of given Employee Id
      * 
      * @param employeeId, ID of the user
-     * @return boolean, true if employee detail is available 
+     * @return boolean, true if employee detail is deleted 
      */
     public boolean deleteEmployeeById(int employeeId);
+
+    /**
+     * Deletes the Address given from the user
+     * 
+     * @param addressId, addressID of the address
+     * @return boolean, true if employee address is deleted 
+     */
+    public boolean deleteAddress(int addressId);
 
     /**
      * Check the Records whether it contains given Employee Id
@@ -144,10 +182,10 @@ public interface EmployeeService {
     /**
      * Create and store new Employee
      *
-     * @param employeeDTO, EmployeeDTO containing Employee details
+     * @param addressDTO, AddressDTO containing Employee details
      * @return boolean, true if null is return from employees
      */
-    public boolean createEmployee(EmployeeDTO employeeDTO);
+    public boolean createEmployee(AddressDTO addressDTO);
 }
 
 

@@ -4,10 +4,12 @@
 package com.ideas2it.project.model.dto;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.ideas2it.project.controller.EmployeeController;
-import com.ideas2it.project.model.dto.EmployeeAddressDTO;
-import com.ideas2it.project.model.EmployeeAddress;
+import com.ideas2it.project.model.Address;
+import com.ideas2it.project.model.dto.AddressDTO;
 
 /**
  * Data Transfer Object for the Employee Management System
@@ -22,7 +24,7 @@ public class EmployeeDTO {
     private String name;
     private String email;
     private LocalDate dob;
-    private EmployeeAddressDTO address;
+    private List<AddressDTO> address;
 
     /**
      * EmployeeDTO getters and setters
@@ -75,11 +77,11 @@ public class EmployeeDTO {
         this.contact = contact;
     }
 
-    public EmployeeAddressDTO getAddress() {
+    public List<AddressDTO> getAddress() {
         return address;
     }
     
-    public void setAddress(EmployeeAddressDTO address) {
+    public void setAddress(List<AddressDTO> address) {
         this.address = address;
     }
     
@@ -94,8 +96,7 @@ public class EmployeeDTO {
                .append(this.name).append(" DOB : ").append(this.dob) 
                .append(" Salary : ").append(String.format("%.3f", this.salary))
                .append(" Email : ").append(this.email).append(" Contact : ")
-               .append(this.contact);
-        
+               .append(this.contact).append("\n");
         return display.toString();
     }
 }	

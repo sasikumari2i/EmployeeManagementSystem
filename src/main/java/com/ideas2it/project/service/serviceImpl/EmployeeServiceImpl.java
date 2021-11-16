@@ -5,31 +5,34 @@ package com.ideas2it.project.service.serviceImpl;
 
 import java.text.ParseException;
 import java.time.LocalDate;
-import java.time.Period;
 import java.time.LocalDate;
-import java.util.regex.Pattern;
-import java.util.regex.Matcher;
-import java.util.Map;
-import java.util.HashMap;
-import java.util.List;
+import java.time.Period;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
-import com.ideas2it.project.dao.daoImpl.DataAccessObjectImpl;
+import com.ideas2it.project.dao.daoImpl.EmployeeDAOImpl;
+import com.ideas2it.project.model.Address;
 import com.ideas2it.project.model.dto.EmployeeDTO;
-import com.ideas2it.project.utils.EmployeeMapper;
+import com.ideas2it.project.model.dto.AddressDTO;
 import com.ideas2it.project.model.Employee;
-import com.ideas2it.project.model.EmployeeAddress;
 import com.ideas2it.project.service.EmployeeService;
+import com.ideas2it.project.utils.EmployeeMapper;
+
+
 
 /**
  * Performs the business logic for the Employee Management System
  *
  * @version	1.0
- * @author	Sasikumar Raju
+ * @author	Sasikumar 
  */
 public class EmployeeServiceImpl implements EmployeeService {
 
-    DataAccessObjectImpl dao = new DataAccessObjectImpl();
+    private EmployeeDAOImpl dao = new EmployeeDAOImpl();
     
     /**
      * To validate the given Choice in correct format using regex
@@ -114,40 +117,63 @@ public class EmployeeServiceImpl implements EmployeeService {
         return ((period.getYears() < 60) && (period.getYears() > 18));
     }
 
+    /**
+     * To validate the given Door number in correct format using regex
+     *
+     * @return boolean, true if door number is valid 
+     * @param doorNo, door number given by the user
+     */
     public boolean getDoorNoValidated(String doorNo) {
-        //String pattern = "[0-9A-Z]";
-        return true;//(doorNo.matches(pattern));
+        String pattern = "[\\w&&[^_]]+[/-]{0,1}[\\w&&[^_]]+";
+        return (doorNo.matches(pattern));
     }
 
-    public boolean getLandMarkValidated(String landMark) {
-        String pattern = "[0-9A-Za-z]{1,20}+([ ][0-9a-zA-Z]{1,20}+)*";
-        return (landMark.matches(pattern));
+    /**
+     * To validate the given city,street,landmark in correct format using regex
+     *
+     * @return boolean, true if each are valid 
+     * @param  address, common for city,street,landmark
+     */
+    public boolean getAddressValidated(String address) {
+        String pattern = "[A-Za-z0-9]+([ ][a-zA-Z0-9]+)*";
+        return (address.matches(pattern));
     }
 
-    public boolean getStreetValidated(String street) {
-        String pattern = "[0-9A-Za-z]{1,20}+([ ][0-9a-zA-Z]{1,20}+)*";
-        return (street.matches(pattern));
-    }
-    
-    public boolean getCityValidated(String city) {
-        String pattern = "[0-9A-Za-z]{1,20}+([ ][0-9a-zA-Z]{1,20}+)*";
-        return (city.matches(pattern));
-    }
-
+    /**
+     * To validate the given Pincode in correct format using regex
+     *
+     * @return boolean, true if pincode is valid 
+     * @param  pincode pincode given by the user
+     */
     public boolean getPincodeValidated(long pincode) {
         String stringPincode = String.valueOf(pincode);
-        String pattern = "[0-9]{1,6}";
+        String pattern = "[1-9][0-9]{5}";
         return (stringPincode.matches(pattern));
     }
 
     /**
      * To update all details of an Employee
      *
-     * @param employeeDTO, EmployeeDTO containing the employee details
+     * @param addressDTO, AddressDTO containing the employee details
+     * @return boolean, true if records are updated 
      */    
-    public boolean updateAllDetails(EmployeeDTO employeeDTO) {
-        Employee employee = EmployeeMapper.convertDTOToEmployee(employeeDTO);
-        return (null == dao.updateEmployee(employee));
+    public boolean updateAllDetails(AddressDTO addressDTO) {
+        Address address = EmployeeMapper.convertAddressDTOToAddress(addressDTO);
+        return (null == dao.updateEmployee(address));
+    }
+
+    /**
+     * Gets the list of addresses for the given user
+     *
+     * @param employeeId, Employee id given by the user
+     * @return addressList, List of address for the given employee
+     */
+    public List<AddressDTO> getAddressById(int employeeId) {
+        List<AddressDTO> addressList = new ArrayList<>();
+        for (Address address : dao.getAddressById(employeeId)) {
+            addressList.add(EmployeeMapper.convertAddressToDTO(address));
+        }
+        return addressList;
     }
 
     /**
@@ -166,6 +192,16 @@ public class EmployeeServiceImpl implements EmployeeService {
      */
     public boolean deleteEmployeeById(int employeeId) {
         return dao.deleteEmployeeById(employeeId);
+    }
+
+    /**
+     * Deletes the Address given from the user
+     * 
+     * @param addressId, addressID of the address
+     * @return boolean, true if employee address is deleted 
+     */
+    public boolean deleteAddress(int addressId) {
+        return dao.deleteAddress(addressId);
     }
 
     /**
@@ -216,13 +252,12 @@ public class EmployeeServiceImpl implements EmployeeService {
     /**
      * Create and store new Employee
      *
-     * @param employeeDTO, EmployeeDTO containing Employee details
+     * @param addressDTO, AddressDTO containing Employee details
      * @return boolean, true if null is return from employees
      */
-    public boolean createEmployee(EmployeeDTO employeeDTO) {
-        Employee employee = EmployeeMapper.convertDTOToEmployee(employeeDTO);
-        EmployeeAddress address = EmployeeMapper.convertAddressDTOToEmployeeAddress(employeeDTO.getAddress());
-        return (null == dao.createEmployee(employee, address));
+    public boolean createEmployee(AddressDTO addressDTO) {
+        Address address = EmployeeMapper.convertAddressDTOToAddress(addressDTO);
+        return (null == dao.createEmployee(address));
     }
 }
 

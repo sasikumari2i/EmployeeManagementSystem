@@ -3,19 +3,19 @@
  */
 package com.ideas2it.project.dao.daoImpl;
 
-import java.sql.Date;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.Statement;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.ideas2it.project.dao.DataAccessObject;
+import com.ideas2it.project.dao.EmployeeDAO;
+import com.ideas2it.project.model.Address;
 import com.ideas2it.project.model.Employee;
-import com.ideas2it.project.model.EmployeeAddress;
 import com.ideas2it.project.utils.DatabaseConnection;
 
 /**
@@ -24,75 +24,97 @@ import com.ideas2it.project.utils.DatabaseConnection;
  * @version	1.0
  * @author	Sasikumar Raju
  */
-public class DataAccessObjectImpl implements DataAccessObject {
+public class EmployeeDAOImpl implements EmployeeDAO {
    
     private Connection connection = null;
-    //private EmployeeAddress address = new EmployeeAddress();
    
+    /**
+     * Inserts address to the employee
+     *
+     * @return boolean, true if records are inserted 
+     * @param  Address, address record to be inserted
+     * @param employeeId, employee Id of the user to be inserted
+     */
+    public boolean insertAddress(int employeeId, Address address) {
+        PreparedStatement statement = null;
+        int noOfRecords = 0;
+        StringBuilder query = new StringBuilder("insert into address ")
+                              .append("(employee_id,door_no,landmark,street,")
+                              .append("city,pincode) values (?,?,?,?,?,?)"); 
+        try {
+            String pincode = String.valueOf(address.getPincode());
+            statement = connection.prepareStatement(query.toString());
+            statement.setInt(1,employeeId);
+            statement.setString(2,address.getDoorNo());
+            statement.setString(3,address.getLandMark());
+            statement.setString(4,address.getStreet());
+            statement.setString(5,address.getCity());
+            statement.setString(6,pincode);
+            noOfRecords = statement.executeUpdate();
+        } catch(Exception e) { 
+            System.out.println(e);
+        } finally {
+            DatabaseConnection.close(statement);
+        }
+        return (0 != noOfRecords);
+    }
+
     /**
      * Inserts new employee details to the database
      *
-     * @return Employee, returns the inserted employee 
-     * @param  Employee, employee record to be inserted
+     * @return Employee, employee which is inserted
+     * @param  Address, Employee Address of the employee which contains employee
      */
-    public Employee createEmployee(Employee employee, EmployeeAddress address) {
+    public Employee createEmployee(Address address) {
         PreparedStatement statement = null;
-        PreparedStatement addressStatement = null;
-         
+        ResultSet resultSet = null;
+        int employeeId = 0; 
+        int noOfRecords = 0;
+        Employee employee = address.getEmployee();
+        boolean isAddressAdded = false;
         String insertQuery = "insert into employee values (?,?,?,?,?,?)";
-        String insertAddressQuery = "insert into address values (?,?,?,?,?,?)"; 
         try{
             connection = DatabaseConnection.getConnection();
             statement = connection.prepareStatement(insertQuery);
             Date date = Date.valueOf(employee.getDob());  
-            statement.setInt(1,employee.getId());
+            statement.setInt(1,0);
             statement.setLong(2,employee.getContact());
             statement.setFloat(3,employee.getSalary());
             statement.setString(4,employee.getName());
             statement.setString(5,employee.getEmail());
             statement.setDate(6,date);
-            addressStatement = connection.prepareStatement(insertAddressQuery);
-            addressStatement.setInt(1,employee.getId());
-            addressStatement.setString(2,address.getDoorNo());
-            addressStatement.setString(3,address.getLandMark());
-            addressStatement.setString(4,address.getStreet());
-            addressStatement.setString(5,address.getCity());
-            addressStatement.setLong(6,address.getPincode());
-                if(0 != statement.executeUpdate() && 0 != addressStatement.executeUpdate()) {
-                    employee = null;
-                }
+            noOfRecords = statement.executeUpdate();
+            insertQuery = "select last_insert_id()"; 
+            statement = connection.prepareStatement(insertQuery);
+            resultSet = statement.executeQuery();
+            resultSet.next();
+            employeeId = resultSet.getInt(1);
+            if(0 != noOfRecords) {
+                isAddressAdded = insertAddress(employeeId, address);       
+            }
         } catch(Exception e) { 
             System.out.println(e);
         } finally {
-            if(statement != null) {
-                try {
-                    statement.close();
-                } catch(SQLException e) {
-                    System.out.println(e);
-                }
-            }
-            if(connection != null) {
-                try {
-                    connection.close();
-                } catch(SQLException e) {
-                    System.out.println(e);
-                }    
-            }
+            DatabaseConnection.close(statement);
+            DatabaseConnection.close(connection);
         }
-        return employee;
+        return isAddressAdded ? (employee = null) : employee;
     }
-    
+
     /**
      * Update the employee details of an employee
      *
      * @return Employee, returns the inserted employee 
-     * @param  Employee, employee record to be updated
+     * @param  Address, Employee Address of the employee which contains employee
      */
-    public Employee updateEmployee(Employee employee) {
+    public Employee updateEmployee(Address address) {
         PreparedStatement statement = null;
+        boolean isAddressAdded = false;
+        int noOfRecords = 0;
+        Employee employee = address.getEmployee();;
         StringBuilder updateQuery = new StringBuilder();
         updateQuery.append("update employee set phonenumber = ?, salary = ?,")
-                   .append("name = ?,email = ?, dob = ? where id = ?");  
+                   .append("name = ?,email = ?, dob = ? where id = ?");
         try{
             connection = DatabaseConnection.getConnection();
             statement = connection.prepareStatement(updateQuery.toString());
@@ -103,30 +125,20 @@ public class DataAccessObjectImpl implements DataAccessObject {
             statement.setString(4,employee.getEmail());
             statement.setDate(5,date);
             statement.setInt(6,employee.getId());
-            if(0 != statement.executeUpdate()) {
-                employee = null;
-            }
+            noOfRecords = statement.executeUpdate();
+            if(null != address.getDoorNo()) {
+                isAddressAdded = insertAddress(employee.getId(), address);       
+            }       
         } catch(Exception e) { 
-            System.out.println(e);
+            System.out.println(e + "  here");
         } finally {
-            if(statement != null) {
-                try {
-                    statement.close();
-                } catch(SQLException e) {
-                    System.out.println(e);
-                }
-            }
-            if(connection != null) {
-                try {
-                    connection.close();
-                } catch(SQLException e) {
-                    System.out.println(e);
-                }    
-            }
+            DatabaseConnection.close(statement);
+            DatabaseConnection.close(connection);
         }
-        return employee;
+        return (isAddressAdded || 0 != noOfRecords) ?
+                                  (employee = null) : employee;
     }
-
+    
     /**
      * Deletes the given employee from the database
      *
@@ -142,23 +154,35 @@ public class DataAccessObjectImpl implements DataAccessObject {
             statement = connection.prepareStatement(deleteQuery);        
             statement.setInt(1,employeeId);
             noOfRecords = statement.executeUpdate();
-        }  catch(Exception e) { 
+        } catch(Exception e) { 
             System.out.println(e);
         } finally {
-            if(statement != null) {
-                try {
-                    statement.close();
-                } catch(SQLException e) {
-                    System.out.println(e);
-                }
-            }
-            if(connection != null) {
-                try {
-                    connection.close();
-                } catch(SQLException e) {
-                    System.out.println(e);
-                }    
-            }
+            DatabaseConnection.close(statement);
+            DatabaseConnection.close(connection);
+        }
+        return (noOfRecords == 0);
+    }
+
+    /**
+     * Deletes the given address of the employee from the database
+     *
+     * @return boolean, returns whether any rows affected 
+     * @param  addressId, addressId of the employee to be deleted
+     */
+    public boolean deleteAddress(int addressId) {
+        PreparedStatement statement = null;
+        String deleteQuery = "Delete from address where id = ?";  
+        int noOfRecords = 0;
+        try{
+            connection = DatabaseConnection.getConnection();
+            statement = connection.prepareStatement(deleteQuery);        
+            statement.setInt(1,addressId);
+            noOfRecords = statement.executeUpdate();
+        } catch(Exception e) { 
+            System.out.println(e);
+        } finally {
+            DatabaseConnection.close(statement);
+            DatabaseConnection.close(connection);
         }
         return (noOfRecords == 0);
     }
@@ -185,13 +209,7 @@ public class DataAccessObjectImpl implements DataAccessObject {
         }  catch(Exception e) { 
             System.out.println(e);
         } finally {
-            if(connection != null) {
-                try {
-                    connection.close();
-                } catch(SQLException e) {
-                    System.out.println(e);
-                }    
-            }
+            DatabaseConnection.close(connection);
         }
         return employee;
     }
@@ -203,28 +221,20 @@ public class DataAccessObjectImpl implements DataAccessObject {
      * @param  EmployeeEmail, Employee email used to retrieve employee
      */
     public Employee containsEmployeeEmail(String employeeEmail) {
-        ResultSet resultSet = null;
         Employee employee = null;
-        StringBuilder emailQuery = new StringBuilder();
-        emailQuery.append("Select id from employee where email = ")
-                  .append("'"+ employeeEmail +"'");
+        StringBuilder emailQuery = new StringBuilder("Select id from employee")
+                                  .append(" where email = '"+employeeEmail+"'");
         try{
             connection = DatabaseConnection.getConnection();
             Statement statement = connection.createStatement();
-            resultSet = statement.executeQuery(emailQuery.toString());
+            ResultSet resultSet = statement.executeQuery(emailQuery.toString());
             if((resultSet.next())) {
                 employee = new Employee();
             }
         }  catch(Exception e) { 
             System.out.println(e);
         } finally {
-            if(connection != null) {
-                try {
-                    connection.close();
-                } catch(SQLException e) {
-                    System.out.println(e);
-                }    
-            }
+            DatabaseConnection.close(connection);
         }
         return employee;
     }    
@@ -236,15 +246,15 @@ public class DataAccessObjectImpl implements DataAccessObject {
      * @param  employeeId, Employee Id used to retrieve employee
      */
     public Employee viewEmployeeById(int employeeId) {
-        ResultSet resultSet = null;
         boolean isAvailable = true;
-        StringBuilder viewQuery = new StringBuilder(); 
-        viewQuery.append("Select * from employee where id = '"+ employeeId +"'");
+        StringBuilder viewQuery = new StringBuilder("select * from"); 
+        viewQuery.append(" employee where id = '"+ employeeId +"'");
         Employee employee = new Employee();
+        List<Address> addressList = employee.getAddress();
         try{
             connection = DatabaseConnection.getConnection();
             Statement statement = connection.createStatement();
-            resultSet = statement.executeQuery(viewQuery.toString());
+            ResultSet resultSet = statement.executeQuery(viewQuery.toString());
             if(resultSet.next()) {
                 employee.setId(resultSet.getInt("id"));
                 employee.setContact(Long
@@ -254,19 +264,14 @@ public class DataAccessObjectImpl implements DataAccessObject {
                 employee.setName(resultSet.getString("name"));
                 employee.setEmail(resultSet.getString("email"));
                 employee.setDob(resultSet.getDate("dob").toLocalDate());
+                employee.setAddress(getAddressById(employee.getId()));
             } else {
                 employee = null;
-            } 
+            }
         }  catch(Exception e) { 
             System.out.println(e);
         } finally {
-            if(connection != null) {
-                try {
-                    connection.close();
-                } catch(SQLException e) {
-                    System.out.println(e);
-                }    
-            }
+            DatabaseConnection.close(connection);
         }
         return employee;
     }
@@ -278,14 +283,14 @@ public class DataAccessObjectImpl implements DataAccessObject {
      */
     public List<Employee> viewEmployee() {
         ResultSet resultSet = null;
-        boolean isAvailable = true;
         List<Employee> employees = new ArrayList<Employee>();
+        Employee employee = new Employee();
+        List<Address> addressList = new ArrayList<Address>();
         try{
             connection = DatabaseConnection.getConnection();
             Statement statement = connection.createStatement();
-            resultSet = statement.executeQuery("Select * from employee");
+            resultSet = statement.executeQuery("select * from employee");
             while(resultSet.next()) {
-                Employee employee = new Employee();
                 employee.setId(resultSet.getInt("id"));
                 employee.setContact(Long.parseLong(resultSet
                                                   .getString("phonenumber")));
@@ -296,19 +301,54 @@ public class DataAccessObjectImpl implements DataAccessObject {
                 employee.setDob(resultSet.getDate("dob").toLocalDate());
                 employees.add(employee);
             }
+            if (!employees.isEmpty()) {
+                for (int index = 0; index < employees.size(); index++) {
+                     addressList = getAddressById(employees.get(index).getId());
+                     employees.get(index).setAddress(addressList);
+                }
+            }
         }  catch(Exception e) { 
             System.out.println(e);
         } finally {
-            if(connection != null) {
-                try {
-                    connection.close();
-                } catch(SQLException e) {
-                    System.out.println(e);
-                }    
-            }
+            DatabaseConnection.close(connection);
         }
         return employees;
     }    
+
+    /**
+     * List of address for the given employee
+     *
+     * @return List<Address>, returns available addresses for the given employee 
+     * @param  employeeId, employeeId of the user
+     */
+    public List<Address> getAddressById(int employeeId) {
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+        List<Address> addressList = new ArrayList<Address>();
+        String query = "select id,door_no,street,city,landmark,pincode," 
+                + "employee_id from address where employee_id=" + employeeId;
+        try {
+            connection = DatabaseConnection.getConnection();
+            statement = connection.prepareStatement(query);
+            resultSet = statement.executeQuery();
+            while(resultSet.next()) {
+                Address address = new Address();
+                address.setAddressId(resultSet.getInt(1));
+                address.setDoorNo(resultSet.getString(2));
+                address.setStreet(resultSet.getString(3));
+                address.setCity(resultSet.getString(4));
+                address.setLandMark(resultSet.getString(5));
+                address.setPincode(Long.parseLong(resultSet.getString(6)));
+                addressList.add(address);
+            }
+        }catch(Exception e) { 
+            System.out.println(e);
+        } finally {
+            DatabaseConnection.close(statement);
+            DatabaseConnection.close(connection);
+        }
+        return addressList;
+    }
     
     /**
      * Deletes all the records
@@ -321,17 +361,11 @@ public class DataAccessObjectImpl implements DataAccessObject {
         try{
             connection = DatabaseConnection.getConnection();
             Statement statement = connection.createStatement();
-            noOfRecords = statement.executeUpdate("Truncate table employee");
+            noOfRecords = statement.executeUpdate("Delete from employee");
         }  catch(Exception e) { 
             System.out.println(e);
         } finally {
-            if(connection != null) {
-                try {
-                    connection.close();
-                } catch(SQLException e) {
-                    System.out.println(e);
-                }    
-            }
+            DatabaseConnection.close(connection);
         }
         return (noOfRecords == 0);
     }

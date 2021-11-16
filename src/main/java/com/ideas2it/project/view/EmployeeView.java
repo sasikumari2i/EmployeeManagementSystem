@@ -9,12 +9,13 @@ import java.time.format.DateTimeParseException;
 import java.time.LocalDate;
 import java.util.InputMismatchException;
 import java.util.List;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 import com.ideas2it.project.controller.EmployeeController;
+import com.ideas2it.project.model.Address;
+import com.ideas2it.project.model.dto.AddressDTO;
 import com.ideas2it.project.model.dto.EmployeeDTO;
-import com.ideas2it.project.model.dto.EmployeeAddressDTO;
-import com.ideas2it.project.model.EmployeeAddress;
 
 /**
  * User Interface for getting inputs and displaying the appropriate outputs
@@ -271,43 +272,40 @@ public class EmployeeView {
         boolean isValidId = false;
         while(!isValidId) {
             isValidId = true;
-            int employeeId = getEmployeeId();
-            if(employeeController.containsEmployee(employeeId)) {
-                System.out.println("Employee ID already available, Try again");
-                createEmployee();
-                isValidId = false;
-            } else {
-                EmployeeDTO employeeDTO = new EmployeeDTO();
-                employeeDTO.setId(employeeId);
-                employeeDTO.setName(getEmployeeName());
-                employeeDTO.setSalary(getEmployeeSalary());
-                employeeDTO.setDob(getDateOfBirth());
-                employeeDTO.setEmail(getEmployeeEmail());
-                employeeDTO.setContact(getEmployeeContact());
-                employeeDTO.setAddress(createEmployeeAddress());
-                System.out.println(employeeController
-                                  .createEmployee(employeeDTO)
-                                  ? "Employee created successfully!!" 
-                                  : "Employee not created");
-            }
-            isValidId = true;
+            EmployeeDTO employeeDTO = new EmployeeDTO();
+            employeeDTO.setName(getEmployeeName());
+            employeeDTO.setSalary(getEmployeeSalary());
+            employeeDTO.setDob(getDateOfBirth());
+            employeeDTO.setEmail(getEmployeeEmail());
+            employeeDTO.setContact(getEmployeeContact());
+            AddressDTO addressDTO = getEmployeeAddress(employeeDTO);
+            System.out.println(employeeController.createEmployee(addressDTO)
+                                      ? "Employee created successfully!!" 
+                                      : "Employee not created");
         }
     }
-    public EmployeeAddressDTO createEmployeeAddress() {
-        EmployeeAddressDTO addressDTO = new EmployeeAddressDTO();
-        
+
+    /**
+     * Gets and validates the address from user and Creates a new 
+     * address for the employee
+     */
+    private AddressDTO getEmployeeAddress(EmployeeDTO employeeDTO) {
+        System.out.println("Enter your address");
+        AddressDTO addressDTO = new AddressDTO();
+            
         addressDTO.setDoorNo(getDoorNo());
         addressDTO.setLandMark(getLandMark());
         addressDTO.setStreet(getStreet());
         addressDTO.setCity(getCity());
         addressDTO.setPincode(getPincode());
+        addressDTO.setEmployee(employeeDTO);
         return addressDTO;
     }
 
     /**
-     * Validates the given city of the user
+     * Validates the given Door number of the user
      *
-     * @return city, Validated city
+     * @return doorno, Validated Door number
      */
     private String getDoorNo() {
         boolean isValidDoorNo = false;
@@ -324,6 +322,11 @@ public class EmployeeView {
         return doorNo;
     }
 
+    /**
+     * Validates the given Landmark of the user
+     *
+     * @return landmark, Validated landmark
+     */
     private String getLandMark() {
         boolean isValidLandMark = false;
         String landMark = null;
@@ -331,7 +334,7 @@ public class EmployeeView {
         System.out.println("Enter Land Mark");
         while (!isValidLandMark) { 
             landMark = inputReader.nextLine();
-            isValidLandMark = employeeController.getLandMarkValidated(landMark);
+            isValidLandMark = employeeController.getAddressValidated(landMark);
             if(!isValidLandMark) {
                 System.out.println("Please enter a valid Land Mark");
             }  
@@ -339,6 +342,11 @@ public class EmployeeView {
         return landMark;
     }
 
+    /**
+     * Validates the given street given by the user
+     *
+     * @return street, Validated street name
+     */
     private String getStreet() {
         boolean isValidStreet = false;
         String street = null;
@@ -346,7 +354,7 @@ public class EmployeeView {
         System.out.println("Enter Street");
         while (!isValidStreet) { 
             street = inputReader.nextLine();
-            isValidStreet = employeeController.getStreetValidated(street);
+            isValidStreet = employeeController.getAddressValidated(street);
             if(!isValidStreet) {
                 System.out.println("Please enter a valid Street");
             }  
@@ -354,6 +362,11 @@ public class EmployeeView {
         return street;
     }
 
+    /**
+     * Validates the given city of the user
+     *
+     * @return city, Validated city
+     */
     private String getCity() {
         boolean isValidCity = false;
         String city = null;
@@ -361,7 +374,7 @@ public class EmployeeView {
         System.out.println("Enter City");
         while (!isValidCity) { 
             city = inputReader.nextLine();
-            isValidCity = employeeController.getCityValidated(city);
+            isValidCity = employeeController.getAddressValidated(city);
             if(!isValidCity) {
                  System.out.println("Please enter a valid City");
             }  
@@ -369,6 +382,11 @@ public class EmployeeView {
         return city;
     }
 
+    /**
+     * Validates the given Pincode of the user
+     *
+     * @return pincode, Validated pincode
+     */
     private long getPincode() {
         boolean isValidPincode = false;
         long pincode = 0;
@@ -377,7 +395,8 @@ public class EmployeeView {
         while (!isValidPincode) { 
             try {
                 pincode = Long.parseLong(inputReader.nextLine());
-                isValidPincode = employeeController.getPincodeValidated(pincode);
+                isValidPincode = employeeController
+                                .getPincodeValidated(pincode);
                 if(!isValidPincode) {
                      System.out.println("Please enter a valid Pincode");
                 }  
@@ -422,6 +441,10 @@ public class EmployeeView {
         List<EmployeeDTO> viewList = employeeController.viewEmployee();
         for(EmployeeDTO employeeDTO : viewList) {
             System.out.println(employeeDTO);
+            List<AddressDTO> addressList = employeeDTO.getAddress();
+            for(AddressDTO address : addressList) {
+                System.out.println(address);
+            }
         }
     }
 
@@ -432,7 +455,13 @@ public class EmployeeView {
     private void viewEmployeeById() {
         int employeeId = getEmployeeId();
         if(employeeController.containsEmployee(employeeId)) {
-            System.out.println(employeeController.viewEmployeeById(employeeId));
+            EmployeeDTO employeeDTO = employeeController
+                                      .viewEmployeeById(employeeId);
+            System.out.println(employeeDTO);
+            List<AddressDTO> addressList = employeeDTO.getAddress();
+            for(AddressDTO address : addressList) {
+                System.out.println(address);
+            }
         } else {
             System.out.println("Employee Id not Available, Try Again");
             viewEmployee();
@@ -445,7 +474,7 @@ public class EmployeeView {
     private void deleteEmployee() {
         boolean isValidChoice = false;
         StringBuilder displayMsg = new StringBuilder("1.Delete by ID ");
-        displayMsg.append("2.Delete all users 3.Main Menu");
+        displayMsg.append("2.Delete all users 3.Delete address 4.Main Menu");
         while(!isValidChoice) {
             isValidChoice = true;
             if(!(isRecordsAvailable())) {
@@ -458,7 +487,9 @@ public class EmployeeView {
                              break;
                     case 2 : deleteAllEmployee();
                              break;
-                    case 3 : break;
+                    case 3 : deleteAddress();
+                             break;
+                    case 4 : break;
                     default : System.out.println("Enter between from 1 - 3");
                               isValidChoice = false;
                               break;
@@ -494,6 +525,56 @@ public class EmployeeView {
     } 
 
     /**
+     * Gets the required AddressId given by the user
+     *
+     * @return addressId, Address Id of an address of employee
+     */
+    public int getAddressId(List<AddressDTO> addressList) {
+        boolean isValidId = false;
+        int addressId = 0;
+        while(!isValidId) {
+            try {
+                addressId = Integer.parseInt(inputReader.nextLine());
+                for(AddressDTO address : addressList) {
+                    if(address.getAddressId() == addressId) {
+                        isValidId = true;    
+                    }
+                }
+                if(!isValidId) {
+                    System.out.println("Enter valid address id");
+                }
+            } catch(NumberFormatException e) {
+                System.out.println("Enter a valid address Id");
+            }
+        }
+        return addressId;
+    }
+
+    /**
+     * Delete an address of the user
+     */
+    private void deleteAddress() {
+        int employeeId = getEmployeeId();
+        boolean isAddressDeleted = false;
+   
+        if(employeeController.containsEmployee(employeeId)) {
+            List<AddressDTO> addressList = employeeController
+                                           .getAddressById(employeeId);
+            for(AddressDTO address : addressList) {
+                System.out.println(address);
+            }
+            System.out.println("Enter the address_id to be deleted");
+            int addressId = getAddressId(addressList);
+            isAddressDeleted = employeeController.deleteAddress(addressId);
+            System.out.println(isAddressDeleted ? "Address not deleted"
+                                                 : "Address deleted");
+        } else {
+            System.out.println("Invalid Employee ID ");
+            deleteEmployee();
+        }    
+    }
+
+    /**
      * Displays Update Employee Main Menu
      */
     private void updateEmployee() {
@@ -507,7 +588,8 @@ public class EmployeeView {
                 if(employeeController.containsEmployee(employeeId)) {
                     StringBuilder stringBuilder = new StringBuilder("1.Update"); 
                     stringBuilder.append(" All 2.Name 3.Salary 4.Email 5.DOB ");
-                    stringBuilder.append("6.Contact 7.Main Menu or Any other"); 
+                    stringBuilder.append("6.Contact 7.Add new address ");
+                    stringBuilder.append("8.Main menu or Anyother");
                     System.out.println(stringBuilder.append(" to Back Menu"));
                     
                     int inputChoice = getInputChoice();
@@ -524,7 +606,9 @@ public class EmployeeView {
                                  break;
                         case 6 : updateEmployeeContact(employeeId);
                                  break;
-                        case 7 : break;
+                        case 7 : addAddress(employeeId);
+                                 break;
+                        case 8 : break;
                         default : isValidChoice = false; 
                                   break;
                     }
@@ -560,17 +644,19 @@ public class EmployeeView {
     private void updateAllDetails(int employeeId) {
         boolean isUpdated = false;
         
-        EmployeeDTO employeeDTO = employeeController.viewEmployeeById
-                                                     (employeeId);
+        EmployeeDTO employeeDTO = employeeController
+                                  .viewEmployeeById(employeeId);
+        AddressDTO addressDTO = new AddressDTO();
         employeeDTO.setId(employeeId);
         employeeDTO.setName(getEmployeeName());
         employeeDTO.setSalary(getEmployeeSalary());
         employeeDTO.setDob(getDateOfBirth());
         employeeDTO.setContact(getEmployeeContact());
         employeeDTO.setEmail(getEmployeeEmail());
-        isUpdated = employeeController.updateAllDetails(employeeDTO);
-        System.out.println(isUpdated ? "Employee updated" 
-                                     : "Employee Not Updated");   
+        addressDTO.setEmployee(employeeDTO);
+        System.out.println(employeeController.updateAllDetails(addressDTO)
+                                      ? "Employee updated successfully!!" 
+                                      : "Employee not updated");
     }
     
     /**
@@ -579,11 +665,14 @@ public class EmployeeView {
      * @param employeeId
      */
     private void updateEmployeeName(int employeeId) {
-        EmployeeDTO employeeDTO = employeeController.viewEmployeeById
-                                                     (employeeId);
-        employeeDTO.setId(employeeId);
+        EmployeeDTO employeeDTO = employeeController
+                                  .viewEmployeeById(employeeId);
+        AddressDTO addressDTO = new AddressDTO();
         employeeDTO.setName(getEmployeeName());
-        employeeController.updateAllDetails(employeeDTO);        
+        addressDTO.setEmployee(employeeDTO);
+        System.out.println(employeeController.updateAllDetails(addressDTO) ?
+                                                   "Employee Name updated" :
+                                                        "Name not updated");
     }
 
     /**
@@ -594,9 +683,12 @@ public class EmployeeView {
     private void updateEmployeeSalary(int employeeId) {
         EmployeeDTO employeeDTO = employeeController.viewEmployeeById
                                                      (employeeId);
-        employeeDTO.setId(employeeId);
+        AddressDTO addressDTO = new AddressDTO();
         employeeDTO.setSalary(getEmployeeSalary());
-        employeeController.updateAllDetails(employeeDTO);        
+        addressDTO.setEmployee(employeeDTO);
+        System.out.println(employeeController.updateAllDetails(addressDTO) ?
+                                                 "Employee Salary updated" :
+                                                      "Salary not updated");        
     }
 
     /**
@@ -607,9 +699,24 @@ public class EmployeeView {
     private void updateEmployeeEmail(int employeeId) {
         EmployeeDTO employeeDTO = employeeController.viewEmployeeById
                                                      (employeeId);
-        employeeDTO.setId(employeeId);
+        AddressDTO addressDTO = new AddressDTO();
         employeeDTO.setEmail(getEmployeeEmail());
-        employeeController.updateAllDetails(employeeDTO);        
+        addressDTO.setEmployee(employeeDTO);
+        System.out.println(employeeController.updateAllDetails(addressDTO) ?
+                                                 "Employee Salary updated" :
+                                                      "Salary not updated");
+    }
+
+    /**
+     * Adds new address for the given employee
+     */
+    private void addAddress(int employeeId) {
+        EmployeeDTO employeeDTO = employeeController
+                                  .viewEmployeeById(employeeId);
+        AddressDTO addressDTO = getEmployeeAddress(employeeDTO);
+        System.out.println(employeeController.updateAllDetails(addressDTO) ?
+                                                "Employee Address updated" :
+                                                     "Address not updated");
     }
 
     /**
@@ -620,9 +727,12 @@ public class EmployeeView {
     private void updateEmployeeContact(int employeeId) {
         EmployeeDTO employeeDTO = employeeController.viewEmployeeById
                                                      (employeeId);
-        employeeDTO.setId(employeeId);
+        AddressDTO addressDTO = new AddressDTO(); 
         employeeDTO.setContact(getEmployeeContact());
-        employeeController.updateAllDetails(employeeDTO);        
+        addressDTO.setEmployee(employeeDTO);
+        System.out.println(employeeController.updateAllDetails(addressDTO) ?
+                                                "Employee Contact updated" :
+                                                     "Contact not updated");        
     }
     
     /**
@@ -633,14 +743,11 @@ public class EmployeeView {
     private void updateEmployeeDob(int employeeId) {
         EmployeeDTO employeeDTO = employeeController.viewEmployeeById
                                                      (employeeId);
-        employeeDTO.setId(employeeId);
+        AddressDTO addressDTO = new AddressDTO();
         employeeDTO.setDob(getDateOfBirth());
-        employeeController.updateAllDetails(employeeDTO);        
+        addressDTO.setEmployee(employeeDTO);
+        System.out.println(employeeController.updateAllDetails(addressDTO) ?
+                                                    "Employee DOB updated" :
+                                                         "DOB not updated");        
     }
 }
-
-
-
-
-
-

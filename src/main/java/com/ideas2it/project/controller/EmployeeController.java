@@ -6,6 +6,7 @@ package com.ideas2it.project.controller;
 import java.time.LocalDate;
 import java.util.List;
 
+import com.ideas2it.project.model.dto.AddressDTO;
 import com.ideas2it.project.model.dto.EmployeeDTO;
 import com.ideas2it.project.service.serviceImpl.EmployeeServiceImpl;
 
@@ -91,23 +92,35 @@ public class EmployeeController {
         return employeeService.getValidatedDOB(dob);     
     }
 
-
+    /**
+     * To check whether the Door Number given by Employee  is valid,
+     * from EmployeeService
+     *
+     * @param doorNumber, Employee doorNo to be validated
+     * @return boolean
+     */
     public boolean getDoorNoValidated(String doorNo) {
         return employeeService.getDoorNoValidated(doorNo);
     }
 
-    public boolean getLandMarkValidated(String landMark) {
-        return employeeService.getLandMarkValidated(landMark);
+    /**
+     * To check whether the City,Street,LandMark given by Employee  is valid,
+     * from EmployeeService
+     *
+     * @param address, Employee city or street or landmark to be validated
+     * @return boolean
+     */
+    public boolean getAddressValidated(String address) {
+        return employeeService.getAddressValidated(address);
     }
 
-    public boolean getStreetValidated(String street) {
-        return employeeService.getStreetValidated(street);
-    }
-
-    public boolean getCityValidated(String city) {
-        return employeeService.getCityValidated(city);
-    }
-
+    /**
+     * To check whether the Pincode given by Employee  is valid,
+     * from EmployeeService
+     *
+     * @param pincode, Employee pincode to be validated
+     * @return boolean
+     */
     public boolean getPincodeValidated(long pincode) {
         return employeeService.getPincodeValidated(pincode);
     }
@@ -134,10 +147,10 @@ public class EmployeeController {
     /**
      * To create new Employee
      *
-     * @param employeeDTO, Details of the user
+     * @param addressDTO, Details of the user
      */
-    public boolean createEmployee(EmployeeDTO employeeDTO) {
-        return employeeService.createEmployee(employeeDTO);
+    public boolean createEmployee(AddressDTO addressDTO) {
+        return employeeService.createEmployee(addressDTO);
     }    
 
     /**
@@ -147,6 +160,15 @@ public class EmployeeController {
      */
     public List<EmployeeDTO> viewEmployee() {
         return employeeService.viewEmployee();
+    }
+
+    /**
+     * Gets the List of address for the given Employee from Employee Service
+     *
+     * @return List<AddressDTO>, list of address
+     */
+    public List<AddressDTO> getAddressById(int employeeId) {
+        return employeeService.getAddressById(employeeId);
     }
     
     /**
@@ -170,6 +192,16 @@ public class EmployeeController {
     }
 
     /**
+     * Delete the Address of given Address Id
+     * 
+     * @param AddressId, Address ID of the user given
+     * @return boolean, true if address detail is deleted 
+     */
+    public boolean deleteAddress(int addressId) {
+        return employeeService.deleteAddress(addressId);
+    }
+
+    /**
      * Deletes All the Records
      */
     public boolean deleteAllEmployee() {
@@ -181,8 +213,8 @@ public class EmployeeController {
      *
      * @param employeeDTO, EmployeeDTO object containing all records
      */
-    public boolean updateAllDetails(EmployeeDTO employeeDTO) {
-        return employeeService.updateAllDetails(employeeDTO);
+    public boolean updateAllDetails(AddressDTO addressDTO) {
+        return employeeService.updateAllDetails(addressDTO);
     }
 }
 

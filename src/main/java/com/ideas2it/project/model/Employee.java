@@ -4,7 +4,10 @@
 package com.ideas2it.project.model;
 
 import java.time.LocalDate;
-import com.ideas2it.project.model.EmployeeAddress;
+import java.util.ArrayList;
+import java.util.List;
+
+import com.ideas2it.project.model.Address;
 	
 /**
  * Employee Management System model class
@@ -19,7 +22,7 @@ public class Employee {
     private String name;
     private String email;
     private LocalDate dob;
-    private EmployeeAddress address;
+    private List<Address> address;
 
     /**
      * Employee getters and setters
@@ -72,11 +75,11 @@ public class Employee {
         this.contact = contact;
     }
 
-    public EmployeeAddress getAddress() {
+    public List<Address> getAddress() {
         return address;
     }
   
-    public void setAddress(EmployeeAddress address) {
+    public void setAddress(List<Address> address) {
         this.address = address;
     }
     
