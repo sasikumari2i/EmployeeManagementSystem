@@ -1,79 +1,37 @@
 package com.ideas2it.project.utils;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import org.hibernate.Session; 
+import org.hibernate.SessionFactory;
+import org.hibernate.cfg.Configuration;
+import org.hibernate.service.ServiceRegistry;
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+
+import org.hibernate.HibernateException;
 
 public class DatabaseConnection {
 
     private DatabaseConnection() {
     }
     
-    private static Connection connection = null;   
+    private static SessionFactory factory = null;
 
     /**
      * Open the Database Connection
      *
      * @return, Database connection
      */
-    public static Connection getConnection() {
-        String url = "jdbc:mysql://localhost:3306/employee_management_system";
-        String username = "root";
-        String password = "Test@123"; 
+    public static SessionFactory getSessionFactory() {
         try {
-            Class.forName("com.mysql.cj.jdbc.Driver");  
-            connection = DriverManager.getConnection
-                             (url,username,password);
-        } catch (ClassNotFoundException | SQLException exception) {
-            System.out.println(exception.getMessage());
-        }
-        return connection;
-    }
-
-    /**
-     * Closes the Database Connection
-     *
-     * @param Connection, database connection
-     */    
-    public static void close(Connection connection) {
-        try {
-            if (null != connection) {
-                connection.close();
-            }
-        } catch (SQLException e) {
+           // Configuration configuration = new Configuration().configure();
+            //configuration.addResource("resources/Employee.hbm.xml");
+            //configuration.addResource("resources/Address.hbm.xml");
+            //ServiceRegistry servReg = new StandardServiceRegistryBuilder()
+              //                    .applySettings(configuration.getProperties())
+                //                  .build();
+            factory = new Configuration().configure().buildSessionFactory();
+        } catch(HibernateException e) {
             e.printStackTrace();
         }
-    }
-
-    /**
-     * Closes the Prepared statement
-     *
-     * @param PreparedStatement
-     */
-    public static void close(PreparedStatement statement) {
-        try {
-            if (null != statement) {
-                statement.close();
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-    
-    /**
-     * Closes the ResultSet
-     *
-     * @param resultSet
-     */    
-    public static void close(ResultSet resultSet) {
-        try {
-            if (null != resultSet) {
-                resultSet.close();
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
+        return factory;
+    }    
 }

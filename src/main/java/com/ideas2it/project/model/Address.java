@@ -10,14 +10,18 @@ package com.ideas2it.project.model;
  * @author	Sasikumar Raju
  */
 public class Address {
-    private int employeeId;
+    
     private int addressId;
-    private Employee employee;	
     private String doorNo;
     private String landMark;
     private String street;
     private String city;
-    private Long pincode;
+    private long pincode;
+    private int employeeId;
+    private Employee employee;	
+       
+ 
+    public Address() {}
 
     /**
      * Employee getters and setters
@@ -29,7 +33,7 @@ public class Address {
     public void setAddressId(int addressId) {
         this.addressId = addressId;
     }
-    
+
     public int getEmployeeId() {
         return employeeId;
     }
@@ -37,8 +41,9 @@ public class Address {
     public void setEmployeeId(int employeeId) {
         this.employeeId = employeeId;
     }
+  
  
-    public String getDoorNo() {
+   public String getDoorNo() {
         return doorNo;
     }
 
@@ -74,7 +79,7 @@ public class Address {
         return pincode;
     }
 
-    public void setPincode(Long pincode) {
+    public void setPincode(long pincode) {
         this.pincode = pincode;
     }
     

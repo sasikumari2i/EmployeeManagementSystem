@@ -4,6 +4,7 @@
 package com.ideas2it.project.model;
 
 import java.time.LocalDate;
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,7 +23,9 @@ public class Employee {
     private String name;
     private String email;
     private LocalDate dob;
-    private List<Address> address;
+    private List<Address> addresses;
+
+    public Employee() {}
 
     /**
      * Employee getters and setters
@@ -76,11 +79,11 @@ public class Employee {
     }
 
     public List<Address> getAddress() {
-        return address;
+        return addresses;
     }
   
-    public void setAddress(List<Address> address) {
-        this.address = address;
+    public void setAddress(List<Address> addresses) {
+        this.addresses = addresses;
     }
     
     /**
@@ -96,7 +99,7 @@ public class Employee {
                .append(" Salary : ").append(String.format("%.3f", this.salary))
                .append(" Email : ").append(this.email)
                .append(" Contact : ").append(this.contact)
-               .append(" Address : ").append(this.address);
+               .append(" Address : ").append(this.addresses);
         
         return display.toString();
     }

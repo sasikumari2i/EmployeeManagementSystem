@@ -10,18 +10,29 @@ package com.ideas2it.project.model.dto;
  * @author	Sasikumar Raju
  */
 public class AddressDTO {
-    private int employeeId;
+    
+    private int serialId;
     private int addressId;
-    private EmployeeDTO employeeDTO;
     private String doorNo;
     private String landMark;
     private String street;
     private String city;
-    private Long pincode;
+    private long pincode;
+    private EmployeeDTO employeeDTO;
+    private int employeeId;
 
     /**
      * Employee getters and setters
      */
+
+    public int getSerialId() {
+        return serialId;
+    }
+
+    public void setSerialId(int serialId) {
+        this.serialId = serialId;
+    }    
+
     public int getAddressId() {
         return addressId;
     }
@@ -70,11 +81,11 @@ public class AddressDTO {
         this.street = street;
     }
  
-    public Long getPincode() {
+    public long getPincode() {
         return pincode;
     }
 
-    public void setPincode(Long pincode) {
+    public void setPincode(long pincode) {
         this.pincode = pincode;
     }
     
@@ -93,7 +104,7 @@ public class AddressDTO {
      */ 
     public String toString() {
         StringBuilder display = new StringBuilder();
-        display.append(" Address ID : ").append(this.addressId)
+        display.append(" Serial ID : ").append(this.serialId)
                .append(" DoorNo : ").append(this.doorNo)
                .append(" Landmark : ").append(this.landMark)
                .append(" Street : ").append(this.street)

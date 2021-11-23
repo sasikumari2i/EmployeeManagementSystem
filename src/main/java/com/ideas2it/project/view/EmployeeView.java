@@ -278,8 +278,10 @@ public class EmployeeView {
             employeeDTO.setDob(getDateOfBirth());
             employeeDTO.setEmail(getEmployeeEmail());
             employeeDTO.setContact(getEmployeeContact());
-            AddressDTO addressDTO = getEmployeeAddress(employeeDTO);
-            System.out.println(employeeController.createEmployee(addressDTO)
+            List<AddressDTO> addressList = new ArrayList<AddressDTO>();
+            addressList.add(getEmployeeAddress());
+            employeeDTO.setAddress(addressList); 
+            System.out.println(employeeController.createEmployee(employeeDTO)
                                       ? "Employee created successfully!!" 
                                       : "Employee not created");
         }
@@ -289,7 +291,7 @@ public class EmployeeView {
      * Gets and validates the address from user and Creates a new 
      * address for the employee
      */
-    private AddressDTO getEmployeeAddress(EmployeeDTO employeeDTO) {
+    private AddressDTO getEmployeeAddress() {
         System.out.println("Enter your address");
         AddressDTO addressDTO = new AddressDTO();
             
@@ -298,7 +300,6 @@ public class EmployeeView {
         addressDTO.setStreet(getStreet());
         addressDTO.setCity(getCity());
         addressDTO.setPincode(getPincode());
-        addressDTO.setEmployee(employeeDTO);
         return addressDTO;
     }
 
@@ -442,8 +443,11 @@ public class EmployeeView {
         for(EmployeeDTO employeeDTO : viewList) {
             System.out.println(employeeDTO);
             List<AddressDTO> addressList = employeeDTO.getAddress();
+            int count = 1;
             for(AddressDTO address : addressList) {
+                address.setSerialId(count);
                 System.out.println(address);
+                count++;
             }
         }
     }
@@ -459,8 +463,11 @@ public class EmployeeView {
                                       .viewEmployeeById(employeeId);
             System.out.println(employeeDTO);
             List<AddressDTO> addressList = employeeDTO.getAddress();
+            int count = 1;
             for(AddressDTO address : addressList) {
+                address.setSerialId(count);
                 System.out.println(address);
+                count++;
             }
         } else {
             System.out.println("Employee Id not Available, Try Again");
@@ -515,9 +522,8 @@ public class EmployeeView {
         if(employeeController.containsEmployee(employeeId)) {
             boolean isEmployeeDeleted = employeeController
                                         .deleteEmployeeById(employeeId);
-            System.out.println(isEmployeeDeleted ? "User not deleted"
-                                                 : "User deleted");
-            employeeController.deleteEmployeeById(employeeId);
+            System.out.println(isEmployeeDeleted ? "User deleted"
+                                                 : "User not deleted");
         } else {
             System.out.println("Invalid Employee ID ");
             deleteEmployee();
@@ -529,25 +535,30 @@ public class EmployeeView {
      *
      * @return addressId, Address Id of an address of employee
      */
-    public int getAddressId(List<AddressDTO> addressList) {
+    public List<AddressDTO> getAddressList(List<AddressDTO> addressList) {
         boolean isValidId = false;
+        EmployeeDTO employeeDTO = new EmployeeDTO();
+        AddressDTO addressDTO = new AddressDTO();
         int addressId = 0;
         while(!isValidId) {
             try {
-                addressId = Integer.parseInt(inputReader.nextLine());
+                int serialId = Integer.parseInt(inputReader.nextLine());
                 for(AddressDTO address : addressList) {
-                    if(address.getAddressId() == addressId) {
+                    if(address.getSerialId() == serialId) {
+                        addressDTO = address;
+                        //employeeDTO = address.getEmployee();
                         isValidId = true;    
                     }
                 }
+                addressList.remove(addressDTO);
                 if(!isValidId) {
-                    System.out.println("Enter valid address id");
+                    System.out.println("Enter valid serial id");
                 }
             } catch(NumberFormatException e) {
-                System.out.println("Enter a valid address Id");
+                System.out.println("Enter a valid serial Id");
             }
         }
-        return addressId;
+        return addressList;
     }
 
     /**
@@ -556,18 +567,30 @@ public class EmployeeView {
     private void deleteAddress() {
         int employeeId = getEmployeeId();
         boolean isAddressDeleted = false;
+        StringBuilder errorMsg = new StringBuilder("Sorry! Employee should ")
+                                .append("have atleast 2 address to delete one");
    
         if(employeeController.containsEmployee(employeeId)) {
-            List<AddressDTO> addressList = employeeController
-                                           .getAddressById(employeeId);
+            EmployeeDTO employeeDTO = employeeController
+                                      .viewEmployeeById(employeeId);
+            List<AddressDTO> addressList = employeeDTO.getAddress();
+            int count = 1;
             for(AddressDTO address : addressList) {
+                address.setSerialId(count);
                 System.out.println(address);
+                count++;
             }
-            System.out.println("Enter the address_id to be deleted");
-            int addressId = getAddressId(addressList);
-            isAddressDeleted = employeeController.deleteAddress(addressId);
-            System.out.println(isAddressDeleted ? "Address not deleted"
-                                                 : "Address deleted");
+            if(2 <= addressList.size()) {
+                System.out.println("Enter the serial to be deleted");
+                //List<AddressDTO> addresses = getAddressList(addressList);
+                employeeDTO.setAddress(getAddressList(addressList));
+                isAddressDeleted = employeeController.deleteAddress(employeeDTO);
+                System.out.println(isAddressDeleted ? "Address deleted"
+                                                    : "Address not deleted");
+            } else {
+                System.out.println(errorMsg);  
+                deleteEmployee();  
+            }
         } else {
             System.out.println("Invalid Employee ID ");
             deleteEmployee();
@@ -646,6 +669,8 @@ public class EmployeeView {
         
         EmployeeDTO employeeDTO = employeeController
                                   .viewEmployeeById(employeeId);
+        
+        List<AddressDTO> addressList = employeeDTO.getAddress();
         AddressDTO addressDTO = new AddressDTO();
         employeeDTO.setId(employeeId);
         employeeDTO.setName(getEmployeeName());
@@ -653,8 +678,9 @@ public class EmployeeView {
         employeeDTO.setDob(getDateOfBirth());
         employeeDTO.setContact(getEmployeeContact());
         employeeDTO.setEmail(getEmployeeEmail());
+        employeeDTO.setAddress(addressList);
         addressDTO.setEmployee(employeeDTO);
-        System.out.println(employeeController.updateAllDetails(addressDTO)
+        System.out.println(employeeController.updateAllDetails(employeeDTO)
                                       ? "Employee updated successfully!!" 
                                       : "Employee not updated");
     }
@@ -670,7 +696,7 @@ public class EmployeeView {
         AddressDTO addressDTO = new AddressDTO();
         employeeDTO.setName(getEmployeeName());
         addressDTO.setEmployee(employeeDTO);
-        System.out.println(employeeController.updateAllDetails(addressDTO) ?
+        System.out.println(employeeController.updateAllDetails(employeeDTO) ?
                                                    "Employee Name updated" :
                                                         "Name not updated");
     }
@@ -686,7 +712,7 @@ public class EmployeeView {
         AddressDTO addressDTO = new AddressDTO();
         employeeDTO.setSalary(getEmployeeSalary());
         addressDTO.setEmployee(employeeDTO);
-        System.out.println(employeeController.updateAllDetails(addressDTO) ?
+        System.out.println(employeeController.updateAllDetails(employeeDTO) ?
                                                  "Employee Salary updated" :
                                                       "Salary not updated");        
     }
@@ -702,7 +728,7 @@ public class EmployeeView {
         AddressDTO addressDTO = new AddressDTO();
         employeeDTO.setEmail(getEmployeeEmail());
         addressDTO.setEmployee(employeeDTO);
-        System.out.println(employeeController.updateAllDetails(addressDTO) ?
+        System.out.println(employeeController.updateAllDetails(employeeDTO) ?
                                                  "Employee Salary updated" :
                                                       "Salary not updated");
     }
@@ -711,10 +737,13 @@ public class EmployeeView {
      * Adds new address for the given employee
      */
     private void addAddress(int employeeId) {
-        EmployeeDTO employeeDTO = employeeController
-                                  .viewEmployeeById(employeeId);
-        AddressDTO addressDTO = getEmployeeAddress(employeeDTO);
-        System.out.println(employeeController.updateAllDetails(addressDTO) ?
+        EmployeeDTO employeeDTO = employeeController.viewEmployeeById
+                                                     (employeeId);
+        AddressDTO addressDTO = getEmployeeAddress();
+        List<AddressDTO> addressList = employeeDTO.getAddress();
+        addressList.add(addressDTO);
+        employeeDTO.setAddress(addressList);
+        System.out.println(employeeController.updateAllDetails(employeeDTO) ?
                                                 "Employee Address updated" :
                                                      "Address not updated");
     }
@@ -730,7 +759,7 @@ public class EmployeeView {
         AddressDTO addressDTO = new AddressDTO(); 
         employeeDTO.setContact(getEmployeeContact());
         addressDTO.setEmployee(employeeDTO);
-        System.out.println(employeeController.updateAllDetails(addressDTO) ?
+        System.out.println(employeeController.updateAllDetails(employeeDTO) ?
                                                 "Employee Contact updated" :
                                                      "Contact not updated");        
     }
@@ -746,7 +775,7 @@ public class EmployeeView {
         AddressDTO addressDTO = new AddressDTO();
         employeeDTO.setDob(getDateOfBirth());
         addressDTO.setEmployee(employeeDTO);
-        System.out.println(employeeController.updateAllDetails(addressDTO) ?
+        System.out.println(employeeController.updateAllDetails(employeeDTO) ?
                                                     "Employee DOB updated" :
                                                          "DOB not updated");        
     }

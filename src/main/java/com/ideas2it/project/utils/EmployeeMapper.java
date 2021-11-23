@@ -5,6 +5,7 @@ package com.ideas2it.project.utils;
 
 import java.util.ArrayList;
 import java.util.List;
+import org.hibernate.HibernateException;
 
 import com.ideas2it.project.model.Address;
 import com.ideas2it.project.model.dto.AddressDTO;
@@ -29,20 +30,24 @@ public class EmployeeMapper {
      */   
     public static EmployeeDTO convertEmployeeToDTO(Employee employee) {
         EmployeeDTO employeeDTO = new EmployeeDTO();
-        
-        employeeDTO.setId(employee.getId());        
-        employeeDTO.setName(employee.getName());
-        employeeDTO.setEmail(employee.getEmail());
-        employeeDTO.setContact(employee.getContact());
-        employeeDTO.setSalary(employee.getSalary());
-        employeeDTO.setDob(employee.getDob());
-        List<AddressDTO> addressList = new ArrayList<AddressDTO>();
-        if(null != employee.getAddress()) {
-            for(Address address : employee.getAddress()) {
-                addressList.add(convertAddressToDTO(address));
+        List<Address> addressList = employee.getAddress();
+        try {
+            employeeDTO.setId(employee.getId());        
+            employeeDTO.setName(employee.getName());
+            employeeDTO.setEmail(employee.getEmail());
+            employeeDTO.setContact(employee.getContact());
+            employeeDTO.setSalary(employee.getSalary());
+            employeeDTO.setDob(employee.getDob());
+            if(null != addressList) {
+                List<AddressDTO> addressDTOList = new ArrayList<>();
+                for(Address address : addressList) {
+                    addressDTOList.add(convertAddressToDTO(address));            
+                }
+                employeeDTO.setAddress(addressDTOList);
             }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        employeeDTO.setAddress(addressList);
         return employeeDTO;
     }
 
@@ -63,8 +68,15 @@ public class EmployeeMapper {
         addressDTO.setPincode(address.getPincode());
         Employee employee = address.getEmployee();
         addressDTO.setEmployeeId(address.getEmployeeId());
-        if (null != employee) {
-            addressDTO.setEmployee(convertEmployeeToDTO(employee));
+        if (null != employee.getName()) {
+            EmployeeDTO employeeDTO = new EmployeeDTO();            
+            employeeDTO.setId(employee.getId());
+            employeeDTO.setName(employee.getName());
+            employeeDTO.setDob(employee.getDob());
+            employeeDTO.setEmail(employee.getEmail());
+            employeeDTO.setSalary(employee.getSalary());
+            employeeDTO.setContact(employee.getContact());
+            addressDTO.setEmployee(employeeDTO);
         }
         return addressDTO;
     }
@@ -76,7 +88,9 @@ public class EmployeeMapper {
      * @return employee, Employee class 
      */       
     public static Employee convertDTOToEmployee(EmployeeDTO employeeDTO) {
+        List<AddressDTO> addressDTOList = employeeDTO.getAddress();
         Employee employee = new Employee();
+        List<Address> addressList = new ArrayList<>();
 
         employee.setId(employeeDTO.getId());        
         employee.setEmail(employeeDTO.getEmail());
@@ -84,11 +98,11 @@ public class EmployeeMapper {
         employee.setContact(employeeDTO.getContact());
         employee.setSalary(employeeDTO.getSalary());
         employee.setDob(employeeDTO.getDob());
-        List<Address> addressList = new ArrayList<Address>();
-        if(null != employeeDTO.getAddress()) {
+        if(null != addressDTOList) {        
             for(AddressDTO address : employeeDTO.getAddress()) {
                 addressList.add(convertAddressDTOToAddress(address));
             }
+            //System.out.println(addressList);
         }
         employee.setAddress(addressList);
         return employee;
@@ -101,15 +115,16 @@ public class EmployeeMapper {
      * @return Address, Employee's Address
      */
     public static Address convertAddressDTOToAddress(AddressDTO addressDTO) {
+            EmployeeDTO employeeDTO = addressDTO.getEmployee();
             Address address = new Address();
-        
+            
+            address.setAddressId(addressDTO.getAddressId());
             address.setDoorNo(addressDTO.getDoorNo());
             address.setLandMark(addressDTO.getLandMark());
             address.setCity(addressDTO.getCity());
             address.setStreet(addressDTO.getStreet());
             address.setPincode(addressDTO.getPincode());
-            EmployeeDTO employeeDTO = addressDTO.getEmployee();
-            address.setEmployeeId(addressDTO.getEmployeeId());
+            //address.setEmployeeId(addressDTO.getEmployeeId());
             if (null != employeeDTO) {
                 address.setEmployee(convertDTOToEmployee(employeeDTO));
             }

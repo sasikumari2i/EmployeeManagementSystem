@@ -157,23 +157,15 @@ public class EmployeeServiceImpl implements EmployeeService {
      * @param addressDTO, AddressDTO containing the employee details
      * @return boolean, true if records are updated 
      */    
-    public boolean updateAllDetails(AddressDTO addressDTO) {
-        Address address = EmployeeMapper.convertAddressDTOToAddress(addressDTO);
-        return (null == dao.updateEmployee(address));
+    public boolean updateAllDetails(EmployeeDTO employeeDTO) {
+        Employee employee = EmployeeMapper.convertDTOToEmployee(employeeDTO);
+        System.out.println("Updateeeeeeee  " + employee);
+        return (null != dao.updateEmployee(employee));
     }
-
-    /**
-     * Gets the list of addresses for the given user
-     *
-     * @param employeeId, Employee id given by the user
-     * @return addressList, List of address for the given employee
-     */
-    public List<AddressDTO> getAddressById(int employeeId) {
-        List<AddressDTO> addressList = new ArrayList<>();
-        for (Address address : dao.getAddressById(employeeId)) {
-            addressList.add(EmployeeMapper.convertAddressToDTO(address));
-        }
-        return addressList;
+   
+    public boolean addAddress(EmployeeDTO employeeDTO) {
+        Employee employee = EmployeeMapper.convertDTOToEmployee(employeeDTO);
+        return (null != dao.updateEmployee(employee));
     }
 
     /**
@@ -191,7 +183,7 @@ public class EmployeeServiceImpl implements EmployeeService {
      * @return boolean, true if employee detail is deleted 
      */
     public boolean deleteEmployeeById(int employeeId) {
-        return dao.deleteEmployeeById(employeeId);
+        return (null != dao.deleteEmployeeById(employeeId));
     }
 
     /**
@@ -200,8 +192,9 @@ public class EmployeeServiceImpl implements EmployeeService {
      * @param addressId, addressID of the address
      * @return boolean, true if employee address is deleted 
      */
-    public boolean deleteAddress(int addressId) {
-        return dao.deleteAddress(addressId);
+    public boolean deleteAddress(EmployeeDTO employeeDTO) {
+        Employee employee = EmployeeMapper.convertDTOToEmployee(employeeDTO);
+        return (null != dao.updateEmployee(employee));
     }
 
     /**
@@ -255,9 +248,9 @@ public class EmployeeServiceImpl implements EmployeeService {
      * @param addressDTO, AddressDTO containing Employee details
      * @return boolean, true if null is return from employees
      */
-    public boolean createEmployee(AddressDTO addressDTO) {
-        Address address = EmployeeMapper.convertAddressDTOToAddress(addressDTO);
-        return (null == dao.createEmployee(address));
+    public boolean createEmployee(EmployeeDTO employeeDTO) {
+        Employee employee = EmployeeMapper.convertDTOToEmployee(employeeDTO);
+        return (null == dao.createEmployee(employee));
     }
 }
 

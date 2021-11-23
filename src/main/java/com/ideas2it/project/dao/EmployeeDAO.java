@@ -33,7 +33,7 @@ public interface EmployeeDAO {
      * @param  Address, address record to be inserted
      * @param employeeId, employee Id of the user to be inserted
      */
-    public boolean insertAddress(int employeeId, Address address);
+    //public Address insertAddress(Address address);
 
     /**
      * Inserts new employee details to the database
@@ -41,7 +41,7 @@ public interface EmployeeDAO {
      * @return Employee, employee which is inserted
      * @param  Address, Employee Address of the employee which contains employee
      */
-    public Employee createEmployee(Address address);
+    public Employee createEmployee(Employee employee);
 
     /**
      * Update the employee details of an employee
@@ -49,7 +49,7 @@ public interface EmployeeDAO {
      * @return Employee, returns the inserted employee 
      * @param  Address, Employee Address of the employee which contains employee
      */
-    public Employee updateEmployee(Address address);
+    public Employee updateEmployee(Employee employee);
     
     /**
      * Deletes the given employee from the database
@@ -57,7 +57,7 @@ public interface EmployeeDAO {
      * @return boolean, returns whether any rows affected 
      * @param  employeeId, employeeId of the employee to be deleted
      */
-    public boolean deleteEmployeeById(int employeeId);
+    public Employee deleteEmployeeById(int employeeId);
 
     /**
      * Deletes the given address of the employee from the database
@@ -65,7 +65,7 @@ public interface EmployeeDAO {
      * @return boolean, returns whether any rows affected 
      * @param  addressId, addressId of the employee to be deleted
      */
-    public boolean deleteAddress(int addressId);
+    public Address deleteAddress(int addressId);
 
     /**
      * Retrieves the record of the employeeContact given from the user
@@ -104,7 +104,7 @@ public interface EmployeeDAO {
      * @return List<Address>, returns available addresses for the given employee 
      * @param  employeeId, employeeId of the user
      */
-    public List<Address> getAddressById(int employeeId);
+   // public List<Address> getAddressById(int employeeId);
     
     /**
      * Deletes all the records

@@ -117,7 +117,9 @@ public interface EmployeeService {
      * @param addressDTO, AddressDTO containing the employee details
      * @return boolean, true if records are updated 
      */    
-    public boolean updateAllDetails(AddressDTO addressDTO);
+    public boolean updateAllDetails(EmployeeDTO employeeDTO);
+
+    public boolean addAddress(EmployeeDTO employeeDTO);
 
     /**
      * Gets the list of addresses for the given user
@@ -125,7 +127,7 @@ public interface EmployeeService {
      * @param employeeId, Employee id given by the user
      * @return addressList, List of address for the given employee
      */
-    public List<AddressDTO> getAddressById(int employeeId);
+    //public List<AddressDTO> getAddressById(int employeeId);
 
     /**
      * Delete all the Records
@@ -147,7 +149,7 @@ public interface EmployeeService {
      * @param addressId, addressID of the address
      * @return boolean, true if employee address is deleted 
      */
-    public boolean deleteAddress(int addressId);
+    public boolean deleteAddress(EmployeeDTO employeeDTO);
 
     /**
      * Check the Records whether it contains given Employee Id
@@ -185,7 +187,7 @@ public interface EmployeeService {
      * @param addressDTO, AddressDTO containing Employee details
      * @return boolean, true if null is return from employees
      */
-    public boolean createEmployee(AddressDTO addressDTO);
+    public boolean createEmployee(EmployeeDTO employeeDTO);
 }
 
 

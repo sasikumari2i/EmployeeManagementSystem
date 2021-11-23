@@ -149,8 +149,8 @@ public class EmployeeController {
      *
      * @param addressDTO, Details of the user
      */
-    public boolean createEmployee(AddressDTO addressDTO) {
-        return employeeService.createEmployee(addressDTO);
+    public boolean createEmployee(EmployeeDTO employeeDTO) {
+        return employeeService.createEmployee(employeeDTO);
     }    
 
     /**
@@ -167,9 +167,9 @@ public class EmployeeController {
      *
      * @return List<AddressDTO>, list of address
      */
-    public List<AddressDTO> getAddressById(int employeeId) {
+    /*public List<AddressDTO> getAddressById(int employeeId) {
         return employeeService.getAddressById(employeeId);
-    }
+    }*/
     
     /**
      * View Employee details of the given ID from the EmployeeService
@@ -197,8 +197,8 @@ public class EmployeeController {
      * @param AddressId, Address ID of the user given
      * @return boolean, true if address detail is deleted 
      */
-    public boolean deleteAddress(int addressId) {
-        return employeeService.deleteAddress(addressId);
+    public boolean deleteAddress(EmployeeDTO employeeDTO) {
+        return employeeService.deleteAddress(employeeDTO);
     }
 
     /**
@@ -213,8 +213,12 @@ public class EmployeeController {
      *
      * @param employeeDTO, EmployeeDTO object containing all records
      */
-    public boolean updateAllDetails(AddressDTO addressDTO) {
-        return employeeService.updateAllDetails(addressDTO);
+    public boolean updateAllDetails(EmployeeDTO employeeDTO) {
+        return employeeService.updateAllDetails(employeeDTO);
+    }
+
+    public boolean addAddress(EmployeeDTO employeeDTO) {
+        return employeeService.addAddress(employeeDTO);
     }
 }
 
