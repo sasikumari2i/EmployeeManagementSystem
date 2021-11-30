@@ -3,9 +3,6 @@ package com.ideas2it.project.utils;
 import org.hibernate.Session; 
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
-import org.hibernate.service.ServiceRegistry;
-import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
-
 import org.hibernate.HibernateException;
 
 public class DatabaseConnection {
@@ -13,25 +10,63 @@ public class DatabaseConnection {
     private DatabaseConnection() {
     }
     
-    private static SessionFactory factory = null;
+    private static SessionFactory sessionFactory = null;
+    private static Session session = null;
 
     /**
-     * Open the Database Connection
+     * Open the Database Connection using Session Factory
      *
-     * @return, Database connection
+     * @return Session Factory
      */
     public static SessionFactory getSessionFactory() {
+        if(null == sessionFactory) {
+            try {
+                sessionFactory = new Configuration().configure()
+                                                    .buildSessionFactory();
+            } catch(HibernateException e) {
+                e.printStackTrace();
+            } 
+        }
+        return sessionFactory;
+    }
+
+    /**
+     * Create a Session using the Session Factory available
+     *
+     * @return Session
+     */
+    public static Session getSession() {
         try {
-           // Configuration configuration = new Configuration().configure();
-            //configuration.addResource("resources/Employee.hbm.xml");
-            //configuration.addResource("resources/Address.hbm.xml");
-            //ServiceRegistry servReg = new StandardServiceRegistryBuilder()
-              //                    .applySettings(configuration.getProperties())
-                //                  .build();
-            factory = new Configuration().configure().buildSessionFactory();
-        } catch(HibernateException e) {
+            session = getSessionFactory().openSession();
+        } catch (HibernateException e) { 
             e.printStackTrace();
         }
-        return factory;
-    }    
+        return session;
+    }
+    
+    /**
+     * Close the Session
+     */
+    public static void closeSession() {
+        if (null != session) {
+            try {
+                session.close();
+            } catch (HibernateException e) { 
+                e.printStackTrace();
+            }
+        }
+    }
+
+    /**
+     * Close the Session Factory
+     */
+    public static void closeSessionFactory() {
+        if (null != sessionFactory) {
+            try {
+                sessionFactory.close();
+            } catch (HibernateException e) { 
+                e.printStackTrace();
+            }
+        }
+    }
 }

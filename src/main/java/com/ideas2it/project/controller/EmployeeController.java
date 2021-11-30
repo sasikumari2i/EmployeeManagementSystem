@@ -9,6 +9,7 @@ import java.util.List;
 import com.ideas2it.project.model.dto.AddressDTO;
 import com.ideas2it.project.model.dto.EmployeeDTO;
 import com.ideas2it.project.service.serviceImpl.EmployeeServiceImpl;
+import com.ideas2it.project.model.dto.ProjectDTO;
 
 /**
  * Manipulates the data between view and service layer
@@ -147,7 +148,7 @@ public class EmployeeController {
     /**
      * To create new Employee
      *
-     * @param addressDTO, Details of the user
+     * @param boolean, true if Employee created
      */
     public boolean createEmployee(EmployeeDTO employeeDTO) {
         return employeeService.createEmployee(employeeDTO);
@@ -163,14 +164,34 @@ public class EmployeeController {
     }
 
     /**
-     * Gets the List of address for the given Employee from Employee Service
+     * View All the project List from the EmployeeService
      *
-     * @return List<AddressDTO>, list of address
+     * @return List<ProjectDTO>, list of projects
      */
-    /*public List<AddressDTO> getAddressById(int employeeId) {
-        return employeeService.getAddressById(employeeId);
-    }*/
-    
+    public List<ProjectDTO> viewAllProject() {
+        return employeeService.viewAllProject();
+    }
+
+    /**
+     * To check whether Employee contains the project using Employee Service
+     *
+     * @param projectId, Project ID to be checked
+     * @return boolean
+     */
+    public boolean containsProject(int projectId) {
+        return employeeService.containsProject(projectId);
+    } 
+
+    /**
+     * View Project details of the given ID from the EmployeeService
+     *
+     * @param projectId, Project ID of the user to be viewed
+     * @return ProjectDTO, Single project
+     */
+    public ProjectDTO viewProjectById(int projectId) {
+        return employeeService.viewProjectById(projectId);
+    }   
+
     /**
      * View Employee details of the given ID from the EmployeeService
      *
@@ -215,10 +236,6 @@ public class EmployeeController {
      */
     public boolean updateAllDetails(EmployeeDTO employeeDTO) {
         return employeeService.updateAllDetails(employeeDTO);
-    }
-
-    public boolean addAddress(EmployeeDTO employeeDTO) {
-        return employeeService.addAddress(employeeDTO);
     }
 }
 

@@ -7,10 +7,8 @@ import java.time.LocalDate;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
-
-import com.ideas2it.project.controller.EmployeeController;
-import com.ideas2it.project.model.Address;
-import com.ideas2it.project.model.dto.AddressDTO;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Data Transfer Object for the Employee Management System
@@ -25,7 +23,16 @@ public class EmployeeDTO {
     private String name;
     private String email;
     private LocalDate dob;
-    private List<AddressDTO> address;
+    private List<AddressDTO> address = new ArrayList<AddressDTO>();
+    private Set<ProjectDTO> projects = new HashSet<ProjectDTO>();
+
+    /**
+     * Override equals method to compare two objects
+     */
+    public boolean equals(Object object) {
+        EmployeeDTO employee = (EmployeeDTO)object;
+        return this.id == employee.id;
+    }
 
     /**
      * EmployeeDTO getters and setters
@@ -84,6 +91,14 @@ public class EmployeeDTO {
     
     public void setAddress(List<AddressDTO> address) {
         this.address = address;
+    }
+
+    public Set<ProjectDTO> getProjects() {
+        return projects;
+    }
+  
+    public void setProjects(Set<ProjectDTO> projects) {
+        this.projects = projects;
     }
     
     /**

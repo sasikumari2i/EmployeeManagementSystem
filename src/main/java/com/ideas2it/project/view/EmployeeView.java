@@ -7,15 +7,17 @@ import java.lang.ArrayIndexOutOfBoundsException;
 import java.lang.NumberFormatException;
 import java.time.format.DateTimeParseException;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.List;
-import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.Set;
+import java.util.HashSet;
 
 import com.ideas2it.project.controller.EmployeeController;
-import com.ideas2it.project.model.Address;
 import com.ideas2it.project.model.dto.AddressDTO;
 import com.ideas2it.project.model.dto.EmployeeDTO;
+import com.ideas2it.project.model.dto.ProjectDTO;
 
 /**
  * User Interface for getting inputs and displaying the appropriate outputs
@@ -34,9 +36,8 @@ public class EmployeeView {
         boolean isExit = true;
         int inputChoice = 0;
         
-        System.out.println("-----Welcome!!!-----");
         do {
-            System.out.println("1.CREATE 2.DISPLAY 3.DELETE 4.UPDATE 5.Exit ");
+            System.out.println("1.CREATE 2.DISPLAY 3.DELETE 4.UPDATE 5.Back ");
             inputChoice = getInputChoice();
             switch(inputChoice) {
                 case 1 : createEmployee();
@@ -45,7 +46,7 @@ public class EmployeeView {
                          break;
                 case 3 : deleteEmployee();
                          break;
-                case 4 : updateEmployee();
+                case 4 : updateDisplay();
                          break;
                 case 5 : isExit = false;
                          System.out.println("Thank you!!!");
@@ -61,7 +62,7 @@ public class EmployeeView {
      *
      * @return inputChoice, Validated choice number 
      */
-    private int getInputChoice() {
+    public int getInputChoice() {
         int inputChoice = 0;
         boolean isValidChoice = false;
         
@@ -290,6 +291,8 @@ public class EmployeeView {
     /**
      * Gets and validates the address from user and Creates a new 
      * address for the employee
+     *
+     * @return AddressDTO, The created addressDTO 
      */
     private AddressDTO getEmployeeAddress() {
         System.out.println("Enter your address");
@@ -449,12 +452,16 @@ public class EmployeeView {
                 System.out.println(address);
                 count++;
             }
+            Set<ProjectDTO> projectDTOList = employeeDTO.getProjects();
+            for(ProjectDTO projectDTO : projectDTOList) {
+                System.out.println(projectDTO);
+            }
         }
     }
 
 
     /**
-     * Displays only the details of given Employee Id
+     * Displays only the details of the Employee Id given by the user
      */
     private void viewEmployeeById() {
         int employeeId = getEmployeeId();
@@ -468,6 +475,10 @@ public class EmployeeView {
                 address.setSerialId(count);
                 System.out.println(address);
                 count++;
+            }
+            Set<ProjectDTO> projectDTOList = employeeDTO.getProjects();
+            for(ProjectDTO projectDTO : projectDTOList) {
+                System.out.println(projectDTO);
             }
         } else {
             System.out.println("Employee Id not Available, Try Again");
@@ -515,7 +526,7 @@ public class EmployeeView {
     }
     
     /**
-     * Deletes the details of the given Employee Id
+     * Deletes the details of the Employee Id given by the user
      */
     private void deleteEmployeeById() {
         int employeeId = getEmployeeId();
@@ -531,13 +542,13 @@ public class EmployeeView {
     } 
 
     /**
-     * Gets the required AddressId given by the user
+     * Gets the List of address of an employee and set a serial Id for 
+     * each address to display
      *
-     * @return addressId, Address Id of an address of employee
+     * @return List<AddressDTO>, List of AddressDTO after setting serial Id
      */
-    public List<AddressDTO> getAddressList(List<AddressDTO> addressList) {
+    private List<AddressDTO> getAddressList(List<AddressDTO> addressList) {
         boolean isValidId = false;
-        EmployeeDTO employeeDTO = new EmployeeDTO();
         AddressDTO addressDTO = new AddressDTO();
         int addressId = 0;
         while(!isValidId) {
@@ -546,7 +557,6 @@ public class EmployeeView {
                 for(AddressDTO address : addressList) {
                     if(address.getSerialId() == serialId) {
                         addressDTO = address;
-                        //employeeDTO = address.getEmployee();
                         isValidId = true;    
                     }
                 }
@@ -582,9 +592,9 @@ public class EmployeeView {
             }
             if(2 <= addressList.size()) {
                 System.out.println("Enter the serial to be deleted");
-                //List<AddressDTO> addresses = getAddressList(addressList);
                 employeeDTO.setAddress(getAddressList(addressList));
-                isAddressDeleted = employeeController.deleteAddress(employeeDTO);
+                isAddressDeleted = employeeController
+                                                    .deleteAddress(employeeDTO);
                 System.out.println(isAddressDeleted ? "Address deleted"
                                                     : "Address not deleted");
             } else {
@@ -598,10 +608,11 @@ public class EmployeeView {
     }
 
     /**
-     * Displays Update Employee Main Menu
+     * Displays Update Employee Verification menu
      */
-    private void updateEmployee() {
+    private void updateDisplay() {
         boolean isValidChoice = false;
+
         while(!isValidChoice) {
             isValidChoice = true;
             if(!(isRecordsAvailable())) {
@@ -609,37 +620,69 @@ public class EmployeeView {
             } else {
                 int employeeId = getEmployeeId();
                 if(employeeController.containsEmployee(employeeId)) {
-                    StringBuilder stringBuilder = new StringBuilder("1.Update"); 
-                    stringBuilder.append(" All 2.Name 3.Salary 4.Email 5.DOB ");
-                    stringBuilder.append("6.Contact 7.Add new address ");
-                    stringBuilder.append("8.Main menu or Anyother");
-                    System.out.println(stringBuilder.append(" to Back Menu"));
-                    
-                    int inputChoice = getInputChoice();
-                    switch(inputChoice) {
-                        case 1 : updateAllDetails(employeeId);
-                                 break;
-                        case 2 : updateEmployeeName(employeeId);
-                                 break;
-                        case 3 : updateEmployeeSalary(employeeId);
-                                 break;
-                        case 4 : updateEmployeeEmail(employeeId);
-                                 break;
-                        case 5 : updateEmployeeDob(employeeId);
-                                 break;
-                        case 6 : updateEmployeeContact(employeeId);
-                                 break;
-                        case 7 : addAddress(employeeId);
-                                 break;
-                        case 8 : break;
-                        default : isValidChoice = false; 
-                                  break;
-                    }
+                    StringBuilder stringBuilder = new StringBuilder("1.Update") 
+                    .append(" All 2.Name 3.Salary 4.Email 5.DOB 6.Contact ")
+                    .append("7.Add new address 8.Assign/Unassign Project")
+                    .append("9.Main menu or Anyother to Back Menu");
+                    System.out.println(stringBuilder);
+                    updateEmployee(employeeId);
                 } else {
                     goToMenu();    
                 }
             }
+        }
+    }
+
+    /**
+     * Displays Update Employee Main Menu
+     */
+    private void updateEmployee(int employeeId) {
+        int inputChoice = getInputChoice();
+
+        switch(inputChoice) {
+            case 1 : updateAllDetails(employeeId);
+                     break;
+            case 2 : updateEmployeeName(employeeId);
+                     break;
+            case 3 : updateEmployeeSalary(employeeId);
+                     break;
+            case 4 : updateEmployeeEmail(employeeId);
+                     break;
+            case 5 : updateEmployeeDob(employeeId);
+                     break;
+            case 6 : updateEmployeeContact(employeeId);
+                     break;
+            case 7 : addAddress(employeeId);
+                     break;
+            case 8 : assignUnassignDisplay(employeeId);
+                     break;
+            case 9 : break;
+            default : break;
         }    
+    }
+
+    /**
+     * Validates the choice number given by the user 
+     *
+     * @return inputChoice, Validated choice number 
+     */
+    private void assignUnassignDisplay(int employeeId) {
+        boolean isValidNo = true;
+        int inputChoice = 0;
+        do {
+            System.out.println("1.Assign Project 2.UnAssign Project 3.Back");
+            inputChoice = getInputChoice();
+            switch(inputChoice) {
+                case 1 : assignProject(employeeId);
+                         break;
+                case 2 : unassignProject(employeeId);
+                         break;
+                case 3 : isValidNo = false;
+                         break;
+                default : System.out.println("Choose from the given numbers");
+                          break;
+            }
+        } while(isValidNo);
     }
 
     /**
@@ -650,10 +693,9 @@ public class EmployeeView {
         StringBuilder displayString = new StringBuilder("Id invalid! ");
         displayString.append("Enter 1.Update or Any other Number for Home");
         System.out.println(displayString);
-
-        int inputChoice = getInputChoice(); 
+        int inputChoice = getInputChoice();
         if(inputChoice == 1) {
-            updateEmployee();
+            updateDisplay();
         } else {
             showMainMenu();
         }
@@ -669,20 +711,193 @@ public class EmployeeView {
         
         EmployeeDTO employeeDTO = employeeController
                                   .viewEmployeeById(employeeId);
-        
-        List<AddressDTO> addressList = employeeDTO.getAddress();
-        AddressDTO addressDTO = new AddressDTO();
         employeeDTO.setId(employeeId);
         employeeDTO.setName(getEmployeeName());
         employeeDTO.setSalary(getEmployeeSalary());
         employeeDTO.setDob(getDateOfBirth());
         employeeDTO.setContact(getEmployeeContact());
         employeeDTO.setEmail(getEmployeeEmail());
-        employeeDTO.setAddress(addressList);
-        addressDTO.setEmployee(employeeDTO);
         System.out.println(employeeController.updateAllDetails(employeeDTO)
                                       ? "Employee updated successfully!!" 
                                       : "Employee not updated");
+    }
+
+    /**
+     * Assign a project for the given Employee
+     *
+     * @param employeeId
+     */
+    private void assignProject(int employeeId) {
+        EmployeeDTO employeeDTO = employeeController
+                                                  .viewEmployeeById(employeeId);
+        Set<ProjectDTO> projectDTOSet = employeeDTO.getProjects();
+        List<ProjectDTO> projectDTOList = new ArrayList<>(employeeController
+                                                             .viewAllProject());
+        List<ProjectDTO> availableProjects = new ArrayList<>(projectDTOSet);
+        projectDTOList.removeAll(availableProjects);
+        ProjectDTO projectDTO = new ProjectDTO();
+
+        if(assignDisplay(projectDTOList)) {
+            System.out.println("Give the ProjectId to Assign for the Employee");
+            int projectId = getProjectId();
+            if(containsProject(projectDTOList, projectId)) {
+                projectDTO = employeeController.viewProjectById(projectId);
+                projectDTOSet.add(projectDTO);
+                employeeDTO.setProjects(projectDTOSet);
+                System.out.println(employeeController
+                                               .updateAllDetails(employeeDTO) ?
+                                                           "Assigned Project" :
+                                                       "Project not assigned");
+            } else {
+                System.out.println("Sorry Project ID not available");    
+            }
+        } else {
+            System.out.println("Sorry No Projects available");
+        }
+    }
+
+    /**
+     * Displays the available Projects if available
+     *
+     * @param projectDTOList
+     * @return boolean, true if projects are available
+     */
+    private boolean assignDisplay(List<ProjectDTO> projectDTOList) {
+        boolean isAvailable = false;
+
+        if((null != projectDTOList) && !(projectDTOList.isEmpty())) {
+            isAvailable = true;
+            System.out.println("Project's Available");
+            for(ProjectDTO project : projectDTOList) {
+                StringBuilder display = new StringBuilder();
+                display.append("Id : ").append(project.getId())
+                      .append(" Name : ").append(project.getName());
+                System.out.println(display);
+            }
+        }
+        return isAvailable;
+    }
+
+    /**
+     * Unassign a project for the given Employee Id
+     *
+     * @param employeeId
+     */
+    private void unassignProject(int employeeId) {
+        EmployeeDTO employeeDTO = employeeController
+                                                 .viewEmployeeById(employeeId);
+        Set<ProjectDTO> projectDTOSet = employeeDTO.getProjects();
+        ProjectDTO projectDTO = new ProjectDTO();
+        if(unAssignDisplay(projectDTOSet)) {
+            System.out.println("Enter the Project Id to be Unassigned");
+            int projectId = getProjectId();
+            if(containsProject(projectDTOSet, projectId)) {
+                projectDTO = employeeController.viewProjectById(projectId);
+                Set<ProjectDTO> unAssignSet = new HashSet<>();
+                for(ProjectDTO unAssignProject : projectDTOSet) {
+                    if(unAssignProject.getId() == employeeId) {
+                        unAssignSet.add(unAssignProject);
+                    }
+                }
+                projectDTOSet.removeAll(unAssignSet);
+                employeeDTO.setProjects(projectDTOSet);
+                System.out.println(employeeController
+                                                .updateAllDetails(employeeDTO) ?
+                                                         "Unassigned Employee" :
+                                                    "Employee unassign failed");
+            } else {
+                System.out.println("Sorry Project ID not available");
+            }
+        } else {
+            System.out.println("Sorry! No Projects Available for the Employee");
+        }         
+    }
+
+    /**
+     * Displays the available Projects if available
+     *
+     * @param projectDTOSet
+     * @return boolean, true if projects are available
+     */
+    private boolean unAssignDisplay(Set<ProjectDTO> projectDTOSet) {
+        boolean isAvailable = false;
+
+        if((null != projectDTOSet) && !(projectDTOSet.isEmpty())) {
+            isAvailable = true;
+            System.out.println("Project's Available");
+            for(ProjectDTO project : projectDTOSet) {
+                StringBuilder display = new StringBuilder();
+                display.append("Id : ").append(project.getId())
+                      .append(" Name : ").append(project.getName());
+                System.out.println(display);
+            }
+        }
+        return isAvailable;
+    }
+
+    /**
+     * To Check whether the Set of Project has the given ProjectId
+     *
+     * @param projectDTOSet
+     * @param projectId
+     * @return boolean, true if project is available
+     */
+    private boolean containsProject(Set<ProjectDTO> projectDTOSet, 
+                                                               int projectId) {
+        boolean isAvailable = false;
+        if(null != projectDTOSet) {
+            for(ProjectDTO projectDTO : projectDTOSet) {
+                if(projectDTO.getId() == projectId) {
+                    isAvailable = true;
+                } 
+            }
+        }
+        return isAvailable;
+    }
+
+    /**
+     * To Check whether the List of Project has the given ProjectId
+     *
+     * @param projectDTOList
+     * @param projectId
+     * @return boolean, true if project is available
+     */    
+    private boolean containsProject(List<ProjectDTO> projectDTOList, 
+                                                               int projectId) {
+        boolean isAvailable = false;
+        if(null != projectDTOList) {
+            for(ProjectDTO projectDTO : projectDTOList) {
+                if(projectDTO.getId() == projectId) {
+                    isAvailable = true;
+                } 
+            }
+        }
+        return isAvailable;
+    }
+
+    /**
+     * Validates the project Id given by the user
+     *
+     * @return projectId Validated
+     */
+    private int getProjectId(){
+        boolean isValidId = true;
+        int projectId = 0;
+        while(isValidId) {
+            try {
+                String stringId = inputReader.nextLine() ;
+                String pattern = "^[0-9]{1,4}";
+                if(stringId.matches(pattern)) {
+                    projectId = Integer.parseInt(stringId);
+                    isValidId = false;
+                } else {
+                    System.out.println("Enter a valid Project Id");
+                }
+            } catch(NumberFormatException e) {
+                System.out.println("Enter a valid Project Id");
+            }
+        }
+        return projectId;       
     }
     
     /**
@@ -693,12 +908,10 @@ public class EmployeeView {
     private void updateEmployeeName(int employeeId) {
         EmployeeDTO employeeDTO = employeeController
                                   .viewEmployeeById(employeeId);
-        AddressDTO addressDTO = new AddressDTO();
         employeeDTO.setName(getEmployeeName());
-        addressDTO.setEmployee(employeeDTO);
         System.out.println(employeeController.updateAllDetails(employeeDTO) ?
-                                                   "Employee Name updated" :
-                                                        "Name not updated");
+                                                    "Employee Name updated" :
+                                                         "Name not updated");
     }
 
     /**
@@ -709,12 +922,10 @@ public class EmployeeView {
     private void updateEmployeeSalary(int employeeId) {
         EmployeeDTO employeeDTO = employeeController.viewEmployeeById
                                                      (employeeId);
-        AddressDTO addressDTO = new AddressDTO();
         employeeDTO.setSalary(getEmployeeSalary());
-        addressDTO.setEmployee(employeeDTO);
         System.out.println(employeeController.updateAllDetails(employeeDTO) ?
-                                                 "Employee Salary updated" :
-                                                      "Salary not updated");        
+                                                  "Employee Salary updated" :
+                                                       "Salary not updated");        
     }
 
     /**
@@ -725,16 +936,16 @@ public class EmployeeView {
     private void updateEmployeeEmail(int employeeId) {
         EmployeeDTO employeeDTO = employeeController.viewEmployeeById
                                                      (employeeId);
-        AddressDTO addressDTO = new AddressDTO();
         employeeDTO.setEmail(getEmployeeEmail());
-        addressDTO.setEmployee(employeeDTO);
         System.out.println(employeeController.updateAllDetails(employeeDTO) ?
-                                                 "Employee Salary updated" :
-                                                      "Salary not updated");
+                                                  "Employee Salary updated" :
+                                                       "Salary not updated");
     }
 
     /**
      * Adds new address for the given employee
+     *
+     * @param employeeId
      */
     private void addAddress(int employeeId) {
         EmployeeDTO employeeDTO = employeeController.viewEmployeeById
@@ -744,8 +955,8 @@ public class EmployeeView {
         addressList.add(addressDTO);
         employeeDTO.setAddress(addressList);
         System.out.println(employeeController.updateAllDetails(employeeDTO) ?
-                                                "Employee Address updated" :
-                                                     "Address not updated");
+                                                 "Employee Address updated" :
+                                                      "Address not updated");
     }
 
     /**
@@ -756,12 +967,10 @@ public class EmployeeView {
     private void updateEmployeeContact(int employeeId) {
         EmployeeDTO employeeDTO = employeeController.viewEmployeeById
                                                      (employeeId);
-        AddressDTO addressDTO = new AddressDTO(); 
         employeeDTO.setContact(getEmployeeContact());
-        addressDTO.setEmployee(employeeDTO);
         System.out.println(employeeController.updateAllDetails(employeeDTO) ?
-                                                "Employee Contact updated" :
-                                                     "Contact not updated");        
+                                                 "Employee Contact updated" :
+                                                      "Contact not updated");        
     }
     
     /**
@@ -772,11 +981,9 @@ public class EmployeeView {
     private void updateEmployeeDob(int employeeId) {
         EmployeeDTO employeeDTO = employeeController.viewEmployeeById
                                                      (employeeId);
-        AddressDTO addressDTO = new AddressDTO();
         employeeDTO.setDob(getDateOfBirth());
-        addressDTO.setEmployee(employeeDTO);
         System.out.println(employeeController.updateAllDetails(employeeDTO) ?
-                                                    "Employee DOB updated" :
-                                                         "DOB not updated");        
+                                                     "Employee DOB updated" :
+                                                          "DOB not updated");        
     }
 }

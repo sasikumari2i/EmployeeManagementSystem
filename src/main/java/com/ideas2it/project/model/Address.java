@@ -10,7 +10,6 @@ package com.ideas2it.project.model;
  * @author	Sasikumar Raju
  */
 public class Address {
-    
     private int addressId;
     private String doorNo;
     private String landMark;

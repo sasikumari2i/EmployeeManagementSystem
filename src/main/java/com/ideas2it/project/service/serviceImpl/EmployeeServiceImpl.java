@@ -11,6 +11,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.List;
+import java.util.Set;
+import java.util.HashSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -21,7 +23,10 @@ import com.ideas2it.project.model.dto.AddressDTO;
 import com.ideas2it.project.model.Employee;
 import com.ideas2it.project.service.EmployeeService;
 import com.ideas2it.project.utils.EmployeeMapper;
-
+import com.ideas2it.project.model.dto.ProjectDTO;
+import com.ideas2it.project.model.Project;
+import com.ideas2it.project.service.serviceImpl.ProjectServiceImpl;
+import com.ideas2it.project.service.ProjectService;
 
 
 /**
@@ -33,6 +38,7 @@ import com.ideas2it.project.utils.EmployeeMapper;
 public class EmployeeServiceImpl implements EmployeeService {
 
     private EmployeeDAOImpl dao = new EmployeeDAOImpl();
+    private ProjectService projectService = null;
     
     /**
      * To validate the given Choice in correct format using regex
@@ -159,15 +165,9 @@ public class EmployeeServiceImpl implements EmployeeService {
      */    
     public boolean updateAllDetails(EmployeeDTO employeeDTO) {
         Employee employee = EmployeeMapper.convertDTOToEmployee(employeeDTO);
-        System.out.println("Updateeeeeeee  " + employee);
         return (null != dao.updateEmployee(employee));
     }
    
-    public boolean addAddress(EmployeeDTO employeeDTO) {
-        Employee employee = EmployeeMapper.convertDTOToEmployee(employeeDTO);
-        return (null != dao.updateEmployee(employee));
-    }
-
     /**
      * Delete all the Records
      * @return boolean, true if no employee records available
@@ -189,7 +189,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     /**
      * Deletes the Address given from the user
      * 
-     * @param addressId, addressID of the address
+     * @param employeeDTO
      * @return boolean, true if employee address is deleted 
      */
     public boolean deleteAddress(EmployeeDTO employeeDTO) {
@@ -233,6 +233,39 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     /**
+     * To check the if project details available for the ID
+     * 
+     * @param projectId, ID of the Project
+     * @return boolean, true if Project is available 
+     */
+    public boolean containsProject(int projectId) {
+        projectService = new ProjectServiceImpl();
+        return projectService.containsProject(projectId);
+    }
+
+    /**
+     * View All the project details
+     *
+     * @return List<ProjectDTO>, list of project details
+     */
+    public List<ProjectDTO> viewAllProject() {
+        projectService = new ProjectServiceImpl();
+        List<ProjectDTO> projectDTOList = projectService.viewProject(); 
+        return projectDTOList;
+    }
+
+    /**
+     * View project details of the given project Id
+     *
+     * @return ProjectDTO, retrived Project
+     */
+    public ProjectDTO viewProjectById(int projectId) {
+        projectService = new ProjectServiceImpl();
+        return projectService.viewProjectById(projectId);
+    }
+
+
+    /**
      * Check whether any Records available.
      *  
      * @return boolean, true if no employee records are available 
@@ -245,8 +278,8 @@ public class EmployeeServiceImpl implements EmployeeService {
     /**
      * Create and store new Employee
      *
-     * @param addressDTO, AddressDTO containing Employee details
-     * @return boolean, true if null is return from employees
+     * @param employeeDTO, EmployeeDTO containing Employee details
+     * @return boolean, true if null is return from projects
      */
     public boolean createEmployee(EmployeeDTO employeeDTO) {
         Employee employee = EmployeeMapper.convertDTOToEmployee(employeeDTO);

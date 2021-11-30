@@ -7,6 +7,8 @@ import java.time.LocalDate;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.HashSet;
 
 import com.ideas2it.project.model.Address;
 	
@@ -23,7 +25,8 @@ public class Employee {
     private String name;
     private String email;
     private LocalDate dob;
-    private List<Address> addresses;
+    private List<Address> addresses = new ArrayList<Address>();
+    private Set<Project> projects = new HashSet<>();
 
     public Employee() {}
 
@@ -85,6 +88,14 @@ public class Employee {
     public void setAddress(List<Address> addresses) {
         this.addresses = addresses;
     }
+
+    public Set<Project> getProjects() {
+        return projects;
+    }
+  
+    public void setProjects(Set<Project> projects) {
+        this.projects = projects;
+    }
     
     /**
      * Overrides toString method to display the details 
@@ -99,7 +110,8 @@ public class Employee {
                .append(" Salary : ").append(String.format("%.3f", this.salary))
                .append(" Email : ").append(this.email)
                .append(" Contact : ").append(this.contact)
-               .append(" Address : ").append(this.addresses);
+               .append(" Address : ").append(this.addresses)
+               .append(" Projects assigned : ").append(this.projects);
         
         return display.toString();
     }
