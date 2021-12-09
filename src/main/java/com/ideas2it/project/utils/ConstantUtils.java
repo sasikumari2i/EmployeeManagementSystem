@@ -1,19 +1,17 @@
 /*
- *
- * copyright (c) ideas2it
- * All the rights reserved
+ * Copyright (c) Ideas2It Technologies, Inc. All Rights Reserved.
  */
 package com.ideas2it.project.utils;
 
 import java.util.Collections;
 import java.util.Map;
 import java.util.HashMap;
+	
 /**
- * Stores all the constant values for employee management application.
- *
- * @version 1.00 
- * @author  Pallavan
- * @since   1.00
+ * Employee Management System model class
+ * 
+ * @version	1.0
+ * @author	Sasikumar Raju
  */
 public class ConstantUtils { 
     public static final Map<String, String> error = getError();
