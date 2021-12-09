@@ -12,7 +12,7 @@ import org.apache.logging.log4j.Logger;
 
 import com.ideas2it.project.model.dto.AddressDTO;
 import com.ideas2it.project.model.dto.EmployeeDTO;
-import com.ideas2it.project.service.serviceImpl.EmployeeServiceImpl;
+import com.ideas2it.project.service.serviceImpl.ProjectServiceImpl;
 import com.ideas2it.project.model.dto.ProjectDTO;
 import com.ideas2it.project.exception.CustomException;
 
@@ -22,8 +22,8 @@ import com.ideas2it.project.exception.CustomException;
  * @version	1.0
  * @author	Sasikumar Raju
  */
-public class EmployeeController {
-    private EmployeeServiceImpl employeeService = new EmployeeServiceImpl();
+public class ProjectController {
+    private ProjectServiceImpl projectService = new ProjectServiceImpl();
 
     /**
      * To check whether the given choice is valid, from EmployeeService class
@@ -32,7 +32,7 @@ public class EmployeeController {
      * @return boolean
      */
     public boolean getChoiceValidated(int inputChoice) {
-        return employeeService.getChoiceValidated(inputChoice);
+        return projectService.getChoiceValidated(inputChoice);
     }
 
     /**
@@ -41,8 +41,8 @@ public class EmployeeController {
      * @param employeeId, Employee ID to be validated
      * @return boolean
      */
-    public boolean getEmployeeIdValidated(int employeeId) {
-        return employeeService.getEmployeeIdValidated(employeeId);     
+    public boolean getProjectIdValidated(int projectId) {
+        return projectService.getProjectIdValidated(projectId);     
     }
 
     /**
@@ -51,8 +51,8 @@ public class EmployeeController {
      * @param employeeName, Employee Name to be validated
      * @return boolean
      */
-    public boolean getEmployeeNameValidated(String employeeName) {
-        return employeeService.getEmployeeNameValidated(employeeName);      
+    public boolean getProjectNameValidated(String projectName) {
+        return projectService.getProjectNameValidated(projectName);      
     }
     
     /**
@@ -62,8 +62,8 @@ public class EmployeeController {
      * @param employeeSalary, Employee Salary to be validated
      * @return boolean
      */
-    public boolean getEmployeeSalaryValidated(float employeeSalary) {
-        return employeeService.getEmployeeSalaryValidated(employeeSalary);     
+    public boolean getProjectDomainValidated(String domain) {
+        return projectService.getProjectDomainValidated(domain);     
     }
 
     /**
@@ -72,14 +72,8 @@ public class EmployeeController {
      * @param employeeEmail, Employee Email to be validated
      * @return boolean
      */
-    public boolean getEmployeeEmailValidated(String employeeEmail) {
-        boolean isUnique = false;
-        try {
-            isUnique = employeeService.getEmployeeEmailValidated(employeeEmail);
-        } catch(CustomException e) {
-            EmployeeManagementLogger.logger.error(e);            
-        }
-        return isUnique;     
+    public boolean getValidatedStartDate(LocalDate startDate) {
+        return projectService.getValidatedStartDate(startDate);     
     }   
 
     /**
@@ -89,58 +83,8 @@ public class EmployeeController {
      * @param employeeContact, Employee Contact to be validated
      * @return boolean
      */
-    public boolean getEmployeeContactValidated(long employeeContact) {
-        boolean isUnique = false;
-        try {
-            isUnique = employeeService.getEmployeeContactValidated(employeeContact);
-        } catch(CustomException e) {
-            EmployeeManagementLogger.logger.error(e);
-        }
-        return isUnique;     
-    }
-
-    /**
-     * To check whether the given Employee Date of Birth is valid,
-     * from EmployeeService
-     *
-     * @param dateString, Employee dob as String to be validated
-     * @return boolean
-     */
-    public boolean getValidatedDOB(LocalDate dob) {
-        return employeeService.getValidatedDOB(dob);     
-    }
-
-    /**
-     * To check whether the Door Number given by Employee  is valid,
-     * from EmployeeService
-     *
-     * @param doorNumber, Employee doorNo to be validated
-     * @return boolean
-     */
-    public boolean getDoorNoValidated(String doorNo) {
-        return employeeService.getDoorNoValidated(doorNo);
-    }
-
-    /**
-     * To check whether the City,Street,LandMark given by Employee  is valid,
-     * from EmployeeService
-     *
-     * @param address, Employee city or street or landmark to be validated
-     * @return boolean
-     */
-    public boolean getAddressValidated(String address) {
-        return employeeService.getAddressValidated(address);
-    }
-
-    /**
-     * To check whether the Pincode given by Employee  is valid,
-     * from EmployeeService
-     *
-     * @param pincode, Employee pincode to be validated
-     * @return boolean
-     */
-    public boolean getPincodeValidated(long pincode) {
-        return employeeService.getPincodeValidated(pincode);
+    public boolean getValidatedEndDate(LocalDate endDate) {
+        return projectService.getValidatedEndDate(endDate);     
     }
 
     /**
@@ -151,7 +95,7 @@ public class EmployeeController {
     public boolean isRecordsAvailable() {
         boolean isAvailable = false;
         try {
-            isAvailable = employeeService.isRecordsAvailable(); 
+            isAvailable = projectService.isRecordsAvailable();    
         } catch(CustomException e) {
             EmployeeManagementLogger.logger.error(e);
         }
@@ -164,10 +108,10 @@ public class EmployeeController {
      * @param employeeId, Employee ID to be checked
      * @return boolean
      */
-    public boolean containsEmployee(int employeeId) {
+    public boolean containsProject(int projectId) {
         boolean isAvailable = false;
         try {
-            isAvailable = employeeService.containsEmployee(employeeId);
+            isAvailable = projectService.containsProject(projectId);
         } catch(CustomException e) {
             EmployeeManagementLogger.logger.error(e);
         }
@@ -179,10 +123,10 @@ public class EmployeeController {
      *
      * @param boolean, true if Employee created
      */
-    public boolean createEmployee(EmployeeDTO employeeDTO) {
+    public boolean createProject(ProjectDTO projectDTO) {
         boolean isCreated = false;
         try {
-            isCreated = employeeService.createEmployee(employeeDTO);
+            isCreated = projectService.createProject(projectDTO);
         } catch(CustomException e) {
             EmployeeManagementLogger.logger.error(e);
         }
@@ -194,14 +138,14 @@ public class EmployeeController {
      *
      * @return List<EmployeeDTO>, list of employees
      */
-    public List<EmployeeDTO> viewEmployee() {
-        List<EmployeeDTO> employeeDTOList = new ArrayList<>();
+    public List<ProjectDTO> viewProject() {
+        List<ProjectDTO> projectDTOList = new ArrayList<>();
         try {
-            employeeDTOList = employeeService.viewEmployee();
+            projectDTOList = projectService.viewProject();
         } catch(CustomException e) {
             EmployeeManagementLogger.logger.error(e);
         }
-        return employeeDTOList;
+        return projectDTOList;
     }
 
     /**
@@ -209,14 +153,14 @@ public class EmployeeController {
      *
      * @return List<ProjectDTO>, list of projects
      */
-    public List<ProjectDTO> viewAllProject() {
-        List<ProjectDTO> projectDTOList = new ArrayList<>();
+    public List<EmployeeDTO> viewAllEmployee() {
+        List<EmployeeDTO> employeeDTOList = new ArrayList<>();
         try {
-            projectDTOList = employeeService.viewAllProject();
+            employeeDTOList = projectService.viewAllEmployee();
         } catch(CustomException e) {
             EmployeeManagementLogger.logger.error(e);
-        }   
-        return projectDTOList;
+        }
+        return employeeDTOList;
     }
 
     /**
@@ -225,10 +169,10 @@ public class EmployeeController {
      * @param projectId, Project ID to be checked
      * @return boolean
      */
-    public boolean containsProject(int projectId) {
+    public boolean containsEmployee(int employeeId) {
         boolean isAvailable = false;
         try {
-            isAvailable = employeeService.containsProject(projectId);
+            isAvailable = projectService.containsEmployee(employeeId);
         } catch(CustomException e) {
             EmployeeManagementLogger.logger.error(e);
         }
@@ -244,7 +188,7 @@ public class EmployeeController {
     public ProjectDTO viewProjectById(int projectId) {
         ProjectDTO projectDTO = new ProjectDTO();
         try {
-            projectDTO = employeeService.viewProjectById(projectId);
+            projectDTO = projectService.viewProjectById(projectId);
         } catch(CustomException e) {
             EmployeeManagementLogger.logger.error(e);
         }
@@ -260,7 +204,7 @@ public class EmployeeController {
     public EmployeeDTO viewEmployeeById(int employeeId) {
         EmployeeDTO employeeDTO = new EmployeeDTO();
         try {
-            employeeDTO = employeeService.viewEmployeeById(employeeId);
+            employeeDTO = projectService.viewEmployeeById(employeeId);
         } catch(CustomException e) {
             EmployeeManagementLogger.logger.error(e);
         }
@@ -273,26 +217,10 @@ public class EmployeeController {
      * @param employeeId, ID of the user
      * @return boolean, true if employee detail is deleted 
      */
-    public boolean deleteEmployeeById(int employeeId) {
+    public boolean deleteProjectById(int projectId) {
         boolean isDeleted = false;
         try {
-            isDeleted = employeeService.deleteEmployeeById(employeeId);
-        } catch(CustomException e) {
-            EmployeeManagementLogger.logger.error(e);
-        }
-        return isDeleted; 
-    }
-
-    /**
-     * Delete the Address of given Address Id
-     * 
-     * @param AddressId, Address ID of the user given
-     * @return boolean, true if address detail is deleted 
-     */
-    public boolean deleteAddress(EmployeeDTO employeeDTO) {
-        boolean isDeleted = false;
-        try {
-            isDeleted = employeeService.deleteAddress(employeeDTO);
+            isDeleted = projectService.deleteProjectById(projectId);
         } catch(CustomException e) {
             EmployeeManagementLogger.logger.error(e);
         }
@@ -302,10 +230,10 @@ public class EmployeeController {
     /**
      * Deletes All the Records
      */
-    public boolean deleteAllEmployee() {
+    public boolean deleteAllProject() {
         boolean isDeleted = false;
         try {
-            isDeleted = employeeService.deleteAllEmployee();
+            isDeleted = projectService.deleteAllProject(); 
         } catch(CustomException e) {
             EmployeeManagementLogger.logger.error(e);
         }
@@ -317,10 +245,10 @@ public class EmployeeController {
      *
      * @param employeeDTO, EmployeeDTO object containing all records
      */
-    public boolean updateAllDetails(EmployeeDTO employeeDTO) {
+    public boolean updateAllDetails(ProjectDTO projectDTO) {
         boolean isUpdated = false;
         try {
-            isUpdated = employeeService.updateAllDetails(employeeDTO);
+            isUpdated = projectService.updateAllDetails(projectDTO);
         } catch(CustomException e) {
             EmployeeManagementLogger.logger.error(e);
         }

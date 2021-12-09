@@ -11,27 +11,35 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.List;
+import java.util.Set;
+import java.util.HashSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.ideas2it.project.dao.daoImpl.EmployeeDAOImpl;
+import com.ideas2it.project.dao.daoImpl.ProjectDAOImpl;
 import com.ideas2it.project.model.Address;
 import com.ideas2it.project.model.dto.EmployeeDTO;
 import com.ideas2it.project.model.dto.AddressDTO;
-import com.ideas2it.project.model.dto.ProjectDTO;
 import com.ideas2it.project.model.Employee;
+import com.ideas2it.project.service.EmployeeService;
 import com.ideas2it.project.utils.EmployeeMapper;
+import com.ideas2it.project.utils.ProjectMapper;
+import com.ideas2it.project.model.dto.ProjectDTO;
+import com.ideas2it.project.model.Project;
+import com.ideas2it.project.service.serviceImpl.EmployeeServiceImpl;
+import com.ideas2it.project.service.ProjectService;
 import com.ideas2it.project.exception.CustomException;
 
+
 /**
- * Interface to perform business logic for the employee management system
+ * Performs the business logic for the Employee Management System
  *
  * @version	1.0
  * @author	Sasikumar 
  */
-public interface EmployeeService {
+public interface ProjectService {
 
-     /**
+    /**
      * To validate the given Choice in correct format using regex
      *
      * @return boolean, true if choice is valid  
@@ -45,7 +53,7 @@ public interface EmployeeService {
      * @return boolean, true if Id is valid 
      * @param  employeeId
      */
-    public boolean getEmployeeIdValidated(int employeeId);
+    public boolean getProjectIdValidated(int projectId);
 
     /**
      * To validate the given Employee Name in correct format using regex
@@ -53,31 +61,15 @@ public interface EmployeeService {
      * @return boolean, true if Name is valid 
      * @param  employeeName
      */
-    public boolean getEmployeeNameValidated(String employeeName);
+    public boolean getProjectNameValidated(String projectName);
 
     /**
-     * To validate the given Employee Salary in correct format using regex
+     * To validate the given Employee Name in correct format using regex
      *
-     * @return boolean, true if salary is valid 
-     * @param  employeeSalary
+     * @return boolean, true if Name is valid 
+     * @param  employeeName
      */
-    public boolean getEmployeeSalaryValidated(float employeeSalary);
-
-    /**
-     * To validate the given Employee Email in correct format using regex
-     *
-     * @return boolean, true if email is valid 
-     * @param  employeeEmail
-     */
-    public boolean getEmployeeEmailValidated(String employeeEmail) throws CustomException;
-
-    /**
-     * To validate the given Employee Contact in correct format using regex
-     *
-     * @return boolean, true if Phone number is valid 
-     * @param  employeeContact
-     */
-    public boolean getEmployeeContactValidated(long employeeContact) throws CustomException;
+    public boolean getProjectDomainValidated(String domain);
 
     /**
      * To validate the given Employee Contact in correct format using regex
@@ -85,31 +77,15 @@ public interface EmployeeService {
      * @return boolean, true if date of birth is valid 
      * @param  employeeContact
      */
-    public boolean getValidatedDOB(LocalDate dob);
+    public boolean getValidatedStartDate(LocalDate startDate);
 
     /**
-     * To validate the given Door number in correct format using regex
+     * To validate the given Employee Contact in correct format using regex
      *
-     * @return boolean, true if door number is valid 
-     * @param doorNo, door number given by the user
+     * @return boolean, true if date of birth is valid 
+     * @param  employeeContact
      */
-    public boolean getDoorNoValidated(String doorNo);
-
-    /**
-     * To validate the given city,street,landmark in correct format using regex
-     *
-     * @return boolean, true if each are valid 
-     * @param  address, common for city,street,landmark
-     */
-    public boolean getAddressValidated(String address);
-
-    /**
-     * To validate the given Pincode in correct format using regex
-     *
-     * @return boolean, true if pincode is valid 
-     * @param  pincode pincode given by the user
-     */
-    public boolean getPincodeValidated(long pincode);
+    public boolean getValidatedEndDate(LocalDate endDate);    
 
     /**
      * To update all details of an Employee
@@ -117,13 +93,13 @@ public interface EmployeeService {
      * @param addressDTO, AddressDTO containing the employee details
      * @return boolean, true if records are updated 
      */    
-    public boolean updateAllDetails(EmployeeDTO employeeDTO) throws CustomException;
+    public boolean updateAllDetails(ProjectDTO projectDTO) throws CustomException;
    
     /**
      * Delete all the Records
      * @return boolean, true if no employee records available
      */
-    public boolean deleteAllEmployee() throws CustomException;
+    public boolean deleteAllProject() throws CustomException;
 
     /**
      * Delete the Records of given Employee Id
@@ -131,15 +107,7 @@ public interface EmployeeService {
      * @param employeeId, ID of the user
      * @return boolean, true if employee detail is deleted 
      */
-    public boolean deleteEmployeeById(int employeeId) throws CustomException;
-
-    /**
-     * Deletes the Address given from the user
-     * 
-     * @param employeeDTO
-     * @return boolean, true if employee address is deleted 
-     */
-    public boolean deleteAddress(EmployeeDTO employeeDTO) throws CustomException;
+    public boolean deleteProjectById(int projectId) throws CustomException;
 
     /**
      * Check the Records whether it contains given Employee Id
@@ -147,7 +115,7 @@ public interface EmployeeService {
      * @param employeeId, ID of the user
      * @return boolean, true if employee detail is available
      */
-    public boolean containsEmployee(int employeeId) throws CustomException;
+    public boolean containsProject(int projectId) throws CustomException;
 
     /**
      * View the Records of given Employee Id
@@ -155,14 +123,14 @@ public interface EmployeeService {
      * @param employeeId, ID of the user
      * @return employeeDTO of the Employee through EmployeeMapper class
      */
-    public EmployeeDTO viewEmployeeById(int employeeId) throws CustomException;
+    public ProjectDTO viewProjectById(int projectId) throws CustomException;
 
     /**
      * View all the Records
      *
      * @return List<EmployeeDTO>, List of employee using EmployeeMapper class 
      */
-    public List<EmployeeDTO> viewEmployee() throws CustomException;
+    public List<ProjectDTO> viewProject() throws CustomException;
 
     /**
      * To check the if project details available for the ID
@@ -170,21 +138,21 @@ public interface EmployeeService {
      * @param projectId, ID of the Project
      * @return boolean, true if Project is available 
      */
-    public boolean containsProject(int projectId) throws CustomException;
+    public boolean containsEmployee(int employeeId) throws CustomException;
 
     /**
      * View All the project details
      *
      * @return List<ProjectDTO>, list of project details
      */
-    public List<ProjectDTO> viewAllProject() throws CustomException;
+    public List<EmployeeDTO> viewAllEmployee() throws CustomException;
 
     /**
      * View project details of the given project Id
      *
      * @return ProjectDTO, retrived Project
      */
-    public ProjectDTO viewProjectById(int projectId) throws CustomException;
+    public EmployeeDTO viewEmployeeById(int employeeId) throws CustomException;
 
     /**
      * Check whether any Records available.
@@ -199,7 +167,7 @@ public interface EmployeeService {
      * @param employeeDTO, EmployeeDTO containing Employee details
      * @return boolean, true if null is return from projects
      */
-    public boolean createEmployee(EmployeeDTO employeeDTO) throws CustomException;
+    public boolean createProject(ProjectDTO projectDTO) throws CustomException;
 }
 
 

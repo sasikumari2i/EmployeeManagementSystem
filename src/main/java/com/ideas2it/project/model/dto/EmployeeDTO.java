@@ -10,6 +10,8 @@ import java.util.List;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.ideas2it.project.model.Address;
+
 /**
  * Data Transfer Object for the Employee Management System
  * 

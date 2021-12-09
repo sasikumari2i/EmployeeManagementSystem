@@ -25,7 +25,7 @@ public class Employee {
     private String name;
     private String email;
     private LocalDate dob;
-    private List<Address> addresses = new ArrayList<Address>();
+    private List<Address> address = new ArrayList<Address>();
     private Set<Project> projects = new HashSet<>();
 
     public Employee() {}
@@ -82,11 +82,11 @@ public class Employee {
     }
 
     public List<Address> getAddress() {
-        return addresses;
+        return address;
     }
   
-    public void setAddress(List<Address> addresses) {
-        this.addresses = addresses;
+    public void setAddress(List<Address> address) {
+        this.address = address;
     }
 
     public Set<Project> getProjects() {
@@ -110,7 +110,7 @@ public class Employee {
                .append(" Salary : ").append(String.format("%.3f", this.salary))
                .append(" Email : ").append(this.email)
                .append(" Contact : ").append(this.contact)
-               .append(" Address : ").append(this.addresses)
+               .append(" Address : ").append(this.address)
                .append(" Projects assigned : ").append(this.projects);
         
         return display.toString();
