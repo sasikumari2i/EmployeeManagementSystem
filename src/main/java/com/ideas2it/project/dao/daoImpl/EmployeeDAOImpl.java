@@ -19,6 +19,7 @@ import com.ideas2it.project.model.Address;
 import com.ideas2it.project.model.Project;
 import com.ideas2it.project.model.Employee;
 import com.ideas2it.project.utils.DatabaseConnection;
+import com.ideas2it.project.exception.CustomException;
 
 /**
  * Interacts with database to perform required operations
@@ -34,22 +35,20 @@ public class EmployeeDAOImpl implements EmployeeDAO {
      * @return Employee, employee which is inserted
      * @param  Employee, Employee to be inserted
      */
-    public Employee createEmployee(Employee employee) {
+    public Employee createEmployee(Employee employee) throws CustomException {
         Session session = null;
         Transaction transaction = null;
         int employeeID = 0;
-
         try {
             session = DatabaseConnection.getSession();
             transaction = session.beginTransaction();
             employeeID = (Integer)session.save(employee);
-            employee.setId(employee.getId());
             transaction.commit();
         } catch (Exception e) {
             if (transaction != null) {
                 transaction.rollback();
             }
-            e.printStackTrace(); 
+            throw new CustomException("ERROR_CODE_001"); 
         } finally {
             DatabaseConnection.closeSession(); 
         }
@@ -62,7 +61,7 @@ public class EmployeeDAOImpl implements EmployeeDAO {
      * @return Employee, returns the updated employee 
      * @param  Employee, Employee to be updated
      */
-    public Employee updateEmployee(Employee employee) {
+    public Employee updateEmployee(Employee employee) throws CustomException {
         Session session = null;
         Transaction transaction = null;
         int employeeID = 0;
@@ -78,7 +77,7 @@ public class EmployeeDAOImpl implements EmployeeDAO {
             if (transaction != null) {
                 transaction.rollback();
             }
-            e.printStackTrace(); 
+            throw new CustomException("ERROR_CODE_004"); 
         } finally {
             DatabaseConnection.closeSession(); 
         }
@@ -91,7 +90,7 @@ public class EmployeeDAOImpl implements EmployeeDAO {
      * @return Employee, returns the employee deleted 
      * @param  employeeId, employeeId of the employee to be deleted
      */
-    public Employee deleteEmployeeById(int employeeId) {
+    public Employee deleteEmployeeById(int employeeId) throws CustomException {
         Session session = null;
         Transaction transaction = null;
         Employee employee = null;
@@ -107,7 +106,7 @@ public class EmployeeDAOImpl implements EmployeeDAO {
                 transaction.rollback();
             }
             employee = null;
-            e.printStackTrace(); 
+            throw new CustomException("ERROR_CODE_005");
         } finally {
             DatabaseConnection.closeSession(); 
         }
@@ -120,7 +119,7 @@ public class EmployeeDAOImpl implements EmployeeDAO {
      * @return Employee, returns empty employee or null
      * @param  employeeContact, contact number used to retrieve employee
      */
-    public Employee containsEmployeeContact(String employeeContact) {
+    public Employee containsEmployeeContact(String employeeContact) throws CustomException {
         Session session = null;
         Transaction transaction = null;
         Employee employee = null;
@@ -136,7 +135,7 @@ public class EmployeeDAOImpl implements EmployeeDAO {
         } catch (HibernateException e) {
             System.out.println("Session file exception");
             if (transaction != null) transaction.rollback();
-            e.printStackTrace();
+            throw new CustomException("ERROR_CODE_007");
         } finally {
             DatabaseConnection.closeSession(); 
         }
@@ -149,7 +148,7 @@ public class EmployeeDAOImpl implements EmployeeDAO {
      * @return Employee, returns empty employee or null
      * @param  EmployeeEmail, Employee email used to retrieve employee
      */
-    public Employee containsEmployeeEmail(String employeeEmail) {
+    public Employee containsEmployeeEmail(String employeeEmail) throws CustomException {
         Session session = null;
         Transaction transaction = null;
         Employee employee = null;
@@ -167,7 +166,7 @@ public class EmployeeDAOImpl implements EmployeeDAO {
             if (transaction != null) {
                 transaction.rollback();
             }
-            e.printStackTrace();
+            throw new CustomException("ERROR_CODE_008");
         } finally {
             DatabaseConnection.closeSession(); 
         }
@@ -180,7 +179,7 @@ public class EmployeeDAOImpl implements EmployeeDAO {
      * @return Employee, returns employee details
      * @param  employeeId, Employee Id used to retrieve employee
      */
-    public Employee viewEmployeeById(int employeeId) {
+    public Employee viewEmployeeById(int employeeId) throws CustomException {
         Transaction transaction = null;
         Session session = null;
         Employee employee = new Employee();
@@ -198,7 +197,7 @@ public class EmployeeDAOImpl implements EmployeeDAO {
             if (transaction != null) {
                 transaction.rollback();
             }
-            e.printStackTrace();
+            throw new CustomException("ERROR_CODE_002");
         } finally {
             DatabaseConnection.closeSession(); 
         }
@@ -210,7 +209,7 @@ public class EmployeeDAOImpl implements EmployeeDAO {
      *
      * @return List<Employee>, returns all the employee details
      */
-    public List<Employee> viewEmployee() {
+    public List<Employee> viewEmployee() throws CustomException {
         Session session = null;
         Transaction transaction = null;
         List<Employee> employees = null;
@@ -228,7 +227,7 @@ public class EmployeeDAOImpl implements EmployeeDAO {
             if (transaction != null) {
                 transaction.rollback();
             }
-            e.printStackTrace();
+            throw new CustomException("ERROR_CODE_003");
         } finally {
             DatabaseConnection.closeSession();
         }
@@ -240,7 +239,7 @@ public class EmployeeDAOImpl implements EmployeeDAO {
      *
      * @return boolean, returns whether any rows affected 
      */
-    public boolean deleteAllEmployee() {
+    public boolean deleteAllEmployee() throws CustomException {
         Session session = null;
         Transaction transaction = null;
         Employee employee = null;
@@ -256,7 +255,7 @@ public class EmployeeDAOImpl implements EmployeeDAO {
             if (transaction != null) {
                 transaction.rollback();
             }
-            e.printStackTrace(); 
+            throw new CustomException("ERROR_CODE_006"); 
         } finally {
             DatabaseConnection.closeSession(); 
         }
