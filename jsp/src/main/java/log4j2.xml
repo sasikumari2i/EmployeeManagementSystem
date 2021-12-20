@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status = "INFO">
+
+    <Appenders>
+        <Console name="Console">
+            <PatternLayout pattern="Date - %d{yyyy-MM-dd HH:mm:ss}%nPriority level - [%p]%nLogger name - %c{6}%nClass name - %C{6}%nFile
+              name - %F{6}%nMethod name - %M{6}%nException - %m%n"/>
+        </Console>
+
+        <File name="File" fileName="com/ideas2it/employeemanagement/log/employeemanagement.log">
+            <PatternLayout pattern="Date - %d{yyyy-MM-dd HH:mm:ss}%nPriority level - [%p]%nLogger name - %c{6}%nClass name - %C{6}%nFile
+              name - %F{6}%nMethod name - %M{6}%nException - %m%n"/>
+        </File>
+    </Appenders>
+
+    <Loggers>
+        <Root level="ERROR">
+            <AppenderRef ref="Console" />
+            <AppenderRef ref = "File"/>
+        </Root>
+    </Loggers>
+
+</Configuration>
