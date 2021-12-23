@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="INFO">
+
+	<Appenders>
+		<Console name="Console">
+			<PatternLayout
+				pattern="Date - %d{yyyy-MM-dd HH:mm:ss}%nPriority level - [%p]%nLogger name - %c{6}%nClass name - %C{6}%nFile
+              name - %F{6}%nMethod name - %M{6}%nException - %m%n" />
+		</Console>
+
+		<File name="File" fileName="com/ideas2it/project/logger/employeemanagement.log"> 
+			<PatternLayout pattern="Date - %d{yyyy-MM-dd HH:mm:ss}%nPriority level - 
+			[%p]%nLogger name - %c{6}%nClass name - %C{6}%nFile name - %F{6}%nMethod 
+			name - %M{6}%nException - %m%n" /> </File>
+
+		<!--  <RollingFile name="RollingFile"
+			fileName="com/ideas2it/project/logger/rolling.log"> 
+			
+			<PatternLayout
+				pattern="Date - %d{yyyy-MM-dd HH:mm:ss}%nPriority level - 
+			[%p]%nLogger name - %c{6}%nClass name - %C{6}%nFile name - %F{6}%nMethod 
+			name - %M{6}%nException - %m%n" />
+			<Policies>
+				<SizeBasedTriggeringPolicy size="10MB"/>
+			</Policies>
+		</RollingFile> -->
+	</Appenders>
+
+	<Loggers>
+		<Root level="INFO">
+			<AppenderRef ref="Console" />
+			<!-- <AppenderRef ref="File" /> -->
+			<AppenderRef ref="RollingFile" />
+		</Root>
+	</Loggers>
+
+</Configuration>
