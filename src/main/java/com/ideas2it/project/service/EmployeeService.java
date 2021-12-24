@@ -140,6 +140,9 @@ public interface EmployeeService {
      * @return boolean, true if employee address is deleted 
      */
     public boolean deleteAddress(EmployeeDTO employeeDTO) throws CustomException;
+    
+    
+    public List<AddressDTO> addAddress(EmployeeDTO employeeDTO, AddressDTO addressDTO);
 
     /**
      * Check the Records whether it contains given Employee Id

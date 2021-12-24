@@ -8,7 +8,6 @@ import java.util.Set;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -272,7 +271,7 @@ public class ProjectServlet extends HttpServlet {
 			RequestDispatcher dispatcher = request.getRequestDispatcher("createProject.jsp");
 			request.setAttribute("projectDTO", projectDTO);
 			dispatcher.forward(request, response);
-		} catch (Exception e) {
+		} catch (CustomException e) {
 			EmployeeManagementLogger.logger.error(e);
 		}
 	}

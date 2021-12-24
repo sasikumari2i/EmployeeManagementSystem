@@ -29,8 +29,8 @@
 	<Loggers>
 		<Root level="INFO">
 			<AppenderRef ref="Console" />
-			<!-- <AppenderRef ref="File" /> -->
-			<AppenderRef ref="RollingFile" />
+			<AppenderRef ref="File" />
+			<!-- <AppenderRef ref="RollingFile" /> -->
 		</Root>
 	</Loggers>
 

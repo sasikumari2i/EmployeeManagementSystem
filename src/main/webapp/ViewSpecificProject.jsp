@@ -24,7 +24,8 @@
 		<p>Enter an available Project ID</p>
 	</c:if>
 	<form method="get" action="ProjectServlet">
-		<input type="hidden" name="servletId" value='11'> Project ID :
+		<h4>Enter the Project ID to be displayed</h4>
+		<input type="hidden" name="servletId" value="11"> Project ID :
 		<input type="number" name="id" max="9999"><br>
 		<div class="back">
 			<input type="submit" name="Submit"><br> <input

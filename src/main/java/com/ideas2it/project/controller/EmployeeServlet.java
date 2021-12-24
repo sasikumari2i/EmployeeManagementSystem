@@ -9,7 +9,6 @@ import java.util.Set;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -184,13 +183,7 @@ public class EmployeeServlet extends HttpServlet {
 			addressDTO.setLandMark(request.getParameter("landmark"));
 			addressDTO.setStreet(request.getParameter("street"));
 			addressDTO.setPincode(Long.parseLong(request.getParameter("pincode")));
-			List<AddressDTO> addressList = employeeDTO.getAddress();
-			addressList.add(addressDTO);
-			int count = 1;
-			for (AddressDTO address : addressList) {
-				address.setSerialId(count);
-				count++;
-			}
+			List<AddressDTO> addressList = employeeService.addAddress(employeeDTO, addressDTO);
 			employeeDTO.setAddress(addressList);
 			boolean isUpdated = false;
 			isUpdated = employeeService.updateAllDetails(employeeDTO);
@@ -364,7 +357,8 @@ public class EmployeeServlet extends HttpServlet {
 				request.setAttribute("notAvailable", notAvailable);
 				request.getRequestDispatcher("ViewSpecificEmployee.jsp").forward(request, response);
 			}
-		} catch (CustomException e) {
+		} catch (Exception e) {
+			e.printStackTrace();
 			EmployeeManagementLogger.logger.error(e);
 		}
 	}
@@ -377,7 +371,7 @@ public class EmployeeServlet extends HttpServlet {
 			Set<ProjectDTO> projectDTOSet = employeeDTO.getProjects();
 			List<ProjectDTO> projectDTOList = new ArrayList<>(projectDTOSet);
 			List<ProjectDTO> projectList = new ArrayList<>();
-			
+
 			String[] selectedIds = request.getParameterValues("selected");
 			for (String projectId : selectedIds) {
 				ProjectDTO projectDTO = employeeService.viewProjectById(Integer.parseInt(projectId));
