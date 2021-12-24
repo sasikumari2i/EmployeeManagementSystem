@@ -5,15 +5,11 @@ package com.ideas2it.project.dao.daoImpl;
 
 import java.util.List;
 
-import javax.persistence.criteria.AbstractQuery;
-import javax.persistence.criteria.CriteriaBuilder;
-
 import org.hibernate.Criteria;
 import org.hibernate.Hibernate;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-import org.hibernate.criterion.CriteriaQuery;
 import org.hibernate.criterion.Restrictions;
 
 import com.ideas2it.project.dao.EmployeeDAO;
