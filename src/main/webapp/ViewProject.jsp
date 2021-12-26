@@ -64,9 +64,7 @@
 									<a
 										href="ProjectServlet?id=<c:out value='${project.id}'/>&servletId=4">Delete</a>
 									<a
-										href="ProjectServlet?id=<c:out value='${project.id}'/>&servletId=2">Assign</a>
-									<a
-										href="ProjectServlet?id=<c:out value='${project.id}'/>&servletId=7">UnAssign</a>
+										href="ProjectServlet?id=<c:out value='${project.id}'/>&servletId=2">Full Details</a>
 								</div>
 							</div>
 						</div>

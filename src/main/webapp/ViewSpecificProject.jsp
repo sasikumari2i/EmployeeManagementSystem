@@ -28,7 +28,7 @@
 		<input type="hidden" name="servletId" value="11"> Project ID :
 		<input type="number" name="id" max="9999"><br>
 		<div class="back">
-			<input type="submit" name="Submit"><br> <input
+			<input type="submit" name="Submit"><br> <br><input
 				type="button" value="Back" onclick="history.back()">
 		</div>
 	</form>

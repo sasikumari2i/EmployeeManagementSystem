@@ -3,6 +3,7 @@ package com.ideas2it.project.controller;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -97,6 +98,7 @@ public class ProjectServlet extends HttpServlet {
 			ProjectDTO projectDTO = projectService.viewProjectById(Integer.parseInt(request.getParameter("id")));
 			Set<EmployeeDTO> employeeSet = projectDTO.getEmployees();
 			String[] selectedIds = request.getParameterValues("selected");
+			//if(null != selectedIds) {
 			for (String employeeId : selectedIds) {
 				EmployeeDTO employeeDTO = projectService.viewEmployeeById(Integer.parseInt(employeeId));
 				employeeSet.add(employeeDTO);
@@ -113,6 +115,14 @@ public class ProjectServlet extends HttpServlet {
 				request.setAttribute("notAssigned", notAssigned);
 				request.getRequestDispatcher("ViewProjectDetails.jsp").forward(request, response);
 			}
+			/*} else {
+				boolean emptySelect = true;
+				request.setAttribute("emptySelect", emptySelect);
+				request.setAttribute("employeeDTOSet", employeeDTOSet);
+				request.setAttribute("employeeDTOList", employeeDTOList);
+				request.setAttribute("project", project);
+				request.getRequestDispatcher("AssignEmployee.jsp").forward(request, response);	
+			}*/
 		} catch (CustomException e) {
 			EmployeeManagementLogger.logger.error(e);
 		}
@@ -130,6 +140,8 @@ public class ProjectServlet extends HttpServlet {
 			employeeDTOList.removeAll(availableEmployees);
 			RequestDispatcher dispatcher = request.getRequestDispatcher("AssignEmployee.jsp");
 			request.setAttribute("employeeDTOList", employeeDTOList);
+			request.setAttribute("employeeDTOSet", employeeDTOSet);
+			request.setAttribute("project", projectDTO);
 			request.setAttribute("projectId", projectDTO.getId());
 			dispatcher.forward(request, response);
 		} catch (CustomException e) {
@@ -194,26 +206,33 @@ public class ProjectServlet extends HttpServlet {
 		try {
 			ProjectService projectService = new ProjectServiceImpl();
 			ProjectDTO projectDTO = projectService.viewProjectById(Integer.parseInt(request.getParameter("id")));
-			Set<EmployeeDTO> availableEmployees = projectDTO.getEmployees();
-			List<EmployeeDTO> employeeList = new ArrayList<>();
+			List<EmployeeDTO> availableEmployees = new ArrayList<EmployeeDTO>(projectDTO.getEmployees());
+			List<EmployeeDTO> employeeList = new ArrayList<EmployeeDTO>();
 			String[] selectedIds = request.getParameterValues("selected");
-			for (String employeeId : selectedIds) {
-				EmployeeDTO employeeDTO = projectService.viewEmployeeById(Integer.parseInt(employeeId));
-				employeeList.add(employeeDTO);
-			}
-			availableEmployees.removeAll(employeeList);
-			projectDTO.setEmployees(availableEmployees);
-			boolean isUpdated = false;
-			isUpdated = projectService.updateAllDetails(projectDTO);
-			if (isUpdated) {
-				boolean unAssigned = true;
-				request.setAttribute("unAssigned", unAssigned);
-				request.getRequestDispatcher("ViewProjectDetails.jsp").forward(request, response);
-			} else {
-				boolean notUnAssigned = true;
-				request.setAttribute("notUnAssigned", notUnAssigned);
-				request.getRequestDispatcher("ViewProjectDetails.jsp").forward(request, response);
-			}
+			//if (null != selectedIds) {
+				for (String employeeId : selectedIds) {
+					EmployeeDTO employeeDTO = projectService.viewEmployeeById(Integer.parseInt(employeeId));
+					employeeList.add(employeeDTO);
+				}
+				availableEmployees.removeAll(employeeList);
+				Set<EmployeeDTO> employeeDTOSet = new HashSet<EmployeeDTO>(availableEmployees);
+				projectDTO.setEmployees(employeeDTOSet);
+				boolean isUpdated = false;
+				isUpdated = projectService.updateAllDetails(projectDTO);
+				if (isUpdated) {
+					boolean unAssigned = true;
+					request.setAttribute("unAssigned", unAssigned);
+					request.getRequestDispatcher("ViewProjectDetails.jsp").forward(request, response);
+				} else {
+					boolean notUnAssigned = true;
+					request.setAttribute("notUnAssigned", notUnAssigned);
+					request.getRequestDispatcher("ViewProjectDetails.jsp").forward(request, response);
+				}
+			/*} else {
+				boolean emptySelect = true;
+				request.setAttribute("emptySelect", emptySelect);
+				request.getRequestDispatcher("AssignEmployee.jsp").forward(request, response);
+			}*/
 		} catch (CustomException e) {
 			EmployeeManagementLogger.logger.error(e);
 		}

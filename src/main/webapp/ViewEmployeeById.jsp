@@ -62,14 +62,8 @@
 							<div class="dropdown-content">
 								<a
 									href="EmployeeServlet?id=<c:out value='${employee.id}'/>&servletId=10">View
-									Address</a> <a
+									Details</a> <a
 									href="EmployeeServlet?id=<c:out value='${employee.id}'/>&servletId=13">Edit</a>
-								<a
-									href="EmployeeServlet?id=<c:out value='${employee.id}'/>&servletId=12">Delete</a>
-								<a
-									href="EmployeeServlet?id=<c:out value='${employee.id}'/>&servletId=7">Assign</a>
-								<a
-									href="EmployeeServlet?id=<c:out value='${employee.id}'/>&servletId=9">UnAssign</a>
 							</div>
 						</div>
 					</div></td>

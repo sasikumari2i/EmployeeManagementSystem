@@ -117,17 +117,19 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 	public Employee containsEmployeeContact(String employeeContact) throws CustomException {
 		Session session = null;
 		Employee employee = null;
-		Long contact = Long.parseLong(employeeContact);
-		//StringBuilder query = new StringBuilder("select e from Employee e ")
-			//	.append("left join fetch e.address a left join fetch ")
-				//.append("e.projects P WHERE e.contact = '" + employeeContact + "'");
+		// Long contact = Long.parseLong(employeeContact);
+		// StringBuilder query = new StringBuilder("select e from Employee e ")
+		// .append("left join fetch e.address a left join fetch ")
+		// .append("e.projects P WHERE e.contact = '" + employeeContact + "'");
+		StringBuilder query = new StringBuilder("select e from Employee e where e.contact = '" + employeeContact + "'");
 		try {
 			session = DatabaseConnection.getSession();
-			Criteria criteria = session.createCriteria(Employee.class).add(Restrictions.eq("contact", contact));
-			employee = (Employee) criteria.uniqueResult();
-			//employee = (Employee) session.createQuery(query.toString()).uniqueResult();
+			// Criteria criteria =
+			// session.createCriteria(Employee.class).add(Restrictions.eq("contact",
+			// contact));
+			// employee = (Employee) criteria.uniqueResult();
+			employee = (Employee) session.createQuery(query.toString()).uniqueResult();
 		} catch (HibernateException e) {
-			e.printStackTrace();
 			throw new CustomException("ERROR_CODE_007");
 		} finally {
 			DatabaseConnection.closeSession();
@@ -144,16 +146,17 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 	public Employee containsEmployeeEmail(String employeeEmail) throws CustomException {
 		Session session = null;
 		Employee employee = null;
-		//StringBuilder query = new StringBuilder("select e from Employee e left")
-			//	.append(" join fetch e.address a left join fetch e.projects")
-				//.append(" p WHERE e.email = '" + employeeEmail + "'");
-
+		// StringBuilder query = new StringBuilder("select e from Employee e left")
+		// .append(" join fetch e.address a left join fetch e.projects")
+		// .append(" p WHERE e.email = '" + employeeEmail + "'");
+		StringBuilder query = new StringBuilder("select e from Employee e where e.email = '" + employeeEmail + "'");
 		try {
 			session = DatabaseConnection.getSession();
-			Criteria criteria = session.createCriteria(Employee.class).add(Restrictions.eq("email", employeeEmail));
-			employee = (Employee) criteria.uniqueResult();
-			// employee = (Employee)session.createQuery(query.toString())
-			// .uniqueResult();
+			// Criteria criteria =
+			// session.createCriteria(Employee.class).add(Restrictions.eq("email",
+			// employeeEmail));
+			// employee = (Employee) criteria.uniqueResult();
+			employee = (Employee) session.createQuery(query.toString()).uniqueResult();
 		} catch (HibernateException e) {
 			throw new CustomException("ERROR_CODE_008");
 		} finally {
