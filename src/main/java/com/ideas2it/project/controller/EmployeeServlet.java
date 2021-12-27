@@ -58,6 +58,9 @@ public class EmployeeServlet extends HttpServlet {
 			case 15:
 				viewEmployeeById(request, response);
 				break;
+			case 12:
+				deleteEmployee(request, response);
+				break;
 			}
 		} catch (Exception e) {
 			EmployeeManagementLogger.logger.error(e);
@@ -91,9 +94,9 @@ public class EmployeeServlet extends HttpServlet {
 			case 11:
 				deleteAddress(request, response);
 				break;
-			case 12:
-				deleteEmployee(request, response);
-				break;
+			//case 12:
+				//deleteEmployee(request, response);
+				//break;
 			}
 		} catch (Exception e) {
 			EmployeeManagementLogger.logger.error(e);

@@ -89,7 +89,7 @@
 	</c:if>
 	<p>Assigned Projects</p>
 	<c:if test="${projectDTOSet.isEmpty()}">
-		<p>No Employees available to Assign !!</p>
+		<p>No Projects available to Assign !!</p>
 	</c:if>
 	<c:if test="${!projectDTOSet.isEmpty()}">
 		<form method="post" action="EmployeeServlet">

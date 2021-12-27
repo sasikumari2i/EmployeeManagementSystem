@@ -1,7 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"
-	import="com.ideas2it.project.model.dto.EmployeeDTO,com.ideas2it.project.model.dto.AddressDTO,
-	java.util.List,java.util.ArrayList"%>
+	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html>
@@ -67,7 +65,7 @@
 									<div class="dropdown-content">
 										<a
 											href="EmployeeServlet?id=<c:out value='${employee.id}'/>&servletId=10">View
-											Address</a> <a
+											Details</a> <a
 											href="EmployeeServlet?id=<c:out value='${employee.id}'/>&servletId=13">Edit</a>
 										<a
 											href="EmployeeServlet?id=<c:out value='${employee.id}'/>&servletId=12">Delete</a>

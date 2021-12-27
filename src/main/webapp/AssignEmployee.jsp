@@ -9,9 +9,6 @@
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
-	<%
-	response.setHeader("Cache-Control", "no-cache,no-store,must-revalidate");
-	%>
 	<div class="navbar">
 		<a href="index.html">Home</a>
 		<div class="dropdown">
@@ -70,14 +67,14 @@
 				<c:forEach var="employee" items="${employeeDTOList}">
 					<tr>
 						<td><input type="checkbox" name="selected"
-							value="${employee.id}" required/></td>
+							value="${employee.id}" /></td>
 						<td>${employee.id}</td>
 						<td>${employee.name}</td>
 					<tr>
 				</c:forEach>
 			</table>
 			<div class="back">
-				<input type="submit" value="Assign" />
+			<input type ="submit" value="Assign"/>
 			</div>
 		</form>
 		<br>
