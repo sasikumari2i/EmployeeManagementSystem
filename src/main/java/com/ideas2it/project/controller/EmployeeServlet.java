@@ -361,7 +361,6 @@ public class EmployeeServlet extends HttpServlet {
 				request.getRequestDispatcher("ViewSpecificEmployee.jsp").forward(request, response);
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
 			EmployeeManagementLogger.logger.error(e);
 		}
 	}
