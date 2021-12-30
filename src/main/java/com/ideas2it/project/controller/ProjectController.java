@@ -6,15 +6,12 @@ package com.ideas2it.project.controller;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import com.ideas2it.project.logger.EmployeeManagementLogger;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
-import com.ideas2it.project.model.dto.AddressDTO;
-import com.ideas2it.project.model.dto.EmployeeDTO;
-import com.ideas2it.project.service.serviceImpl.ProjectServiceImpl;
-import com.ideas2it.project.model.dto.ProjectDTO;
 import com.ideas2it.project.exception.CustomException;
+import com.ideas2it.project.logger.EmployeeManagementLogger;
+import com.ideas2it.project.model.dto.EmployeeDTO;
+import com.ideas2it.project.model.dto.ProjectDTO;
+import com.ideas2it.project.service.ProjectService;
 
 /**
  * Manipulates the data between view and service layer
@@ -23,8 +20,12 @@ import com.ideas2it.project.exception.CustomException;
  * @author	Sasikumar Raju
  */
 public class ProjectController {
-    private ProjectServiceImpl projectService = new ProjectServiceImpl();
+    ProjectService projectService;
 
+	public void setProjectService(ProjectService projectService) {
+		this.projectService = projectService;
+	}
+	
     /**
      * To check whether the given choice is valid, from EmployeeService class
      *

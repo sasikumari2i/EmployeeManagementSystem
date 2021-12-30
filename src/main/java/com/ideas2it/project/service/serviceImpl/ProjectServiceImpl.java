@@ -16,6 +16,7 @@ import java.util.HashSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.ideas2it.project.dao.ProjectDAO;
 import com.ideas2it.project.dao.daoImpl.ProjectDAOImpl;
 import com.ideas2it.project.model.Address;
 import com.ideas2it.project.model.dto.EmployeeDTO;
@@ -39,8 +40,17 @@ import com.ideas2it.project.exception.CustomException;
  */
 public class ProjectServiceImpl implements ProjectService {
 
-    private ProjectDAOImpl dao = new ProjectDAOImpl();
-    private EmployeeService employeeService = null;
+    private ProjectDAO projectDAO;
+    private EmployeeService employeeService;
+    
+    
+    public void setEmployeeService(EmployeeService employeeService) {
+    	this.employeeService = employeeService;
+    }
+    
+    public void setProjectDAO(ProjectDAO projectDAO) {
+    	this.projectDAO = projectDAO;
+    }
     
     /**
      * To validate the given Choice in correct format using regex
@@ -118,7 +128,7 @@ public class ProjectServiceImpl implements ProjectService {
      */    
     public boolean updateAllDetails(ProjectDTO projectDTO) throws CustomException {
         Project project = ProjectMapper.convertDTOToProject(projectDTO);
-        return (null != dao.updateProject(project));
+        return (null != projectDAO.updateProject(project));
     }
    
     /**
@@ -126,7 +136,7 @@ public class ProjectServiceImpl implements ProjectService {
      * @return boolean, true if no employee records available
      */
     public boolean deleteAllProject() throws CustomException {
-        return dao.deleteAllProject();
+        return projectDAO.deleteAllProject();
     }
 
     /**
@@ -136,7 +146,7 @@ public class ProjectServiceImpl implements ProjectService {
      * @return boolean, true if employee detail is deleted 
      */
     public boolean deleteProjectById(int projectId) throws CustomException {
-        return (null != dao.deleteProjectById(projectId));
+        return (null != projectDAO.deleteProjectById(projectId));
     }
 
     /**
@@ -146,7 +156,7 @@ public class ProjectServiceImpl implements ProjectService {
      * @return boolean, true if employee detail is available
      */
     public boolean containsProject(int projectId) throws CustomException {
-        return (null != dao.viewProjectById(projectId));
+        return (null != projectDAO.viewProjectById(projectId));
     }
 
     /**
@@ -156,7 +166,7 @@ public class ProjectServiceImpl implements ProjectService {
      * @return employeeDTO of the Employee through EmployeeMapper class
      */
     public ProjectDTO viewProjectById(int projectId) throws CustomException {
-        return ProjectMapper.convertProjectToDTO(dao
+        return ProjectMapper.convertProjectToDTO(projectDAO
                                                  .viewProjectById(projectId));
     }
 
@@ -166,7 +176,7 @@ public class ProjectServiceImpl implements ProjectService {
      * @return List<EmployeeDTO>, List of employee using EmployeeMapper class 
      */
     public List<ProjectDTO> viewProject() throws CustomException {
-        List<Project> projectDetails = dao.viewProject();
+        List<Project> projectDetails = projectDAO.viewProject();
         List<ProjectDTO> viewList = new ArrayList<>();
         for(Project project : projectDetails) {
             viewList.add(ProjectMapper.convertProjectToDTO(project));
@@ -225,7 +235,7 @@ public class ProjectServiceImpl implements ProjectService {
      */
     public boolean createProject(ProjectDTO projectDTO) throws CustomException {
         Project project = ProjectMapper.convertDTOToProject(projectDTO);
-        return (null == dao.createProject(project));
+        return (null == projectDAO.createProject(project));
     }
 }
 

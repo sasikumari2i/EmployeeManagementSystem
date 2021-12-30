@@ -1,38 +1,110 @@
 package com.ideas2it.project.controller;
 
-import java.io.IOException;
-import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
-import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.ideas2it.project.exception.CustomException;
 import com.ideas2it.project.logger.EmployeeManagementLogger;
 import com.ideas2it.project.model.dto.AddressDTO;
 import com.ideas2it.project.model.dto.EmployeeDTO;
-import com.ideas2it.project.model.dto.ProjectDTO;
 import com.ideas2it.project.service.EmployeeService;
-import com.ideas2it.project.service.serviceImpl.EmployeeServiceImpl;
 
 /**
  * Servlet implementation class EmployeeServlet
  */
 //@WebServlet("/EmployeeServlet")
-public class EmployeeServlet extends HttpServlet {
+@Controller
+public class EmployeeServlet  extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-
+	EmployeeService employeeService;
+	
+	public void setEmployeeService(EmployeeService employeeService) {
+		this.employeeService = employeeService;
+	}
+	
+	/*@RequestMapping(value = "/save")
+    public ModelAndView saveEmployee(@ModelAttribute("employee") EmployeeDTO employeeDTO)
+    {
+        try
+        {
+        	employeeService.createEmployee(employeeDTO);
+        }
+        catch(CustomException e)
+        {
+            System.out.println("inside catch");
+           // employeeService.saveEmployee(employeeDTO);
+        }
+        return new ModelAndView("redirect:/employeeView");
+    }*/
+	
+	@PostMapping("/save")
+	public String save(@ModelAttribute("employee") EmployeeDTO employeeDTO,@ModelAttribute("address") AddressDTO addressDTO,BindingResult result,Model m){
+    	List<AddressDTO> addressList = new ArrayList<AddressDTO>();
+		addressList.add(addressDTO);
+		employeeDTO.setAddress(addressList);
+		boolean isCreated = false;
+		try {
+			isCreated = employeeService.createEmployee(employeeDTO);
+		} catch (CustomException e) {
+			EmployeeManagementLogger.logger.error(e);
+		}
+		m.addAttribute("isCreated",isCreated);
+		return "employeeView";
+	}	
+	@RequestMapping("/createEmp")
+	public String showform(Model m){
+		m.addAttribute("employee", new EmployeeDTO());
+		m.addAttribute("address", new AddressDTO());
+		return "createEmployee";
+	}
+	
+	@RequestMapping("/viewAllEmp")
+	private String viewAllEmployee(Model m) {
+		try {
+			List<EmployeeDTO> employeeList = employeeService.viewEmployee();
+			m.addAttribute("employeeList", employeeList);
+		} catch (CustomException e) {
+			EmployeeManagementLogger.logger.error(e);
+		}
+		return "ViewEmployee"; 
+	}
+	
+	@RequestMapping("/viewById")
+	private String viewEmployeeById(Model m,@RequestParam int id) {
+		EmployeeDTO employeeDTO = new EmployeeDTO();
+		boolean notAvailable = false;
+		try {
+			if (employeeService.containsEmployee(id)) {
+				employeeDTO = employeeService.viewEmployeeById(id);
+				m.addAttribute("employee", employeeDTO);
+				return "ViewEmployeeById";
+			} else {
+				notAvailable = true;
+				m.addAttribute("notAvailable", notAvailable);
+				return "ViewSpecificEmployee";
+			}
+		} catch (Exception e) {
+			EmployeeManagementLogger.logger.error(e);
+			return "error";
+		}
+		
+	}
+	
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
 	 *      response)
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+	/*protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		int action = Integer.parseInt(request.getParameter("servletId"));
 		try {
@@ -71,7 +143,7 @@ public class EmployeeServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
 	 *      response)
 	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+	/*protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		int action = Integer.parseInt(request.getParameter("servletId"));
 		try {
@@ -94,9 +166,9 @@ public class EmployeeServlet extends HttpServlet {
 			case 11:
 				deleteAddress(request, response);
 				break;
-			//case 12:
-				//deleteEmployee(request, response);
-				//break;
+			// case 12:
+			// deleteEmployee(request, response);
+			// break;
 			}
 		} catch (Exception e) {
 			EmployeeManagementLogger.logger.error(e);
@@ -109,8 +181,7 @@ public class EmployeeServlet extends HttpServlet {
 	 * null; request.getRequestDispatcher("createEmployee.jsp").forward(request,
 	 * response); }
 	 */
-
-	private void insertEmployee(HttpServletRequest request, HttpServletResponse response)
+	/*private void insertEmployee(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		AddressDTO addressDTO = new AddressDTO();
 		EmployeeDTO employeeDTO = new EmployeeDTO();
@@ -439,6 +510,6 @@ public class EmployeeServlet extends HttpServlet {
 		} catch (CustomException e) {
 			EmployeeManagementLogger.logger.error(e);
 		}
-	}
+	}*/
 
 }

@@ -12,6 +12,7 @@ import org.apache.logging.log4j.Logger;
 
 import com.ideas2it.project.model.dto.AddressDTO;
 import com.ideas2it.project.model.dto.EmployeeDTO;
+import com.ideas2it.project.service.EmployeeService;
 import com.ideas2it.project.service.serviceImpl.EmployeeServiceImpl;
 import com.ideas2it.project.model.dto.ProjectDTO;
 import com.ideas2it.project.exception.CustomException;
@@ -22,8 +23,12 @@ import com.ideas2it.project.exception.CustomException;
  * @author	Sasikumar Raju
  */
 public class EmployeeController {
-    private EmployeeServiceImpl employeeService = new EmployeeServiceImpl();
+    EmployeeService employeeService;
 
+    public void setEmployeeService(EmployeeService employeeService) {
+    	this.employeeService = employeeService;
+    }
+    
     /**
      * To check whether the given choice is valid, from EmployeeService class
      *

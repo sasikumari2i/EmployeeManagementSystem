@@ -10,6 +10,8 @@ import java.util.List;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import com.ideas2it.project.model.Address;
 
 /**
@@ -24,6 +26,7 @@ public class EmployeeDTO {
     private long contact;
     private String name;
     private String email;
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private LocalDate dob;
     private List<AddressDTO> address = new ArrayList<AddressDTO>();
     private Set<ProjectDTO> projects = new HashSet<ProjectDTO>();

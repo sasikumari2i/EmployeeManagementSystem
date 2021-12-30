@@ -43,7 +43,7 @@
 	</c:choose>
 	<h3>Display Employee Details page</h3>
 	<p>Click here to display All the Employees</p>
-	<a href="EmployeeServlet?servletId=14">View All Employees</a>
+	<a href="viewAllEmp">View All Employees</a>
 	<br>
 	<p>Click here to display a specific Employee</p>
 	<a href="ViewSpecificEmployee.jsp">View By Employee ID</a>

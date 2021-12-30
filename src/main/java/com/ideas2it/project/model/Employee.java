@@ -8,6 +8,9 @@ import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.util.HashSet;
 
 import com.ideas2it.project.model.Address;
@@ -24,6 +27,7 @@ public class Employee {
     private float salary;
     private String name;
     private String email;
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private LocalDate dob;
     private List<Address> address = new ArrayList<Address>();
     private Set<Project> projects = new HashSet<>();

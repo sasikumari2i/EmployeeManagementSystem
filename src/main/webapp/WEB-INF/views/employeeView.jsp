@@ -23,7 +23,7 @@
 				Manage Employee <i class="fa fa-caret-down"></i>
 			</button>
 			<div class="dropdown-content">
-				<a href="empform"> Add New Employee</a> <a
+				<a href="createEmp"> Add New Employee</a> <a
 					href="ViewEmployeeDetails.jsp">View Employees</a> <br>
 			</div>
 		</div>
