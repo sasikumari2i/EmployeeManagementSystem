@@ -23,7 +23,7 @@
 	<c:if test="${notAvailable == true}">
 		<p>Employee ID not available, try another</p>
 	</c:if>
-	<form method="get" action="viewById">
+	<form method="get" action="viewEmpById">
 		<h4>Enter the Employee ID to be displayed</h4> Employee ID
 		: <input type="number" name="id" max="9999" required="required"><br>
 		<div class="back">

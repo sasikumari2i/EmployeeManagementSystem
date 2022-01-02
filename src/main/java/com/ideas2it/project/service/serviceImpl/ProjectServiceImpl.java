@@ -191,7 +191,6 @@ public class ProjectServiceImpl implements ProjectService {
      * @return boolean, true if Project is available 
      */
     public boolean containsEmployee(int employeeId) throws CustomException {
-        employeeService = new EmployeeServiceImpl();
         return employeeService.containsEmployee(employeeId);
     }
 
@@ -201,7 +200,6 @@ public class ProjectServiceImpl implements ProjectService {
      * @return List<ProjectDTO>, list of project details
      */
     public List<EmployeeDTO> viewAllEmployee() throws CustomException {
-        employeeService = new EmployeeServiceImpl();
         List<EmployeeDTO> employeeDTOList = employeeService.viewEmployee(); 
         return employeeDTOList;
     }
@@ -212,7 +210,6 @@ public class ProjectServiceImpl implements ProjectService {
      * @return ProjectDTO, retrived Project
      */
     public EmployeeDTO viewEmployeeById(int employeeId) throws CustomException {
-        employeeService = new EmployeeServiceImpl();
         return employeeService.viewEmployeeById(employeeId);
     }
 

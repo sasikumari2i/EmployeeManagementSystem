@@ -25,7 +25,7 @@
 				Manage Employee <i class="fa fa-caret-down"></i>
 			</button>
 			<div class="dropdown-content">
-				<a href="createEmployee.jsp"> Add New Employee</a>
+				<a href="createEmp"> Add New Employee</a>
 			</div>
 		</div>
 	</div>
@@ -65,11 +65,11 @@
 									</button>
 									<div class="dropdown-content">
 										<a
-											href="EmployeeServlet?id=<c:out value='${employee.id}'/>&servletId=10">View
+											href="viewEmpDetails?id=<c:out value='${employee.id}'/>">View
 											Details</a> <a
-											href="EmployeeServlet?id=<c:out value='${employee.id}'/>&servletId=13">Edit</a>
+											href="getEmpUpdated?id=<c:out value='${employee.id}'/>">Edit</a>
 										<a
-											href="EmployeeServlet?id=<c:out value='${employee.id}'/>&servletId=12">Delete</a>
+											href="deleteEmployee?id=<c:out value='${employee.id}'/>">Delete</a>
 									</div>
 								</div>
 							</div>

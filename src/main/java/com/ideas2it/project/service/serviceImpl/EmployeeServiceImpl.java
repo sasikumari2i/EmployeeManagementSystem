@@ -268,7 +268,6 @@ public class EmployeeServiceImpl implements EmployeeService {
 	 * @return ProjectDTO, retrived Project
 	 */
 	public ProjectDTO viewProjectById(int projectId) throws CustomException {
-		projectService = new ProjectServiceImpl();
 		return projectService.viewProjectById(projectId);
 	}
 

@@ -32,7 +32,7 @@
 	<h3>Manage Project Page</h3>
 	<p>You can manage your project here</p>
 	<c:if test="${isCreated == true}">
-		<p>Employee Created Successfully</p>
+		<p>Project Created Successfully</p>
 	</c:if>
 	<div class="back">
 		<input type="button" value="Back" onclick="history.back()">

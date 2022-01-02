@@ -12,7 +12,6 @@ import org.hibernate.Transaction;
 
 import com.ideas2it.project.dao.ProjectDAO;
 import com.ideas2it.project.exception.CustomException;
-import com.ideas2it.project.model.Employee;
 import com.ideas2it.project.model.Project;
 import com.ideas2it.project.utils.DatabaseConnection;
 
@@ -39,12 +38,12 @@ public class ProjectDAOImpl implements ProjectDAO {
 			session = DatabaseConnection.getSession();
 			transaction = session.beginTransaction();
 			projectID = (Integer) session.save(project);
-			project.setId(project.getId());
 			transaction.commit();
 		} catch (HibernateException e) {
 			if (transaction != null) {
 				transaction.rollback();
 			}
+			e.printStackTrace();
 			throw new CustomException("ERROR_CODE_009");
 		} finally {
 			DatabaseConnection.closeSession();

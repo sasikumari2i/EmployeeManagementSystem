@@ -53,9 +53,8 @@
 		<h3>Employee List</h3>
 		<p>Choose from the below Employees to assign for this project</p>
 		<br>
-		<form method="post" action="ProjectServlet">
-			<input type="hidden" name="servletId" value="1"> <input
-				type="hidden" name="id" value="<c:out value='${projectId}' />" />
+		<form method="post" action="assignEmployee">
+			<input type="hidden" name="id" value="<c:out value='${projectId}' />" />
 			<table border="1">
 				<thead>
 					<tr>
@@ -86,9 +85,8 @@
 		<h3>Employee List</h3>
 		<p>Choose the Employees to be UnAssigned from this Project</p>
 		<br>
-		<form method="post" action="ProjectServlet">
-			<input type="hidden" name="servletId" value='6'> <input
-				type="hidden" name="id" value="<c:out value='${projectId}' />" />
+		<form method="post" action="unAssignEmployee">
+			<input type="hidden" name="id" value="<c:out value='${projectId}' />" />
 			<table border="1">
 				<thead>
 					<tr>

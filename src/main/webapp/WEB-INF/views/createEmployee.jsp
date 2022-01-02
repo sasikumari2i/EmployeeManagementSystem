@@ -1,6 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"
-	import="com.ideas2it.project.model.dto.EmployeeDTO,java.util.List,java.util.ArrayList,com.ideas2it.project.model.dto.AddressDTO"%>
+	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring"%>
@@ -31,22 +30,29 @@
 			</div>
 		</div>
 	</div>
-	<form method="post" action="save">
+	<c:if test="${employeeId == null}">
+		<c:if test="${null == employee.name}">
+			<form method="post" action="saveEmp">Create Employee
+		</c:if>
+		<c:if test="${null != employee.name}">
+			<form method="post" action="updateEmployee">
+				Edit Employee <input type="hidden" name="id"
+					value="<c:out value='${employee.id}' />" />
+		</c:if>
 		<div class="formSpacing">
 			<spring:bind path="employee.name">
 				<td>Name :</td>
 				<td><input type="text" name="name"
+					value="<c:out value='${employee.name}'/>"
 					pattern="^?=.{3,100}$)[a-zA-Z]{3}[a-zA-Z]*\\s?[a-zA-Z]*\\s?[a-zA-Z]*$"
 					required /></td>
 			</spring:bind>
-			<!-- <label> Name : </label> <input type="text"
-				value="<c:out value='${employeeDTO.name}'/>" name="name"
-				required="required"> <br> -->
 		</div>
 		<div class="formSpacing">
 			<spring:bind path="employee.dob">
 				<td>DOB :</td>
-				<td><input type="date" name="dob" min="1961-01-01"
+				<td><input type="date" name="dob"
+					value="<c:out value='${employee.dob}'/>" min="1961-01-01"
 					max="2003-01-01" required="required" /></td>
 			</spring:bind>
 		</div>
@@ -59,6 +65,7 @@
 			<spring:bind path="employee.salary">
 				<td>Salary :</td>
 				<td><input type="text" name="salary"
+					value="<c:out value='${employee.salary}'/>"
 					pattern="^[0]*[1-9][0-9]{3,10}[.]?([0-9]+)?$" required /></td>
 			</spring:bind>
 		</div>
@@ -66,6 +73,7 @@
 			<spring:bind path="employee.contact">
 				<td>Phone Number :</td>
 				<td><input type="tel" name="contact"
+					value="<c:out value='${employee.contact}'/>"
 					pattern="^(0|91)?[6-9][0-9]{9}$" required /></td>
 			</spring:bind>
 		</div>
@@ -77,9 +85,18 @@
 		<div class="formSpacing">
 			<spring:bind path="employee.email">
 				<td>Email :</td>
-				<td><input type="email" name="email"></td>
+				<td><input type="email" name="email"
+					value="<c:out value='${employee.email}'/>"></td>
 			</spring:bind>
 		</div>
+	</c:if>
+	<c:if test="${null == employee.name || employeeId != null}">
+		<c:if test="${employeeId != null}">
+			<form method="post" action="addAddress">
+				<header>Enter Address details</header>
+				<input type="hidden" name="id"
+					value="<c:out value='${employeeId}' />" />
+		</c:if>
 		<div class="formSpacing">
 			<spring:bind path="address.doorNo">
 				<td>Door No :</td>
@@ -110,10 +127,11 @@
 				<td><input type="tel" name="pincode" pattern="[1-9][0-9]{5}"></td>
 			</spring:bind>
 		</div>
-		<div class="back">
-			<input type="submit" name="Submit"> <input type="button"
-				value="Back" onclick="history.back()">
-		</div>
+	</c:if>
+	<div class="back">
+		<input type="submit" name="Submit"> <input type="button"
+			value="Back" onclick="history.back()">
+	</div>
 	</form>
 </body>
 </html>

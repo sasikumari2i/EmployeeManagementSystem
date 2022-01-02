@@ -8,6 +8,9 @@ import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.util.HashSet;
 	
 /**
@@ -20,7 +23,9 @@ public class ProjectDTO {
     private int id;
     private String name;
     private String domain;
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private LocalDate startDate;
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private LocalDate endDate;
     private String status;
     private Set<EmployeeDTO> employees = new HashSet<EmployeeDTO>();

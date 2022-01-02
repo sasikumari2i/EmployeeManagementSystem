@@ -24,7 +24,7 @@
 				Manage Project <i class="fa fa-caret-down"></i>
 			</button>
 			<div class="dropdown-content">
-				<a href="createProject.jsp"> Add New Project</a>
+				<a href="createPro"> Add New Project</a>
 			</div>
 		</div>
 	</div>
@@ -60,11 +60,11 @@
 								</button>
 								<div class="dropdown-content">
 									<a
-										href="ProjectServlet?id=<c:out value='${project.id}'/>&servletId=9">Edit</a>
+										href="getProUpdated?id=<c:out value='${project.id}'/>">Edit</a>
 									<a
-										href="ProjectServlet?id=<c:out value='${project.id}'/>&servletId=4">Delete</a>
+										href="deleteProject?id=<c:out value='${project.id}'/>">Delete</a>
 									<a
-										href="ProjectServlet?id=<c:out value='${project.id}'/>&servletId=2">Full Details</a>
+										href="viewProDetails?id=<c:out value='${project.id}'/>">Full Details</a>
 								</div>
 							</div>
 						</div>

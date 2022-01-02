@@ -39,6 +39,11 @@
 		class="com.ideas2it.project.controller.EmployeeServlet">
 		<property name="employeeService" ref="employeeServiceImpl" />
 	</bean>
+	
+	<bean id="projectServlet"
+		class="com.ideas2it.project.controller.ProjectServlet">
+		<property name="projectService" ref="projectServiceImpl" />
+	</bean>
 
 	<bean id="viewResolver"
 		class="org.springframework.web.servlet.view.InternalResourceViewResolver">

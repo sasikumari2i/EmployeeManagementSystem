@@ -46,16 +46,15 @@
 		</tbody>
 	</table>
 	<p>Address List</p>
-	<a href="EmployeeServlet?id=<c:out value='${employeeId}'/>&servletId=5">Add
-		Address</a>
+	<a href="getAddress?id=<c:out value='${employeeId}'/>">Add Address</a>
 
 	<c:if test="${addressList.isEmpty()}">
 		<p>Address List is Empty !!</p>
 	</c:if>
 	<c:if test="${!addressList.isEmpty()}">
-		<form method="post" action="EmployeeServlet">
-			<input type="hidden" name="servletId" value="11"> <input
-				type="hidden" name="id" value="<c:out value='${employeeId}' />" />
+		<form method="post" action="deleteAddress">
+			<input type="hidden" name="id"
+				value="<c:out value='${employeeId}' />" />
 			<table border="1">
 				<thead>
 					<tr>
@@ -89,12 +88,12 @@
 	</c:if>
 	<p>Assigned Projects</p>
 	<c:if test="${projectDTOSet.isEmpty()}">
-		<p>No Projects available to Assign !!</p>
+		<p>No Projects assigned for the employee !!</p>
 	</c:if>
 	<c:if test="${!projectDTOSet.isEmpty()}">
-		<form method="post" action="EmployeeServlet">
-			<input type="hidden" name="servletId" value='8'> <input
-				type="hidden" name="id" value="<c:out value='${employeeId}' />" />
+		<form method="post" action="unAssignProject">
+			<input type="hidden" name="id"
+				value="<c:out value='${employeeId}' />" />
 			<table border="1">
 				<thead>
 					<tr>
@@ -122,9 +121,9 @@
 		<p>No projects !!</p>
 	</c:if>
 	<c:if test="${!projectDTOList.isEmpty()}">
-		<form method="post" action="EmployeeServlet">
-			<input type="hidden" name="servletId" value='6'> <input
-				type="hidden" name="id" value="<c:out value='${employeeId}' />" />
+		<form method="post" action="assignProject">
+			<input type="hidden" name="id"
+				value="<c:out value='${employeeId}' />" />
 			<table border="1">
 				<thead>
 					<tr>

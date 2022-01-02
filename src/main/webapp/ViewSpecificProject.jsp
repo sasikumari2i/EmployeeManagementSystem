@@ -16,17 +16,16 @@
 				Go To <i class="fa fa-caret-down"></i>
 			</button>
 			<div class="dropdown-content">
-				<a href="projectView.html">Projects</a> <a href="employeeView.jsp">Employee</a>
+				<a href="projectView.jsp">Projects</a> <a href="employeeView.jsp">Employee</a>
 			</div>
 		</div>
 	</div>
 	<c:if test="${notAvailable == true}">
 		<p>Enter an available Project ID</p>
 	</c:if>
-	<form method="get" action="ProjectServlet">
+	<form method="get" action="viewProById">
 		<h4>Enter the Project ID to be displayed</h4>
-		<input type="hidden" name="servletId" value="11"> Project ID :
-		<input type="number" name="id" max="9999"><br>
+	 Project ID : <input type="number" name="id" max="9999"><br>
 		<div class="back">
 			<input type="submit" name="Submit"><br> <br><input
 				type="button" value="Back" onclick="history.back()">
