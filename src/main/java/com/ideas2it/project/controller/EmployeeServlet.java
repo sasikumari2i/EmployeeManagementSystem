@@ -33,42 +33,79 @@ public class EmployeeServlet extends HttpServlet {
 
 	@PostMapping("/saveEmp")
 	public String save(@ModelAttribute("employee") EmployeeDTO employeeDTO,
-			@ModelAttribute("address") AddressDTO addressDTO, BindingResult result, Model m) {
+			@ModelAttribute("address") AddressDTO addressDTO, BindingResult result, Model model) {
 		List<AddressDTO> addressList = new ArrayList<AddressDTO>();
 		addressList.add(addressDTO);
 		employeeDTO.setAddress(addressList);
 		boolean isCreated = false;
-		try {
-			isCreated = employeeService.createEmployee(employeeDTO);
-		} catch (CustomException e) {
-			e.printStackTrace();
-			EmployeeManagementLogger.logger.error(e);
-		}
-		m.addAttribute("isCreated", isCreated);
-		return "employeeView";
-	}
+		String response = null;
 
-	@PostMapping("/updateEmployee")
-	private String updateEmployee(@ModelAttribute("employee") EmployeeDTO employee, @RequestParam int id,
-			BindingResult result, Model m) {
-		boolean isUpdated = false;
-		boolean isMerged = false;
-		boolean notMerged = false;
 		try {
-			EmployeeDTO employeeDTO = employeeService.viewEmployeeById(id);
-			employee.setAddress(employeeDTO.getAddress());
-			isUpdated = employeeService.updateAllDetails(employee);
-			if (isUpdated) {
-				isMerged = true;
-				m.addAttribute("isMerged", isMerged);
+			boolean isDuplicateEmail = employeeService.getEmployeeEmailValidated(employeeDTO.getEmail());
+			boolean isDuplicateContact = employeeService.getEmployeeContactValidated(employeeDTO.getContact());
+			boolean notValidDob = employeeService.getValidatedDOB(employeeDTO.getDob());
+			if (isDuplicateEmail || isDuplicateContact || notValidDob) {
+				boolean isDuplicate = true;
+				model.addAttribute("isDuplicate", isDuplicate);
+				model.addAttribute("isDuplicateEmail", isDuplicateEmail);
+				model.addAttribute("isDuplicateContact", isDuplicateContact);
+				model.addAttribute("notValidDob", notValidDob);
+				model.addAttribute("employee", employeeDTO);
+				model.addAttribute("address", addressDTO);
+				response = "createEmployee";
 			} else {
-				notMerged = true;
-				m.addAttribute("notMerged", notMerged);
+				isCreated = employeeService.createEmployee(employeeDTO);
+				model.addAttribute("isCreated", isCreated);
+				response = "employeeView";
 			}
 		} catch (CustomException e) {
 			EmployeeManagementLogger.logger.error(e);
 		}
-		return "ViewEmployeeDetails";
+		return response;
+	}
+
+	@PostMapping("/updateEmployee")
+	private String updateEmployee(@ModelAttribute("employee") EmployeeDTO employee, @RequestParam int id,
+			BindingResult result, Model model) {
+		boolean isUpdated = false;
+		boolean isMerged = false;
+		boolean notMerged = false;
+		String response = null;
+
+		try {
+			boolean isDuplicateEmail = employeeService.getEmployeeEmailValidated(employee.getEmail());
+			boolean isDuplicateContact = employeeService.getEmployeeContactValidated(employee.getContact());
+			boolean notValidDob = employeeService.getValidatedDOB(employee.getDob());
+			EmployeeDTO employeeDTO = employeeService.viewEmployeeById(id);
+			employee.setAddress(employeeDTO.getAddress());
+			if (notValidDob) {
+				model.addAttribute("notValidDob", notValidDob);
+				model.addAttribute("employee", employee);
+				response = "createEmployee";
+			} else if(isDuplicateEmail && !(employeeDTO.getEmail().equals(employee.getEmail()))) {
+				model.addAttribute("isDuplicateEmail", isDuplicateEmail);
+				model.addAttribute("employee", employee);
+				response = "createEmployee";
+			} else if(isDuplicateContact && !(employeeDTO.getContact() == employee.getContact())) {
+				model.addAttribute("isDuplicateContact", isDuplicateContact);
+				model.addAttribute("employee", employee);
+				response = "createEmployee";
+			} else {
+				isUpdated = employeeService.updateAllDetails(employee);
+				if (isUpdated) {
+					isMerged = true;
+					model.addAttribute("isMerged", isMerged);
+				} else {
+					notMerged = true;
+					model.addAttribute("notMerged", notMerged);
+				}
+				response = "ViewEmployeeDetails";
+			}
+
+		} catch (CustomException e) {
+			EmployeeManagementLogger.logger.error(e);
+		}
+		return response;
 	}
 
 	@RequestMapping("/createEmp")

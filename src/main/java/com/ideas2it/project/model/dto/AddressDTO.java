@@ -20,7 +20,16 @@ public class AddressDTO {
     private long pincode;
     private EmployeeDTO employeeDTO;
     private int employeeId;
+    
+    public AddressDTO() {}
 
+    public AddressDTO(String doorNo, String landMark, String street, String city, long pincode) {
+    	this.doorNo = doorNo;
+    	this.landMark = landMark;
+    	this.street = street;
+    	this.city = city;
+    	this.pincode = pincode;
+    }    
     /**
      * Employee getters and setters
      */

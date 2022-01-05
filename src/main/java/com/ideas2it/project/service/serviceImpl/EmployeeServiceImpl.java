@@ -28,16 +28,14 @@ public class EmployeeServiceImpl implements EmployeeService {
 
 	private EmployeeDAO employeeDAO;
 	private ProjectService projectService;
-	
+
 	public void setEmployeeDAO(EmployeeDAO employeeDAO) {
 		this.employeeDAO = employeeDAO;
 	}
-	
+
 	public void setProjectService(ProjectService projectService) {
 		this.projectService = projectService;
 	}
-	
-	
 
 	/**
 	 * To validate the given Choice in correct format using regex
@@ -94,9 +92,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 	public boolean getEmployeeEmailValidated(String employeeEmail) throws CustomException {
 		// String pattern = "[a-zA-Z0-9_\\.\\-]{3,}+[@][a-z]"
 		// + "+([\\.][a-z]{2,3})+";
-		boolean isUniqueEmail = (null == employeeDAO.containsEmployeeEmail(employeeEmail));
-		System.out.println(isUniqueEmail + "Uniquesnesssssss");
-		return isUniqueEmail;
+		return (null != employeeDAO.containsEmployeeEmail(employeeEmail));
 	}
 
 	/**
@@ -108,7 +104,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 	public boolean getEmployeeContactValidated(long employeeContact) throws CustomException {
 		String stringEmployeeContact = String.valueOf(employeeContact);
 		// String pattern = "[6-9][0-9]{9}";
-		return (null == employeeDAO.containsEmployeeContact(stringEmployeeContact));
+		return (null != employeeDAO.containsEmployeeContact(stringEmployeeContact));
 	}
 
 	/**
@@ -119,7 +115,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 	 */
 	public boolean getValidatedDOB(LocalDate dob) {
 		Period period = Period.between(dob, LocalDate.now());
-		return ((period.getYears() < 60) && (period.getYears() > 18));
+		return !((period.getYears() < 60) && (period.getYears() > 18));
 	}
 
 	/**

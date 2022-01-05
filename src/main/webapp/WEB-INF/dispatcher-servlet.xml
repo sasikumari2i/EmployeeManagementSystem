@@ -7,7 +7,7 @@
                         http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd
                         http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd">
 
-    <mvc:interceptors>
+    <!-- <mvc:interceptors>
 		<mvc:interceptor>
 			<mvc:mapping path="/saveEmp" />
 			<bean
@@ -15,7 +15,7 @@
 				<property name="employeeService" ref="employeeServiceImpl" />
 			</bean>
 		</mvc:interceptor>
-	</mvc:interceptors>
+	</mvc:interceptors> -->
 
 	<context:component-scan
 		base-package="com.ideas2it.project.controller"></context:component-scan>
@@ -48,10 +48,10 @@
 	<!-- <bean id="duplicateFilter" class="com.ideas2it.project.controller.DuplicateFilter"> 
 		<property name="employeeService" ref="employeeServiceImpl" /> </bean> -->
 
-	<bean id="updateDuplicateFilter"
+	<!-- <bean id="updateDuplicateFilter"
 		class="com.ideas2it.project.controller.UpdateDuplicateFilter">
 		<property name="employeeService" ref="employeeServiceImpl" />
-	</bean>
+	</bean> -->
 
 	<bean id="projectServlet"
 		class="com.ideas2it.project.controller.ProjectServlet">
@@ -60,8 +60,9 @@
 
 	<bean id="viewResolver"
 		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-		<!-- <property name="prefix"> </property> -->
 		<property name="suffix" value=".jsp">
 		</property>
 	</bean>
+	<mvc:resources mapping="/resources/**" location="/resources/css/" />
+	
 </beans>

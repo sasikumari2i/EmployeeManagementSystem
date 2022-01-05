@@ -30,7 +30,17 @@ public class EmployeeDTO {
     private LocalDate dob;
     private List<AddressDTO> address = new ArrayList<AddressDTO>();
     private Set<ProjectDTO> projects = new HashSet<ProjectDTO>();
+    
+    public EmployeeDTO() {}
 
+    public EmployeeDTO(String name,LocalDate dob,float salary,long contact,String email) {
+    	this.name = name;
+    	this.dob = dob;
+    	this.salary = salary;
+    	this.contact = contact;
+        this.email = email;	
+    }
+    
     /**
      * Override equals method to compare two objects
      */

@@ -31,35 +31,41 @@ public class DuplicateInterceptors implements HandlerInterceptor {
 		boolean isUniqueEmail = employeeService.getEmployeeEmailValidated(email);
 		boolean isUniqueContact = employeeService.getEmployeeContactValidated(contact);
 		boolean isValidDob = employeeService.getValidatedDOB(dob);
+		boolean isUnique = true;
 
-		if (isUniqueEmail && isUniqueContact && isValidDob) {
-			return true;
-		} else {
+		EmployeeDTO employeeDTO = new EmployeeDTO(request.getParameter("name"), dob,
+				Float.parseFloat(request.getParameter("salary")), contact, email);
+		
+		AddressDTO addressDTO = new AddressDTO(request.getParameter("doorNo"), request.getParameter("landMark"),
+				request.getParameter("street"), request.getParameter("city"),
+				Long.parseLong(request.getParameter("pincode")));
+		if (!(isUniqueEmail && isUniqueContact && isValidDob)) {
+			isUnique = false;
 			if (!isUniqueEmail) {
 				boolean isDuplicateEmail = true;
 				RequestDispatcher dispatcher = request.getRequestDispatcher("createEmployee.jsp");
 				request.setAttribute("isDuplicateEmail", isDuplicateEmail);
-				request.setAttribute("employee", new EmployeeDTO());
-				request.setAttribute("address", new AddressDTO());            	
+				request.setAttribute("employee", employeeDTO);
+				request.setAttribute("address", addressDTO);
 				dispatcher.forward(request, response);
-				
+
 			} else if (!isValidDob) {
 				boolean notValidDob = true;
 				RequestDispatcher dispatcher = request.getRequestDispatcher("createEmployee.jsp");
 				request.setAttribute("notValidDob", notValidDob);
-				request.setAttribute("employee", new EmployeeDTO());
-				request.setAttribute("address", new AddressDTO());
+				request.setAttribute("employee", employeeDTO);
+				request.setAttribute("address", addressDTO);
 				dispatcher.forward(request, response);
 			} else if (!isUniqueContact) {
 				boolean isDuplicateContact = true;
 				RequestDispatcher dispatcher = request.getRequestDispatcher("createEmployee.jsp");
 				request.setAttribute("isDuplicateContact", isDuplicateContact);
-				request.setAttribute("employee", new EmployeeDTO());
-				request.setAttribute("address", new AddressDTO());
+				request.setAttribute("employee", employeeDTO);
+				request.setAttribute("address", addressDTO);
 				dispatcher.forward(request, response);
 			}
-			return false;
 		}
+		return isUnique;
 	}
 
 }
