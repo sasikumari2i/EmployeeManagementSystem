@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.ideas2it.project.dao.EmployeeDAO;
-import com.ideas2it.project.dao.daoImpl.EmployeeDAOImpl;
 import com.ideas2it.project.exception.CustomException;
 import com.ideas2it.project.model.Employee;
 import com.ideas2it.project.model.dto.AddressDTO;
@@ -95,7 +94,9 @@ public class EmployeeServiceImpl implements EmployeeService {
 	public boolean getEmployeeEmailValidated(String employeeEmail) throws CustomException {
 		// String pattern = "[a-zA-Z0-9_\\.\\-]{3,}+[@][a-z]"
 		// + "+([\\.][a-z]{2,3})+";
-		return (null == employeeDAO.containsEmployeeEmail(employeeEmail));
+		boolean isUniqueEmail = (null == employeeDAO.containsEmployeeEmail(employeeEmail));
+		System.out.println(isUniqueEmail + "Uniquesnesssssss");
+		return isUniqueEmail;
 	}
 
 	/**

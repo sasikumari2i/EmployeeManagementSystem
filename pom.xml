@@ -6,7 +6,7 @@
 	<groupId>com.ideas2it.project</groupId>
 	<artifactId>EmployeeManagement</artifactId>
 	<packaging>war</packaging>
-	<version>1.0-SNAPSHOT</version>
+	<version>1.0</version>
 	<name>EMS MAVEN WEB APP</name>
 	<url>http://maven.apache.org</url>
 	<dependencies>

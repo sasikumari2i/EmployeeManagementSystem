@@ -130,6 +130,8 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 			// employee = (Employee) criteria.uniqueResult();
 			employee = (Employee) session.createQuery(query.toString()).uniqueResult();
 		} catch (HibernateException e) {
+			e.printStackTrace();
+			System.out.println("Inside DAO");
 			throw new CustomException("ERROR_CODE_007");
 		} finally {
 			DatabaseConnection.closeSession();

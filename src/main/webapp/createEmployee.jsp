@@ -31,7 +31,8 @@
 		</div>
 	</div>
 	<c:if test="${employeeId == null}">
-		<c:if test="${null == employee.name}">
+		<c:if
+			test="${(null == employee.name) ||notValidDob || isDuplicateContact || isDuplicateEmail}">
 			<form method="post" action="saveEmp">Create Employee
 		</c:if>
 		<c:if test="${null != employee.name}">
@@ -56,11 +57,9 @@
 					max="2003-01-01" required="required" /></td>
 			</spring:bind>
 		</div>
-		<!--<c:if test="${notValidDob == true}">
-			<form method="post" action="EmployeeServlet">
-				<input type="hidden" name="servletId" value='2'>
-				<p>Age should be between 18 to 60</p>
-		</c:if>__-->
+		<c:if test="${notValidDob == true}">
+			<p>Age should be between 18 to 60</p>
+		</c:if>
 		<div class="formSpacing">
 			<spring:bind path="employee.salary">
 				<td>Salary :</td>
@@ -77,11 +76,9 @@
 					pattern="^(0|91)?[6-9][0-9]{9}$" required /></td>
 			</spring:bind>
 		</div>
-		<!--<c:if test="${isDuplicateContact}">
-			<form method="post" action="EmployeeServlet">
-				<input type="hidden" name="servletId" value='2'>
-				<p>Phone number already available, try another</p>
-		</c:if>-->
+		<c:if test="${isDuplicateContact}">
+			<p>Phone number already available, try another</p>
+		</c:if>
 		<div class="formSpacing">
 			<spring:bind path="employee.email">
 				<td>Email :</td>
@@ -89,6 +86,9 @@
 					value="<c:out value='${employee.email}'/>"></td>
 			</spring:bind>
 		</div>
+		<c:if test="${isDuplicateEmail}">
+			<p>Email already available, try another</p>
+		</c:if>
 	</c:if>
 	<c:if test="${null == employee.name || employeeId != null}">
 		<c:if test="${employeeId != null}">

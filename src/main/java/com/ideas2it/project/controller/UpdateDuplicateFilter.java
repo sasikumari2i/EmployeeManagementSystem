@@ -10,21 +10,24 @@ import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
-import javax.servlet.annotation.WebFilter;
 
 import com.ideas2it.project.logger.EmployeeManagementLogger;
 import com.ideas2it.project.model.dto.EmployeeDTO;
 import com.ideas2it.project.service.EmployeeService;
-import com.ideas2it.project.service.serviceImpl.EmployeeServiceImpl;
 
 /**
  * Servlet Filter implementation class UpdateDuplicateFilter
  */
-@WebFilter("/EmployeeServlet")
+//@WebFilter("/updateEmployee")
 public class UpdateDuplicateFilter implements Filter {
+
+	EmployeeService employeeService;
 	
 	public void init(FilterConfig fConfig) throws ServletException {
-		// TODO Auto-generated method stub
+	}
+	
+	public void setEmployeeService(EmployeeService employeeService) {
+		this.employeeService = employeeService;
 	}
 
 	/**
@@ -34,7 +37,7 @@ public class UpdateDuplicateFilter implements Filter {
 			throws IOException, ServletException {
 		if (request.getParameter("servletId").equals("3")) {
 			int employeeId = Integer.parseInt(request.getParameter("id"));
-			EmployeeService employeeService = new EmployeeServiceImpl();
+			//EmployeeService employeeService = new EmployeeServiceImpl();
 			try {
 				EmployeeDTO employeeDTO = employeeService.viewEmployeeById(employeeId);
 				long contact = Long.parseLong(request.getParameter("contact"));
