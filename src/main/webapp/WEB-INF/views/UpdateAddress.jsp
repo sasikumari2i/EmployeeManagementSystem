@@ -59,7 +59,6 @@
 				<thead>
 					<tr>
 						<th></th>
-						<th>ID</th>
 						<th>Door No</th>
 						<th>Street</th>
 						<th>Landmark</th>
@@ -71,8 +70,7 @@
 					<c:forEach var="address" items="${addressList}">
 						<tr>
 							<td><input type="checkbox" name="selected"
-								value="${address.addressId}" /></td>
-							<td>${address.serialId}</td>
+								value='${address.addressId}' /></td>
 							<td>${address.doorNo}</td>
 							<td>${address.street}</td>
 							<td>${address.landMark}</td>
@@ -135,15 +133,28 @@
 				<c:forEach var="project" items="${projectDTOList}">
 					<tr>
 						<td><input type="checkbox" name="selected"
-							value="${project.id}" /></td>
+							value='${project.id}' /></td>
 						<td>${project.id}</td>
 						<td>${project.name}</td>
 					</tr>
 				</c:forEach>
 			</table>
+			<%
+			String s[] = request.getParameterValues("selected");
+			if (s != null && s.length != 0) {
+			%>
 			<div class="back">
 				<input type="submit" value="Assign" />
 			</div>
+			<%
+			} else {
+			%>
+			<div class="back">
+				<input type="submit" value="Assign" disabled />
+			</div>
+			<%
+			}
+			%>
 		</form>
 		<br>
 	</c:if>

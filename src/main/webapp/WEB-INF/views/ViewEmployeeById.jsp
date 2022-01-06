@@ -60,7 +60,7 @@
 								More <i class="fa fa-caret-down"></i>
 							</button>
 							<div class="dropdown-content">
-								<a href="viewDetails?id=<c:out value='${employee.id}'/>">View
+								<a href="viewEmpDetails?id=<c:out value='${employee.id}'/>">View
 									Details</a> <a
 									href="getEmpUpdated?id=<c:out value='${employee.id}'/>">Edit</a>
 								<a href="deleteEmployee?id=<c:out value='${employee.id}'/>">Delete</a>

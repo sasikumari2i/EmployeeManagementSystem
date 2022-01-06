@@ -10,9 +10,9 @@ import javax.servlet.http.HttpServlet;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.ideas2it.project.exception.CustomException;
@@ -39,20 +39,26 @@ public class EmployeeServlet extends HttpServlet {
 		employeeDTO.setAddress(addressList);
 		boolean isCreated = false;
 		String response = null;
-
+		String duplicateString = null;
 		try {
-			boolean isDuplicateEmail = employeeService.getEmployeeEmailValidated(employeeDTO.getEmail());
-			boolean isDuplicateContact = employeeService.getEmployeeContactValidated(employeeDTO.getContact());
-			boolean notValidDob = employeeService.getValidatedDOB(employeeDTO.getDob());
-			if (isDuplicateEmail || isDuplicateContact || notValidDob) {
+			duplicateString = employeeService.employeeUniqueCreate(employeeDTO);
+			if (null != duplicateString) {
+				boolean duplicateAvailable = true;
 				boolean isDuplicate = true;
 				model.addAttribute("isDuplicate", isDuplicate);
-				model.addAttribute("isDuplicateEmail", isDuplicateEmail);
-				model.addAttribute("isDuplicateContact", isDuplicateContact);
-				model.addAttribute("notValidDob", notValidDob);
+				model.addAttribute(duplicateString, duplicateAvailable);
 				model.addAttribute("employee", employeeDTO);
 				model.addAttribute("address", addressDTO);
 				response = "createEmployee";
+				/*
+				 * if (isDuplicateEmail || isDuplicateContact || notValidDob) { boolean
+				 * isDuplicate = true; model.addAttribute("isDuplicate", isDuplicate);
+				 * model.addAttribute("isDuplicateEmail", isDuplicateEmail);
+				 * model.addAttribute("isDuplicateContact", isDuplicateContact);
+				 * model.addAttribute("notValidDob", notValidDob);
+				 * model.addAttribute("employee", employeeDTO); model.addAttribute("address",
+				 * addressDTO); response = "createEmployee";
+				 */
 			} else {
 				isCreated = employeeService.createEmployee(employeeDTO);
 				model.addAttribute("isCreated", isCreated);
@@ -73,23 +79,31 @@ public class EmployeeServlet extends HttpServlet {
 		String response = null;
 
 		try {
-			boolean isDuplicateEmail = employeeService.getEmployeeEmailValidated(employee.getEmail());
-			boolean isDuplicateContact = employeeService.getEmployeeContactValidated(employee.getContact());
-			boolean notValidDob = employeeService.getValidatedDOB(employee.getDob());
+			// boolean isDuplicateEmail =
+			// employeeService.getEmployeeEmailValidated(employee.getEmail());
+			// boolean isDuplicateContact =
+			// employeeService.getEmployeeContactValidated(employee.getContact());
+			// boolean notValidDob = employeeService.getValidatedDOB(employee.getDob());
 			EmployeeDTO employeeDTO = employeeService.viewEmployeeById(id);
 			employee.setAddress(employeeDTO.getAddress());
-			if (notValidDob) {
-				model.addAttribute("notValidDob", notValidDob);
+			String duplicateString = employeeService.employeeUniqueUpdate(employee, id, employeeDTO);
+			if (null != duplicateString) {
+				boolean isDuplicate = true;
+				model.addAttribute(duplicateString, isDuplicate);
 				model.addAttribute("employee", employee);
 				response = "createEmployee";
-			} else if(isDuplicateEmail && !(employeeDTO.getEmail().equals(employee.getEmail()))) {
-				model.addAttribute("isDuplicateEmail", isDuplicateEmail);
-				model.addAttribute("employee", employee);
-				response = "createEmployee";
-			} else if(isDuplicateContact && !(employeeDTO.getContact() == employee.getContact())) {
-				model.addAttribute("isDuplicateContact", isDuplicateContact);
-				model.addAttribute("employee", employee);
-				response = "createEmployee";
+				/*
+				 * if (notValidDob) { model.addAttribute("notValidDob", notValidDob);
+				 * model.addAttribute("employee", employee); response = "createEmployee"; } else
+				 * if (isDuplicateEmail &&
+				 * !(employeeDTO.getEmail().equals(employee.getEmail()))) {
+				 * model.addAttribute("isDuplicateEmail", isDuplicateEmail);
+				 * model.addAttribute("employee", employee); response = "createEmployee"; } else
+				 * if (isDuplicateContact && !(employeeDTO.getContact() ==
+				 * employee.getContact())) { model.addAttribute("isDuplicateContact",
+				 * isDuplicateContact); model.addAttribute("employee", employee); response =
+				 * "createEmployee";
+				 */
 			} else {
 				isUpdated = employeeService.updateAllDetails(employee);
 				if (isUpdated) {
@@ -108,14 +122,14 @@ public class EmployeeServlet extends HttpServlet {
 		return response;
 	}
 
-	@RequestMapping("/createEmp")
+	@GetMapping("/createEmp")
 	public String showform(Model m) {
 		m.addAttribute("employee", new EmployeeDTO());
 		m.addAttribute("address", new AddressDTO());
 		return "createEmployee";
 	}
 
-	@RequestMapping("/viewAllEmp")
+	@GetMapping("/viewAllEmp")
 	private String viewAllEmployee(Model m) {
 		try {
 			List<EmployeeDTO> employeeList = employeeService.viewEmployee();
@@ -126,28 +140,28 @@ public class EmployeeServlet extends HttpServlet {
 		return "ViewEmployee";
 	}
 
-	@RequestMapping("/viewEmpById")
+	@GetMapping("/viewEmpById")
 	private String viewEmployeeById(Model m, @RequestParam int id) {
 		EmployeeDTO employeeDTO = new EmployeeDTO();
 		boolean notAvailable = false;
+		String response = null;
 		try {
 			if (employeeService.containsEmployee(id)) {
 				employeeDTO = employeeService.viewEmployeeById(id);
 				m.addAttribute("employee", employeeDTO);
-				return "ViewEmployeeById";
+				response = "ViewEmployeeById";
 			} else {
 				notAvailable = true;
 				m.addAttribute("notAvailable", notAvailable);
-				return "ViewSpecificEmployee";
+				response = "ViewSpecificEmployee";
 			}
-		} catch (Exception e) {
+		} catch (CustomException e) {
 			EmployeeManagementLogger.logger.error(e);
-			return "error";
 		}
-
+		return response;
 	}
 
-	@RequestMapping("/viewEmpDetails")
+	@GetMapping("/viewEmpDetails")
 	private String viewEmployeeDetails(Model m, @RequestParam int id) {
 		EmployeeDTO employeeDTO = new EmployeeDTO();
 		try {
@@ -157,11 +171,6 @@ public class EmployeeServlet extends HttpServlet {
 			List<ProjectDTO> projectDTOList = new ArrayList<>(employeeService.viewAllProject());
 			List<ProjectDTO> availableProjects = new ArrayList<>(projectDTOSet);
 			projectDTOList.removeAll(availableProjects);
-			int count = 1;
-			for (AddressDTO addressDTO : addressList) {
-				addressDTO.setSerialId(count);
-				count++;
-			}
 			m.addAttribute("employeeId", employeeDTO.getId());
 			m.addAttribute("addressList", addressList);
 			m.addAttribute("projectDTOSet", projectDTOSet);
@@ -173,7 +182,7 @@ public class EmployeeServlet extends HttpServlet {
 		return "UpdateAddress";
 	}
 
-	@RequestMapping("/deleteEmployee")
+	@PostMapping("/deleteEmployee")
 	private String deleteEmployee(Model m, @RequestParam int id) {
 		boolean isDeleted = false;
 		boolean notDeleted = false;
@@ -191,7 +200,7 @@ public class EmployeeServlet extends HttpServlet {
 		return "ViewEmployeeDetails";
 	}
 
-	@RequestMapping("/getEmpUpdated")
+	@GetMapping("/getEmpUpdated")
 	private String getEmployeeUpdated(Model m, @RequestParam int id) {
 		EmployeeDTO employeeDTO = new EmployeeDTO();
 		try {
@@ -203,7 +212,7 @@ public class EmployeeServlet extends HttpServlet {
 		return "createEmployee";
 	}
 
-	@RequestMapping("/getAddress")
+	@GetMapping("/getAddress")
 	private String getAddress(Model m, @RequestParam int id) {
 		EmployeeDTO employeeDTO = new EmployeeDTO();
 		AddressDTO address = new AddressDTO();
@@ -219,7 +228,7 @@ public class EmployeeServlet extends HttpServlet {
 		return "createEmployee";
 	}
 
-	@RequestMapping("/addAddress")
+	@PostMapping("/addAddress")
 	private String addAddress(@ModelAttribute("address") AddressDTO address, Model m, @RequestParam int id,
 			BindingResult result) {
 		EmployeeDTO employeeDTO = new EmployeeDTO();
@@ -242,7 +251,7 @@ public class EmployeeServlet extends HttpServlet {
 		return "ViewEmployeeDetails";
 	}
 
-	@RequestMapping("/deleteAddress")
+	@PostMapping("/deleteAddress")
 	private String deleteAddress(@ModelAttribute("selected") String[] selected,
 			@ModelAttribute("address") AddressDTO address, Model m, @RequestParam int id, BindingResult result) {
 		try {
@@ -272,7 +281,7 @@ public class EmployeeServlet extends HttpServlet {
 		return "ViewEmployeeDetails";
 	}
 
-	@RequestMapping("/unAssignProject")
+	@PostMapping("/unAssignProject")
 	private String unAssignProject(@ModelAttribute("selected") String[] selected, Model m, @RequestParam int id,
 			BindingResult result) {
 		try {
@@ -302,29 +311,37 @@ public class EmployeeServlet extends HttpServlet {
 		return "ViewEmployeeDetails";
 	}
 
-	@RequestMapping("/assignProject")
-	private String assignProject(@ModelAttribute("selected") String[] selected, @RequestParam int id, Model m,
+	@PostMapping("/assignProject")
+	private String assignProject(@RequestParam int id, @ModelAttribute("selected") String[] selected, Model m,
 			BindingResult result) {
+		String response = null;
 		try {
-			EmployeeDTO employeeDTO = employeeService.viewEmployeeById(id);
-			Set<ProjectDTO> projectSet = employeeDTO.getProjects();
-			for (String projectId : selected) {
-				ProjectDTO projectDTO = employeeService.viewProjectById(Integer.parseInt(projectId));
-				projectSet.add(projectDTO);
-			}
-			employeeDTO.setProjects(projectSet);
-			boolean isUpdated = false;
-			isUpdated = employeeService.updateAllDetails(employeeDTO);
-			if (isUpdated) {
-				boolean isAssigned = true;
-				m.addAttribute("isAssigned", isAssigned);
+			if (selected != null) {
+				EmployeeDTO employeeDTO = employeeService.viewEmployeeById(id);
+				Set<ProjectDTO> projectSet = employeeDTO.getProjects();
+				for (String projectId : selected) {
+					ProjectDTO projectDTO = employeeService.viewProjectById(Integer.parseInt(projectId));
+					projectSet.add(projectDTO);
+				}
+				employeeDTO.setProjects(projectSet);
+				boolean isUpdated = false;
+				isUpdated = employeeService.updateAllDetails(employeeDTO);
+				if (isUpdated) {
+					boolean isAssigned = true;
+					m.addAttribute("isAssigned", isAssigned);
+				} else {
+					boolean notAssigned = true;
+					m.addAttribute("notAssigned", notAssigned);
+				}
+				response = "ViewEmployeeDetails";
 			} else {
 				boolean notAssigned = true;
 				m.addAttribute("notAssigned", notAssigned);
+				response = "ViewEmployeeDetails";
 			}
 		} catch (CustomException e) {
 			EmployeeManagementLogger.logger.error(e);
 		}
-		return "ViewEmployeeDetails";
+		return response;
 	}
 }

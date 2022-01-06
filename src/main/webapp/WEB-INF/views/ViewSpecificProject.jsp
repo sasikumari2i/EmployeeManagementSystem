@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>View Specific Employee</title>
+<title>View Specific Project</title>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -21,13 +21,13 @@
 		</div>
 	</div>
 	<c:if test="${notAvailable == true}">
-		<p>Employee ID not available, try another</p>
+		<p>Enter an available Project ID</p>
 	</c:if>
-	<form method="get" action="viewEmpById">
-		<h4>Enter the Employee ID to be displayed</h4> Employee ID
-		: <input type="number" name="id" max="9999" required="required"><br>
+	<form method="get" action="viewProById">
+		<h4>Enter the Project ID to be displayed</h4>
+	 Project ID : <input type="number" name="id" max="9999"><br>
 		<div class="back">
-			<input type="submit" name="Submit"><br> <input
+			<input type="submit" name="Submit"><br> <br><input
 				type="button" value="Back" onclick="history.back()">
 		</div>
 	</form>

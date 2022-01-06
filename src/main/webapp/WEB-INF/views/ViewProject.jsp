@@ -31,50 +31,53 @@
 	<br>
 	<h3>Project List</h3>
 	<br>
-	<table border="1">
-		<thead>
-			<tr>
-				<th>ID</th>
-				<th>Name</th>
-				<th>Start Date</th>
-				<th>End Date</th>
-				<th>Domain</th>
-				<th>Status</th>
-				<th>Actions</th>
-			</tr>
-		</thead>
-		<tbody>
-			<c:forEach var="project" items="${projectList}">
+	<c:if test="${projectList.isEmpty()}">
+		<p>No Projects Available!!</p>
+	</c:if>
+	<c:if test="${!projectList.isEmpty()}">
+		<table border="1">
+			<thead>
 				<tr>
-					<td><c:out value="${project.id}" /></td>
-					<td><c:out value="${project.name}" /></td>
-					<td><c:out value="${project.startDate}" /></td>
-					<td><c:out value="${project.endDate}" /></td>
-					<td><c:out value="${project.domain}" /></td>
-					<td><c:out value="${project.status}" /></td>
-					<td>
-						<div class="dropdown">
-							<div class="dropBackground">
-								<button class="dropbtn">
-									More <i class="fa fa-caret-down"></i>
-								</button>
-								<div class="dropdown-content">
-									<a
-										href="getProUpdated?id=<c:out value='${project.id}'/>">Edit</a>
-									<a
-										href="deleteProject?id=<c:out value='${project.id}'/>">Delete</a>
-									<a
-										href="viewProDetails?id=<c:out value='${project.id}'/>">Full Details</a>
+					<th>ID</th>
+					<th>Name</th>
+					<th>Start Date</th>
+					<th>End Date</th>
+					<th>Domain</th>
+					<th>Status</th>
+					<th>Actions</th>
+				</tr>
+			</thead>
+			<tbody>
+				<c:forEach var="project" items="${projectList}">
+					<tr>
+						<td><c:out value="${project.id}" /></td>
+						<td><c:out value="${project.name}" /></td>
+						<td><c:out value="${project.startDate}" /></td>
+						<td><c:out value="${project.endDate}" /></td>
+						<td><c:out value="${project.domain}" /></td>
+						<td><c:out value="${project.status}" /></td>
+						<td>
+							<div class="dropdown">
+								<div class="dropBackground">
+									<button class="dropbtn">
+										More <i class="fa fa-caret-down"></i>
+									</button>
+									<div class="dropdown-content">
+										<a href="getProUpdated?id=<c:out value='${project.id}'/>">Edit</a>
+										<a href="deleteProject?id=<c:out value='${project.id}'/>">Delete</a>
+										<a href="viewProDetails?id=<c:out value='${project.id}'/>">Full
+											Details</a>
+									</div>
 								</div>
 							</div>
-						</div>
-					</td>
-				</tr>
-			</c:forEach>
-		</tbody>
-	</table>
-	<div class="back">
-		<input type="button" value="Back" onclick="history.back()">
-	</div>
+						</td>
+					</tr>
+				</c:forEach>
+			</tbody>
+		</table>
+		<div class="back">
+			<input type="button" value="Back" onclick="history.back()">
+		</div>
+	</c:if>
 </body>
 </html>

@@ -110,6 +110,8 @@ public interface EmployeeService {
      * @param  pincode pincode given by the user
      */
     public boolean getPincodeValidated(long pincode);
+    
+    public String employeeUniqueUpdate(EmployeeDTO employee, int id, EmployeeDTO employeeDTO) throws CustomException;
 
     /**
      * To update all details of an Employee
@@ -118,6 +120,8 @@ public interface EmployeeService {
      * @return boolean, true if records are updated 
      */    
     public boolean updateAllDetails(EmployeeDTO employeeDTO) throws CustomException;
+    
+    public String employeeUniqueCreate(EmployeeDTO employeeDTO) throws CustomException;
    
     /**
      * Delete all the Records

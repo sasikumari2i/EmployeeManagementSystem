@@ -10,9 +10,9 @@ import javax.servlet.http.HttpServlet;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.ideas2it.project.exception.CustomException;
@@ -30,7 +30,7 @@ public class ProjectServlet extends HttpServlet {
 		this.projectService = projectService;
 	}
 
-	@RequestMapping("/createPro")
+	@GetMapping("/createPro")
 	public String showform(Model m) {
 		m.addAttribute("project", new ProjectDTO());
 		return "createProject";
@@ -48,7 +48,7 @@ public class ProjectServlet extends HttpServlet {
 		return "projectView";
 	}
 
-	@RequestMapping("/viewAllPro")
+	@GetMapping("/viewAllPro")
 	private String viewAllProject(Model m) {
 		try {
 			List<ProjectDTO> projectList = projectService.viewProject();
@@ -59,26 +59,27 @@ public class ProjectServlet extends HttpServlet {
 		return "ViewProject";
 	}
 
-	@RequestMapping("/viewProById")
+	@GetMapping("/viewProById")
 	private String viewProjectById(Model m, @RequestParam int id) {
 		ProjectDTO projectDTO = new ProjectDTO();
+		String response = null;
 		try {
 			if (projectService.containsProject(id)) {
 				projectDTO = projectService.viewProjectById(id);
 				m.addAttribute("project", projectDTO);
-				return "ViewProjectById";
+				response = "ViewProjectById";
 			} else {
 				boolean notAvailable = true;
 				m.addAttribute("notAvailable", notAvailable);
-				return "ViewSpecificProject";
+				response = "ViewSpecificProject";
 			}
 		} catch (CustomException e) {
 			EmployeeManagementLogger.logger.error(e);
-			return "error";
 		}
+		return response;
 	}
 
-	@RequestMapping("/viewProDetails")
+	@GetMapping("/viewProDetails")
 	private String getEmployeeAssigned(Model m, @RequestParam int id) {
 		ProjectDTO projectDTO = new ProjectDTO();
 		try {
@@ -97,7 +98,7 @@ public class ProjectServlet extends HttpServlet {
 		return "AssignEmployee";
 	}
 
-	@RequestMapping("/deleteProject")
+	@PostMapping("/deleteProject")
 	private String deleteProject(Model m, @RequestParam int id) {
 		boolean isDeleted = false;
 		boolean notDeleted = false;
@@ -115,7 +116,7 @@ public class ProjectServlet extends HttpServlet {
 		return "ViewProjectDetails";
 	}
 
-	@RequestMapping("/getProUpdated")
+	@GetMapping("/getProUpdated")
 	private String updateProject(Model m, @RequestParam int id) {
 		ProjectDTO projectDTO = new ProjectDTO();
 		try {
@@ -149,7 +150,7 @@ public class ProjectServlet extends HttpServlet {
 		return "ViewProjectDetails";
 	}
 
-	@RequestMapping("/assignEmployee")
+	@PostMapping("/assignEmployee")
 	private String assignProject(@ModelAttribute("selected") String[] selected, Model m, @RequestParam int id,
 			BindingResult result) {
 		try {
@@ -175,7 +176,7 @@ public class ProjectServlet extends HttpServlet {
 		return "ViewProjectDetails";
 	}
 
-	@RequestMapping("/unAssignEmployee")
+	@PostMapping("/unAssignEmployee")
 	private String unAssignProject(@ModelAttribute("selected") String[] selected, Model m, @RequestParam int id,
 			BindingResult result) {
 		try {

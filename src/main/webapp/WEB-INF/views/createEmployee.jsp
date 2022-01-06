@@ -5,8 +5,8 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <html>
-<link rel="stylesheet" type="text/css" href="/resources/css/style.css">
 <head>
+<link rel="stylesheet" href="style.css">
 <meta charset="UTF-8">
 <title>Create Employee</title>
 </head>
@@ -52,7 +52,7 @@
 		<spring:bind path="employee.dob">
 			<td>DOB :</td>
 			<td><input type="date" name="dob" min="1961-01-01"
-				max="2003-01-01" required="required" /></td>
+				max="2003-01-01" value="<c:out value='${employee.dob}'/>" required="required" /></td>
 		</spring:bind>
 		<c:if test="${notValidDob == true}">
 			<p>Age should be between 18 to 60</p>

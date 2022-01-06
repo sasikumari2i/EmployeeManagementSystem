@@ -163,6 +163,44 @@ public class EmployeeServiceImpl implements EmployeeService {
 		return (null != employeeDAO.updateEmployee(employee));
 	}
 
+	public String employeeUniqueUpdate(EmployeeDTO employee, int id, EmployeeDTO employeeDTO) throws CustomException {
+
+		boolean isDuplicateEmail = getEmployeeEmailValidated(employee.getEmail());
+		boolean isDuplicateContact = getEmployeeContactValidated(employee.getContact());
+		boolean notValidDob = getValidatedDOB(employee.getDob());
+		String duplicateString = null;
+
+		if (notValidDob) {
+			duplicateString = "notValidDob";
+		} else if (isDuplicateEmail && !(employeeDTO.getEmail().equals(employee.getEmail()))) {
+			duplicateString = "isDuplicateEmail";
+		} else if (isDuplicateContact && !(employeeDTO.getContact() == employee.getContact())) {
+			duplicateString = "isDuplicateContact";
+		} else {
+			duplicateString = null;
+		}
+		return duplicateString;
+	}
+
+	public String employeeUniqueCreate(EmployeeDTO employeeDTO) throws CustomException {
+		
+		boolean isDuplicateEmail = getEmployeeEmailValidated(employeeDTO.getEmail());
+		boolean isDuplicateContact = getEmployeeContactValidated(employeeDTO.getContact());
+		boolean notValidDob = getValidatedDOB(employeeDTO.getDob());
+		String duplicateString = null;
+		
+		if (notValidDob) {
+			duplicateString = "notValidDob";
+		} else if (isDuplicateEmail) {
+			duplicateString = "isDuplicateEmail";
+		} else if (isDuplicateContact) {
+			duplicateString = "isDuplicateContact";
+		} else {
+			duplicateString = null;
+		}
+			return duplicateString;
+    }
+
 	/**
 	 * Delete all the Records
 	 * 
@@ -197,11 +235,6 @@ public class EmployeeServiceImpl implements EmployeeService {
 		List<AddressDTO> addressList = new ArrayList<>();
 		addressList = employeeDTO.getAddress();
 		addressList.add(addressDTO);
-		int count = 1;
-		for (AddressDTO address : addressList) {
-			address.setSerialId(count);
-			count++;
-		}
 		return addressList;
 	}
 

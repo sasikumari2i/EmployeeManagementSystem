@@ -44,14 +44,6 @@
 		class="com.ideas2it.project.controller.EmployeeServlet">
 		<property name="employeeService" ref="employeeServiceImpl" />
 	</bean>
-	
-	<!-- <bean id="duplicateFilter" class="com.ideas2it.project.controller.DuplicateFilter"> 
-		<property name="employeeService" ref="employeeServiceImpl" /> </bean> -->
-
-	<!-- <bean id="updateDuplicateFilter"
-		class="com.ideas2it.project.controller.UpdateDuplicateFilter">
-		<property name="employeeService" ref="employeeServiceImpl" />
-	</bean> -->
 
 	<bean id="projectServlet"
 		class="com.ideas2it.project.controller.ProjectServlet">
@@ -60,9 +52,13 @@
 
 	<bean id="viewResolver"
 		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="prefix" value="/WEB-INF/views/">
+		</property>
 		<property name="suffix" value=".jsp">
 		</property>
 	</bean>
-	<mvc:resources mapping="/resources/**" location="/resources/css/" />
+	<mvc:resources mapping="/**"
+		location="/WEB-INF/views/" />
+	<!-- <mvc:resources mapping="/resources/**" location="/resources/css/" /> -->
 	
 </beans>

@@ -24,7 +24,7 @@
 				Manage Project <i class="fa fa-caret-down"></i>
 			</button>
 			<div class="dropdown-content">
-				<a href="createProject.jsp"> Add New Project</a>
+				<a href="createPro"> Add New Project</a>
 			</div>
 		</div>
 	</div>

@@ -21,7 +21,7 @@
 		</div>
 	</div>
 	<c:choose>
-		<c:when test="${isDeleted == true}">
+		<c:when test="${isRemoved == true}">
 			<p>Removed Successfully</p>
 		</c:when>
 		<c:when test="${isMerged == true}">
@@ -34,7 +34,7 @@
 			<p>UnAssigned Successfully</p>
 		</c:when>
 		<c:when
-			test="${notUnAssigned == true || notDeleted == true || notMerged == true || notAssigned == true}">
+			test="${notUnAssigned == true || notRemoved == true || notMerged == true || notAssigned == true}">
 			<p>Something Went wrong try again!!</p>
 		</c:when>
 	</c:choose>
