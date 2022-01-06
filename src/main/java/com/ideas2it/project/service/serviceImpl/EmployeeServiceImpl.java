@@ -29,10 +29,16 @@ public class EmployeeServiceImpl implements EmployeeService {
 	private EmployeeDAO employeeDAO;
 	private ProjectService projectService;
 
+	/**
+	 * Setter method for EmployeeDAO
+	 */
 	public void setEmployeeDAO(EmployeeDAO employeeDAO) {
 		this.employeeDAO = employeeDAO;
 	}
 
+	/**
+	 * Setter method for ProjectService
+	 */
 	public void setProjectService(ProjectService projectService) {
 		this.projectService = projectService;
 	}
@@ -163,8 +169,17 @@ public class EmployeeServiceImpl implements EmployeeService {
 		return (null != employeeDAO.updateEmployee(employee));
 	}
 
-	public String employeeUniqueUpdate(EmployeeDTO employee, int id, EmployeeDTO employeeDTO) throws CustomException {
-
+	/**
+	 * To validate whether date of birth, contact number and email id is unique to
+	 * update Employee
+	 *
+	 * @param employeeDTO, EmployeeDTO returned for a specific employee from
+	 *                     Database for the Employee Id
+	 * @param employee,    user given employee details to update
+	 * @return String, a string if there is duplicate and null if there is no
+	 *         duplicates available
+	 */
+	public String employeeUniqueUpdate(EmployeeDTO employee, EmployeeDTO employeeDTO) throws CustomException {
 		boolean isDuplicateEmail = getEmployeeEmailValidated(employee.getEmail());
 		boolean isDuplicateContact = getEmployeeContactValidated(employee.getContact());
 		boolean notValidDob = getValidatedDOB(employee.getDob());
@@ -182,13 +197,21 @@ public class EmployeeServiceImpl implements EmployeeService {
 		return duplicateString;
 	}
 
+	/**
+	 * To validate whether date of birth, contact number and email id is unique to
+	 * create Employee
+	 *
+	 * @param employeeDTO, EmployeeDTO containing the employee details
+	 * @return String, a string if there is duplicate and null if there is no
+	 *         duplicates available
+	 */
 	public String employeeUniqueCreate(EmployeeDTO employeeDTO) throws CustomException {
-		
+
 		boolean isDuplicateEmail = getEmployeeEmailValidated(employeeDTO.getEmail());
 		boolean isDuplicateContact = getEmployeeContactValidated(employeeDTO.getContact());
 		boolean notValidDob = getValidatedDOB(employeeDTO.getDob());
 		String duplicateString = null;
-		
+
 		if (notValidDob) {
 			duplicateString = "notValidDob";
 		} else if (isDuplicateEmail) {
@@ -198,8 +221,8 @@ public class EmployeeServiceImpl implements EmployeeService {
 		} else {
 			duplicateString = null;
 		}
-			return duplicateString;
-    }
+		return duplicateString;
+	}
 
 	/**
 	 * Delete all the Records
@@ -231,6 +254,13 @@ public class EmployeeServiceImpl implements EmployeeService {
 		return (null != employeeDAO.updateEmployee(employee));
 	}
 
+	/**
+	 * Adds the Address given from the user
+	 * 
+	 * @param employeeDTO, EmployeeDTO for adding address
+	 * @param addressDTO,  Address to be added for the employee
+	 * @return boolean, true if employee address is deleted
+	 */
 	public List<AddressDTO> addAddress(EmployeeDTO employeeDTO, AddressDTO addressDTO) {
 		List<AddressDTO> addressList = new ArrayList<>();
 		addressList = employeeDTO.getAddress();

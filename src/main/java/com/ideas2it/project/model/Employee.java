@@ -4,16 +4,12 @@
 package com.ideas2it.project.model;
 
 import java.time.LocalDate;
-import java.sql.Date;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 import org.springframework.format.annotation.DateTimeFormat;
-
-import java.util.HashSet;
-
-import com.ideas2it.project.model.Address;
 	
 /**
  * Employee Management System model class

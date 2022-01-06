@@ -4,15 +4,12 @@
 package com.ideas2it.project.model.dto;
 
 import java.time.LocalDate;
-import java.sql.Date;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.springframework.format.annotation.DateTimeFormat;
-
-import com.ideas2it.project.model.Address;
 
 /**
  * Data Transfer Object for the Employee Management System

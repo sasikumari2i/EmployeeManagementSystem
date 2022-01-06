@@ -3,36 +3,16 @@
  */
 package com.ideas2it.project.service;
 
-import java.text.ParseException;
 import java.time.LocalDate;
-import java.time.LocalDate;
-import java.time.Period;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.List;
-import java.util.Set;
-import java.util.HashSet;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
-import com.ideas2it.project.dao.daoImpl.ProjectDAOImpl;
-import com.ideas2it.project.model.Address;
-import com.ideas2it.project.model.dto.EmployeeDTO;
-import com.ideas2it.project.model.dto.AddressDTO;
-import com.ideas2it.project.model.Employee;
-import com.ideas2it.project.service.EmployeeService;
-import com.ideas2it.project.utils.EmployeeMapper;
-import com.ideas2it.project.utils.ProjectMapper;
-import com.ideas2it.project.model.dto.ProjectDTO;
-import com.ideas2it.project.model.Project;
-import com.ideas2it.project.service.serviceImpl.EmployeeServiceImpl;
-import com.ideas2it.project.service.ProjectService;
 import com.ideas2it.project.exception.CustomException;
+import com.ideas2it.project.model.dto.EmployeeDTO;
+import com.ideas2it.project.model.dto.ProjectDTO;
 
 
 /**
- * Performs the business logic for the Employee Management System
+ * Performs the business logic for the Project Management System
  *
  * @version	1.0
  * @author	Sasikumar Raju
@@ -48,109 +28,109 @@ public interface ProjectService {
     public boolean getChoiceValidated(int inputChoice); 
    
     /**
-     * To validate the given Employee ID in correct format using regex
+     * To validate the given Project ID in correct format using regex
      *
      * @return boolean, true if Id is valid 
-     * @param  employeeId
+     * @param  projectId
      */
     public boolean getProjectIdValidated(int projectId);
 
     /**
-     * To validate the given Employee Name in correct format using regex
+     * To validate the given Project Name in correct format using regex
      *
      * @return boolean, true if Name is valid 
-     * @param  employeeName
+     * @param  projectName
      */
     public boolean getProjectNameValidated(String projectName);
 
     /**
-     * To validate the given Employee Name in correct format using regex
+     * To validate the given domain Name in correct format using regex
      *
      * @return boolean, true if Name is valid 
-     * @param  employeeName
+     * @param  domain
      */
     public boolean getProjectDomainValidated(String domain);
 
     /**
-     * To validate the given Employee Contact in correct format using regex
+     * To validate the given startDate of the project is valid
      *
-     * @return boolean, true if date of birth is valid 
-     * @param  employeeContact
+     * @return boolean, true if startDate is valid 
+     * @param  startDate
      */
     public boolean getValidatedStartDate(LocalDate startDate);
 
     /**
-     * To validate the given Employee Contact in correct format using regex
+     * To validate the given endDate of the project is valid
      *
-     * @return boolean, true if date of birth is valid 
-     * @param  employeeContact
+     * @return boolean, true if endDate is valid 
+     * @param  endDate
      */
     public boolean getValidatedEndDate(LocalDate endDate);    
 
     /**
-     * To update all details of an Employee
+     * To update all details of an Project
      *
-     * @param addressDTO, AddressDTO containing the employee details
+     * @param projectDTO, ProjectDTO containing the Project details
      * @return boolean, true if records are updated 
      */    
     public boolean updateAllDetails(ProjectDTO projectDTO) throws CustomException;
    
     /**
      * Delete all the Records
-     * @return boolean, true if no employee records available
+     * @return boolean, true if no project records available
      */
     public boolean deleteAllProject() throws CustomException;
 
     /**
-     * Delete the Records of given Employee Id
+     * Delete the Records of given Project Id
      * 
-     * @param employeeId, ID of the user
-     * @return boolean, true if employee detail is deleted 
+     * @param projectId, ID of the project
+     * @return boolean, true if project detail is deleted 
      */
     public boolean deleteProjectById(int projectId) throws CustomException;
 
     /**
-     * Check the Records whether it contains given Employee Id
+     * Check the Records whether it contains given Project Id
      * 
-     * @param employeeId, ID of the user
-     * @return boolean, true if employee detail is available
+     * @param projectId, ID of the Project
+     * @return boolean, true if project detail is available
      */
     public boolean containsProject(int projectId) throws CustomException;
 
     /**
-     * View the Records of given Employee Id
+     * View the Records of given Project Id
      * 
-     * @param employeeId, ID of the user
-     * @return employeeDTO of the Employee through EmployeeMapper class
+     * @param projectId, ID of the Project
+     * @return ProjectDTO of the Project 
      */
     public ProjectDTO viewProjectById(int projectId) throws CustomException;
 
     /**
      * View all the Records
      *
-     * @return List<EmployeeDTO>, List of employee using EmployeeMapper class 
+     * @return List<ProjectDTO>, List of project 
      */
     public List<ProjectDTO> viewProject() throws CustomException;
 
     /**
-     * To check the if project details available for the ID
+     * To check the if employee details available for the ID
      * 
-     * @param projectId, ID of the Project
-     * @return boolean, true if Project is available 
+     * @param employeeId, ID of the Employee
+     * @return boolean, true if Employee is available 
      */
     public boolean containsEmployee(int employeeId) throws CustomException;
 
     /**
-     * View All the project details
+     * View All the employee details
      *
-     * @return List<ProjectDTO>, list of project details
+     * @return List<EmployeeDTO>, list of employee details
      */
     public List<EmployeeDTO> viewAllEmployee() throws CustomException;
 
     /**
-     * View project details of the given project Id
+     * View employee details of the given employeeId
      *
-     * @return ProjectDTO, retrived Project
+     * @return EmployeeDTO, retrieved Project
      */
     public EmployeeDTO viewEmployeeById(int employeeId) throws CustomException;
 
@@ -162,9 +142,9 @@ public interface ProjectService {
     public boolean isRecordsAvailable() throws CustomException;
 
     /**
-     * Create and store new Employee
+     * Create and store new Project
      *
-     * @param employeeDTO, EmployeeDTO containing Employee details
+     * @param ProjectDTO, ProjectDTO containing Employee details
      * @return boolean, true if null is return from projects
      */
     public boolean createProject(ProjectDTO projectDTO) throws CustomException;

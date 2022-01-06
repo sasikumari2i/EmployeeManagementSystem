@@ -139,22 +139,12 @@
 					</tr>
 				</c:forEach>
 			</table>
-			<%
-			String s[] = request.getParameterValues("selected");
-			if (s != null && s.length != 0) {
-			%>
 			<div class="back">
 				<input type="submit" value="Assign" />
 			</div>
-			<%
-			} else {
-			%>
 			<div class="back">
 				<input type="submit" value="Assign" disabled />
 			</div>
-			<%
-			}
-			%>
 		</form>
 		<br>
 	</c:if>

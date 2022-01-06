@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@taglib uri = "http://www.springframework.org/tags/form" prefix = "form"%>
+<%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -64,12 +64,10 @@
 										More <i class="fa fa-caret-down"></i>
 									</button>
 									<div class="dropdown-content">
-										<a
-											href="viewEmpDetails?id=<c:out value='${employee.id}'/>">View
+										<a href="viewEmpDetails?id=<c:out value='${employee.id}'/>">View
 											Details</a> <a
 											href="getEmpUpdated?id=<c:out value='${employee.id}'/>">Edit</a>
-										<a
-											href="deleteEmployee?id=<c:out value='${employee.id}'/>">Delete</a>
+										<a href="deleteEmployee?id=<c:out value='${employee.id}'/>">Delete</a>
 									</div>
 								</div>
 							</div>

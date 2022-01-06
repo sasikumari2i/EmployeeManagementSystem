@@ -180,11 +180,9 @@ public class ProjectServlet extends HttpServlet {
 	private String unAssignProject(@ModelAttribute("selected") String[] selected, Model m, @RequestParam int id,
 			BindingResult result) {
 		try {
-
 			ProjectDTO projectDTO = projectService.viewProjectById(id);
 			List<EmployeeDTO> availableEmployees = new ArrayList<EmployeeDTO>(projectDTO.getEmployees());
 			List<EmployeeDTO> employeeList = new ArrayList<EmployeeDTO>();
-
 			for (String employeeId : selected) {
 				EmployeeDTO employeeDTO = projectService.viewEmployeeById(Integer.parseInt(employeeId));
 				employeeList.add(employeeDTO);

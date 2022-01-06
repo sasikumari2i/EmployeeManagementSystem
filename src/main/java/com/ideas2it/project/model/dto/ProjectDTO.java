@@ -4,17 +4,13 @@
 package com.ideas2it.project.model.dto;
 
 import java.time.LocalDate;
-import java.sql.Date;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Set;
 
 import org.springframework.format.annotation.DateTimeFormat;
-
-import java.util.HashSet;
 	
 /**
- * Employee Management System model class
+ * Employee Management System ProjectDTO model class
  * 
  * @version	1.0
  * @author	Sasikumar Raju
@@ -39,7 +35,7 @@ public class ProjectDTO {
     }
 
     /**
-     * Employee getters and setters
+     * ProjectDTO getters and setters
      */ 
     public int getId() {
         return id;

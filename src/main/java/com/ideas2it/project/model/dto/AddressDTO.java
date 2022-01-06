@@ -4,7 +4,7 @@
 package com.ideas2it.project.model.dto;
 
 /**
- * Employee Address model class
+ * Employee Management System AddressDTO model class
  * 
  * @version 1.0
  * @author Sasikumar Raju
@@ -31,6 +31,9 @@ public class AddressDTO {
 		this.pincode = pincode;
 	}
 
+	/**
+     * AddressDTO getters and setters
+     */
 	public int getAddressId() {
 		return addressId;
 	}

@@ -31,8 +31,7 @@
 		</div>
 	</div>
 	<c:if test="${employeeId == null}">
-		<c:if
-			test="${(null == employee.name) || isDuplicate}">
+		<c:if test="${(null == employee.name) || isDuplicate}">
 			<form method="post" action="saveEmp">Create Employee
 		</c:if>
 		<c:if test="${null != employee.name}">
@@ -52,7 +51,8 @@
 		<spring:bind path="employee.dob">
 			<td>DOB :</td>
 			<td><input type="date" name="dob" min="1961-01-01"
-				max="2003-01-01" value="<c:out value='${employee.dob}'/>" required="required" /></td>
+				max="2003-01-01" value="<c:out value='${employee.dob}'/>"
+				required="required" /></td>
 		</spring:bind>
 		<c:if test="${notValidDob == true}">
 			<p>Age should be between 18 to 60</p>

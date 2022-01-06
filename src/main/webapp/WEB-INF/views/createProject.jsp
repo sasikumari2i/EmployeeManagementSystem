@@ -40,10 +40,6 @@
 			<input type="hidden" name="id"
 				value="<c:out value='${project.id}' />" />
 	</c:if>
-	<!--<c:if test="${projectDTO != null}">
-		<input type="hidden" name="id"
-			value="<c:out value='${projectDTO.id}' />" />
-	</c:if> -->
 	<div class="formSpacing">
 		<spring:bind path="project.name">
 			<td>Name :</td>

@@ -7,7 +7,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;	
 	
 /**
- * Employee Management System model class
+ * Employee Management System Logger class
  * 
  * @version	1.0
  * @author	Sasikumar Raju

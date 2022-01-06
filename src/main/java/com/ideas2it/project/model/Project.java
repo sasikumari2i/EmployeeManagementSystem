@@ -4,19 +4,13 @@
 package com.ideas2it.project.model;
 
 import java.time.LocalDate;
-import java.sql.Date;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Set;
 
 import org.springframework.format.annotation.DateTimeFormat;
-
-import java.util.HashSet;
-
-import com.ideas2it.project.model.Address;
 	
 /**
- * Employee Management System model class
+ * Employee Management System Project model class
  * 
  * @version	1.0
  * @author	Sasikumar Raju
@@ -35,7 +29,7 @@ public class Project {
     public Project() {}
 
     /**
-     * Employee getters and setters
+     * Project getters and setters
      */ 
     public int getId() {
         return id;

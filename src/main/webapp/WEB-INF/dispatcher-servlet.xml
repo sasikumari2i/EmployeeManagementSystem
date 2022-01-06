@@ -7,16 +7,6 @@
                         http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd
                         http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd">
 
-    <!-- <mvc:interceptors>
-		<mvc:interceptor>
-			<mvc:mapping path="/saveEmp" />
-			<bean
-				class="com.ideas2it.project.interceptors.DuplicateInterceptors">
-				<property name="employeeService" ref="employeeServiceImpl" />
-			</bean>
-		</mvc:interceptor>
-	</mvc:interceptors> -->
-
 	<context:component-scan
 		base-package="com.ideas2it.project.controller"></context:component-scan>
 	<mvc:annotation-driven />
@@ -57,8 +47,5 @@
 		<property name="suffix" value=".jsp">
 		</property>
 	</bean>
-	<mvc:resources mapping="/**"
-		location="/WEB-INF/views/" />
-	<!-- <mvc:resources mapping="/resources/**" location="/resources/css/" /> -->
-	
+	<mvc:resources mapping="/**" location="/WEB-INF/views/" />
 </beans>

@@ -50,15 +50,6 @@ public class EmployeeServlet extends HttpServlet {
 				model.addAttribute("employee", employeeDTO);
 				model.addAttribute("address", addressDTO);
 				response = "createEmployee";
-				/*
-				 * if (isDuplicateEmail || isDuplicateContact || notValidDob) { boolean
-				 * isDuplicate = true; model.addAttribute("isDuplicate", isDuplicate);
-				 * model.addAttribute("isDuplicateEmail", isDuplicateEmail);
-				 * model.addAttribute("isDuplicateContact", isDuplicateContact);
-				 * model.addAttribute("notValidDob", notValidDob);
-				 * model.addAttribute("employee", employeeDTO); model.addAttribute("address",
-				 * addressDTO); response = "createEmployee";
-				 */
 			} else {
 				isCreated = employeeService.createEmployee(employeeDTO);
 				model.addAttribute("isCreated", isCreated);
@@ -79,31 +70,14 @@ public class EmployeeServlet extends HttpServlet {
 		String response = null;
 
 		try {
-			// boolean isDuplicateEmail =
-			// employeeService.getEmployeeEmailValidated(employee.getEmail());
-			// boolean isDuplicateContact =
-			// employeeService.getEmployeeContactValidated(employee.getContact());
-			// boolean notValidDob = employeeService.getValidatedDOB(employee.getDob());
 			EmployeeDTO employeeDTO = employeeService.viewEmployeeById(id);
 			employee.setAddress(employeeDTO.getAddress());
-			String duplicateString = employeeService.employeeUniqueUpdate(employee, id, employeeDTO);
+			String duplicateString = employeeService.employeeUniqueUpdate(employee, employeeDTO);
 			if (null != duplicateString) {
 				boolean isDuplicate = true;
 				model.addAttribute(duplicateString, isDuplicate);
 				model.addAttribute("employee", employee);
 				response = "createEmployee";
-				/*
-				 * if (notValidDob) { model.addAttribute("notValidDob", notValidDob);
-				 * model.addAttribute("employee", employee); response = "createEmployee"; } else
-				 * if (isDuplicateEmail &&
-				 * !(employeeDTO.getEmail().equals(employee.getEmail()))) {
-				 * model.addAttribute("isDuplicateEmail", isDuplicateEmail);
-				 * model.addAttribute("employee", employee); response = "createEmployee"; } else
-				 * if (isDuplicateContact && !(employeeDTO.getContact() ==
-				 * employee.getContact())) { model.addAttribute("isDuplicateContact",
-				 * isDuplicateContact); model.addAttribute("employee", employee); response =
-				 * "createEmployee";
-				 */
 			} else {
 				isUpdated = employeeService.updateAllDetails(employee);
 				if (isUpdated) {
@@ -115,7 +89,6 @@ public class EmployeeServlet extends HttpServlet {
 				}
 				response = "ViewEmployeeDetails";
 			}
-
 		} catch (CustomException e) {
 			EmployeeManagementLogger.logger.error(e);
 		}
