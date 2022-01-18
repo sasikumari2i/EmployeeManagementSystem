@@ -4,13 +4,12 @@
 package com.ideas2it.project.model;
 
 import java.time.LocalDate;
-import java.sql.Date;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.HashSet;
 
-import com.ideas2it.project.model.Address;
+import org.springframework.format.annotation.DateTimeFormat;
 	
 /**
  * Employee Management System model class
@@ -24,6 +23,7 @@ public class Employee {
     private float salary;
     private String name;
     private String email;
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private LocalDate dob;
     private List<Address> address = new ArrayList<Address>();
     private Set<Project> projects = new HashSet<>();

@@ -3,25 +3,13 @@
  */
 package com.ideas2it.project.service;
 
-import java.text.ParseException;
 import java.time.LocalDate;
-import java.time.LocalDate;
-import java.time.Period;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
-import com.ideas2it.project.dao.daoImpl.EmployeeDAOImpl;
-import com.ideas2it.project.model.Address;
-import com.ideas2it.project.model.dto.EmployeeDTO;
-import com.ideas2it.project.model.dto.AddressDTO;
-import com.ideas2it.project.model.dto.ProjectDTO;
-import com.ideas2it.project.model.Employee;
-import com.ideas2it.project.utils.EmployeeMapper;
 import com.ideas2it.project.exception.CustomException;
+import com.ideas2it.project.model.dto.AddressDTO;
+import com.ideas2it.project.model.dto.EmployeeDTO;
+import com.ideas2it.project.model.dto.ProjectDTO;
 
 /**
  * Interface to perform business logic for the employee management system
@@ -112,12 +100,29 @@ public interface EmployeeService {
     public boolean getPincodeValidated(long pincode);
 
     /**
+     * To validate whether date of birth, contact number and email id is unique to update Employee
+     *
+     * @param employeeDTO, EmployeeDTO returned for a specific employee from Database for the Employee Id
+     * @param employee, user given employee details to update
+     * @return String, a string if there is duplicate and null if there is no duplicates available 
+     */
+    public String employeeUniqueUpdate(EmployeeDTO employee, EmployeeDTO employeeDTO) throws CustomException;
+
+    /**
      * To update all details of an Employee
      *
      * @param addressDTO, AddressDTO containing the employee details
      * @return boolean, true if records are updated 
      */    
     public boolean updateAllDetails(EmployeeDTO employeeDTO) throws CustomException;
+    
+    /**
+     * To validate whether date of birth, contact number and email id is unique to create Employee
+     *
+     * @param employeeDTO, EmployeeDTO containing the employee details
+     * @return String, a string if there is duplicate and null if there is no duplicates available 
+     */
+    public String employeeUniqueCreate(EmployeeDTO employeeDTO) throws CustomException;
    
     /**
      * Delete all the Records
@@ -141,7 +146,13 @@ public interface EmployeeService {
      */
     public boolean deleteAddress(EmployeeDTO employeeDTO) throws CustomException;
     
-    
+    /**
+	 * Adds the Address given from the user
+	 * 
+	 * @param employeeDTO, EmployeeDTO for adding address
+	 * @param addressDTO, Address to be added for the employee
+	 * @return boolean, true if employee address is deleted
+	 */
     public List<AddressDTO> addAddress(EmployeeDTO employeeDTO, AddressDTO addressDTO);
 
     /**

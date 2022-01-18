@@ -5,8 +5,8 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<link rel="stylesheet" href="style.css">
 <title>Insert title here</title>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
 	<div class="navbar">
@@ -16,46 +16,46 @@
 				Go To <i class="fa fa-caret-down"></i>
 			</button>
 			<div class="dropdown-content">
-				<a href="projectView.jsp">Projects</a>
+				<a href="employeeView.jsp">Employees</a>
 			</div>
 		</div>
 		<div class="dropdown">
 			<button class="dropbtn">
-				Manage Employee <i class="fa fa-caret-down"></i>
+				Manage Project <i class="fa fa-caret-down"></i>
 			</button>
 			<div class="dropdown-content">
-				<a href="createEmployee.jsp"> Add New Employee</a>
+				<a href="createPro"> Add New Project</a>
 			</div>
 		</div>
 	</div>
 	<br>
-	<h3>Employee List</h3>
+	<h3>Project List</h3>
 	<br>
-	<c:if test="${employeeList.isEmpty()}">
-		<p>No Employees Available!!</p>
+	<c:if test="${projectList.isEmpty()}">
+		<p>No Projects Available!!</p>
 	</c:if>
-	<c:if test="${!employeeList.isEmpty()}">
+	<c:if test="${!projectList.isEmpty()}">
 		<table border="1">
 			<thead>
 				<tr>
 					<th>ID</th>
 					<th>Name</th>
-					<th>DOB</th>
-					<th>salary</th>
-					<th>Email</th>
-					<th>Contact</th>
+					<th>Start Date</th>
+					<th>End Date</th>
+					<th>Domain</th>
+					<th>Status</th>
 					<th>Actions</th>
 				</tr>
 			</thead>
 			<tbody>
-				<c:forEach var="employee" items="${employeeList}">
+				<c:forEach var="project" items="${projectList}">
 					<tr>
-						<td><c:out value="${employee.id}" /></td>
-						<td><c:out value="${employee.name}" /></td>
-						<td><c:out value="${employee.dob}" /></td>
-						<td><c:out value="${employee.salary}" /></td>
-						<td><c:out value="${employee.email}" /></td>
-						<td><c:out value="${employee.contact}" /></td>
+						<td><c:out value="${project.id}" /></td>
+						<td><c:out value="${project.name}" /></td>
+						<td><c:out value="${project.startDate}" /></td>
+						<td><c:out value="${project.endDate}" /></td>
+						<td><c:out value="${project.domain}" /></td>
+						<td><c:out value="${project.status}" /></td>
 						<td>
 							<div class="dropdown">
 								<div class="dropBackground">
@@ -63,12 +63,10 @@
 										More <i class="fa fa-caret-down"></i>
 									</button>
 									<div class="dropdown-content">
-										<a
-											href="EmployeeServlet?id=<c:out value='${employee.id}'/>&servletId=10">View
-											Details</a> <a
-											href="EmployeeServlet?id=<c:out value='${employee.id}'/>&servletId=13">Edit</a>
-										<a
-											href="EmployeeServlet?id=<c:out value='${employee.id}'/>&servletId=12">Delete</a>
+										<a href="getProUpdated?id=<c:out value='${project.id}'/>">Edit</a>
+										<a href="deleteProject?id=<c:out value='${project.id}'/>">Delete</a>
+										<a href="viewProDetails?id=<c:out value='${project.id}'/>">Full
+											Details</a>
 									</div>
 								</div>
 							</div>

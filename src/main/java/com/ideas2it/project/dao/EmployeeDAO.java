@@ -3,16 +3,10 @@
  */
 package com.ideas2it.project.dao;
 
-import java.sql.Date;
-import java.sql.SQLException;
-import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
-import com.ideas2it.project.model.Address;
-import com.ideas2it.project.model.Employee;
-import com.ideas2it.project.utils.DatabaseConnection;
 import com.ideas2it.project.exception.CustomException;
+import com.ideas2it.project.model.Employee;
 
 /**
  * Interface to provide methods to interact with the database

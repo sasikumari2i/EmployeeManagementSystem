@@ -12,7 +12,6 @@ import org.hibernate.Transaction;
 
 import com.ideas2it.project.dao.ProjectDAO;
 import com.ideas2it.project.exception.CustomException;
-import com.ideas2it.project.model.Employee;
 import com.ideas2it.project.model.Project;
 import com.ideas2it.project.utils.DatabaseConnection;
 
@@ -25,21 +24,19 @@ import com.ideas2it.project.utils.DatabaseConnection;
 public class ProjectDAOImpl implements ProjectDAO {
 
 	/**
-	 * Inserts new employee details to the database
+	 * Inserts new Project details to the database
 	 *
-	 * @return Employee, employee which is inserted
-	 * @param Employee, Employee to be inserted
+	 * @return Project, Project which is inserted
+	 * @param Project, Project to be inserted
 	 */
 	public Project createProject(Project project) throws CustomException {
 		Session session = null;
 		Transaction transaction = null;
 		int projectID = 0;
-
 		try {
 			session = DatabaseConnection.getSession();
 			transaction = session.beginTransaction();
 			projectID = (Integer) session.save(project);
-			project.setId(project.getId());
 			transaction.commit();
 		} catch (HibernateException e) {
 			if (transaction != null) {
@@ -53,20 +50,17 @@ public class ProjectDAOImpl implements ProjectDAO {
 	}
 
 	/**
-	 * Update the employee details of an employee
+	 * Update the Project details of an Project
 	 *
-	 * @return Employee, returns the updated employee
-	 * @param Employee, Employee to be updated
+	 * @return Project, returns the updated Project
+	 * @param Project, Project to be updated
 	 */
 	public Project updateProject(Project project) throws CustomException {
 		Session session = null;
 		Transaction transaction = null;
-		// int projectID = 0;
-
 		try {
 			session = DatabaseConnection.getSession();
 			transaction = session.beginTransaction();
-			// projectID = project.getId();
 			session.update(project);
 			transaction.commit();
 		} catch (HibernateException e) {
@@ -81,10 +75,10 @@ public class ProjectDAOImpl implements ProjectDAO {
 	}
 
 	/**
-	 * Deletes the given employee from the database
+	 * Deletes the given Project from the database
 	 *
-	 * @return Employee, returns the employee deleted
-	 * @param employeeId, employeeId of the employee to be deleted
+	 * @return Project, returns the Project deleted
+	 * @param projectId, projectId of the Project to be deleted
 	 */
 	public Project deleteProjectById(int projectId) throws CustomException {
 		Session session = null;
@@ -109,10 +103,10 @@ public class ProjectDAOImpl implements ProjectDAO {
 	}
 
 	/**
-	 * Retrieves the record from the EmployeeId given from the user
+	 * Retrieves the record from the projectId given from the user
 	 *
-	 * @return Employee, returns employee details
-	 * @param employeeId, Employee Id used to retrieve employee
+	 * @return Project, returns Project details
+	 * @param projectId, Project Id used to retrieve Project
 	 */
 	public Project viewProjectById(int projectId) throws CustomException {
 		Session session = null;
@@ -134,14 +128,13 @@ public class ProjectDAOImpl implements ProjectDAO {
 	/**
 	 * Retrieves List of all the the records
 	 *
-	 * @return List<Employee>, returns all the employee details
+	 * @return List<Project>, returns all the Project details
 	 */
 	public List<Project> viewProject() throws CustomException {
 		Session session = null;
 		List<Project> projects = null;
 		StringBuilder query = new StringBuilder("SELECT DISTINCT p FROM ");
 		query.append("Project p LEFT JOIN FETCH p.employees e ");
-
 		try {
 			session = DatabaseConnection.getSession();
 			projects = session.createQuery(query.toString()).getResultList();

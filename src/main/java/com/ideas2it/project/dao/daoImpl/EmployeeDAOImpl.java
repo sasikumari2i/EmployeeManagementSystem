@@ -5,12 +5,10 @@ package com.ideas2it.project.dao.daoImpl;
 
 import java.util.List;
 
-import org.hibernate.Criteria;
 import org.hibernate.Hibernate;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-import org.hibernate.criterion.Restrictions;
 
 import com.ideas2it.project.dao.EmployeeDAO;
 import com.ideas2it.project.exception.CustomException;
@@ -63,7 +61,6 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 	public Employee updateEmployee(Employee employee) throws CustomException {
 		Session session = null;
 		Transaction transaction = null;
-
 		try {
 			session = DatabaseConnection.getSession();
 			transaction = session.beginTransaction();
@@ -90,7 +87,6 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 		Session session = null;
 		Transaction transaction = null;
 		Employee employee = null;
-
 		try {
 			session = DatabaseConnection.getSession();
 			transaction = session.beginTransaction();
@@ -117,17 +113,9 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 	public Employee containsEmployeeContact(String employeeContact) throws CustomException {
 		Session session = null;
 		Employee employee = null;
-		// Long contact = Long.parseLong(employeeContact);
-		// StringBuilder query = new StringBuilder("select e from Employee e ")
-		// .append("left join fetch e.address a left join fetch ")
-		// .append("e.projects P WHERE e.contact = '" + employeeContact + "'");
 		StringBuilder query = new StringBuilder("select e from Employee e where e.contact = '" + employeeContact + "'");
 		try {
 			session = DatabaseConnection.getSession();
-			// Criteria criteria =
-			// session.createCriteria(Employee.class).add(Restrictions.eq("contact",
-			// contact));
-			// employee = (Employee) criteria.uniqueResult();
 			employee = (Employee) session.createQuery(query.toString()).uniqueResult();
 		} catch (HibernateException e) {
 			throw new CustomException("ERROR_CODE_007");
@@ -146,16 +134,9 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 	public Employee containsEmployeeEmail(String employeeEmail) throws CustomException {
 		Session session = null;
 		Employee employee = null;
-		// StringBuilder query = new StringBuilder("select e from Employee e left")
-		// .append(" join fetch e.address a left join fetch e.projects")
-		// .append(" p WHERE e.email = '" + employeeEmail + "'");
 		StringBuilder query = new StringBuilder("select e from Employee e where e.email = '" + employeeEmail + "'");
 		try {
 			session = DatabaseConnection.getSession();
-			// Criteria criteria =
-			// session.createCriteria(Employee.class).add(Restrictions.eq("email",
-			// employeeEmail));
-			// employee = (Employee) criteria.uniqueResult();
 			employee = (Employee) session.createQuery(query.toString()).uniqueResult();
 		} catch (HibernateException e) {
 			throw new CustomException("ERROR_CODE_008");
@@ -174,20 +155,13 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 	public Employee viewEmployeeById(int employeeId) throws CustomException {
 		Session session = null;
 		Employee employee = new Employee();
-		// StringBuilder query = new StringBuilder("select e from Employee e left")
-		// .append(" join fetch e.address a left join fetch ")
-		// .append("e.projects p where e.id ='" + employeeId +"'");
-
 		try {
 			session = DatabaseConnection.getSession();
-			// transaction = session.beginTransaction();
 			employee = (Employee) session.get(Employee.class, employeeId);
 			if (null != employee) {
 				Hibernate.initialize(employee.getAddress());
 				Hibernate.initialize(employee.getProjects());
 			}
-			// employee = (Employee)session.createQuery(query.toString())
-			// .uniqueResult();
 		} catch (HibernateException e) {
 			throw new CustomException("ERROR_CODE_002");
 		} finally {

@@ -4,28 +4,19 @@
 	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/j2ee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
 	id="WebApp_ID" version="4.0">
 	<display-name>EmployeeManagement</display-name>
-	<welcome-file-list>
-		<welcome-file>index.html</welcome-file>
-		<welcome-file>index.htm</welcome-file>
-		<welcome-file>index.jsp</welcome-file>
-	</welcome-file-list>
 	<servlet>
-		<servlet-name>EmployeeServlet</servlet-name>
-		<servlet-class>com.ideas2it.project.controller.EmployeeServlet
+		<servlet-name>dispatcher</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet
 		</servlet-class>
+		<init-param>
+			<param-name>contextConfigLocation</param-name>
+			<param-value>/WEB-INF/dispatcher-servlet.xml</param-value>
+		</init-param>
+		<load-on-startup>1</load-on-startup>
 	</servlet>
 	<servlet-mapping>
-		<servlet-name>EmployeeServlet</servlet-name>
-		<url-pattern>/EmployeeServlet</url-pattern>
-	</servlet-mapping>
-	<servlet>
-		<servlet-name>ProjectServlet</servlet-name>
-		<servlet-class>com.ideas2it.project.controller.ProjectServlet
-		</servlet-class>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>ProjectServlet</servlet-name>
-		<url-pattern>/ProjectServlet</url-pattern>
+		<servlet-name>dispatcher</servlet-name>
+		<url-pattern>/</url-pattern>
 	</servlet-mapping>
 	<filter>
 		<filter-name>DuplicateFilter</filter-name>
@@ -34,7 +25,7 @@
 	</filter>
 	<filter-mapping>
 		<filter-name>DuplicateFilter</filter-name>
-		<url-pattern>/EmployeeServlet</url-pattern>
+		<url-pattern>/</url-pattern>
 	</filter-mapping>
 	<filter>
 		<filter-name>UpdateDuplicateFilter</filter-name>
@@ -43,7 +34,7 @@
 	</filter>
 	<filter-mapping>
 		<filter-name>UpdateDuplicateFilter</filter-name>
-		<url-pattern>/EmployeeServlet</url-pattern>
+		<url-pattern>/</url-pattern>
 	</filter-mapping>
 	<error-page>
 		<exception-type>java.lang.Exception</exception-type>

@@ -4,7 +4,7 @@
 package com.ideas2it.project.model;
 
 /**
- * Employee Address model class
+ * Employee Management System Address model class
  * 
  * @version	1.0
  * @author	Sasikumar Raju
@@ -23,7 +23,7 @@ public class Address {
     public Address() {}
 
     /**
-     * Employee getters and setters
+     * Address getters and setters
      */
     public int getAddressId() {
         return addressId;

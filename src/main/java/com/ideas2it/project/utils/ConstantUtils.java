@@ -8,7 +8,7 @@ import java.util.Map;
 import java.util.HashMap;
 	
 /**
- * Employee Management System model class
+ * Employee Management System Constant values class
  * 
  * @version	1.0
  * @author	Sasikumar Raju

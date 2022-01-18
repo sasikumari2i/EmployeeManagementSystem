@@ -1,11 +1,14 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+	pageEncoding="UTF-8"
+	import="com.ideas2it.project.model.dto.EmployeeDTO,com.ideas2it.project.model.dto.AddressDTO,
+	java.util.List"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Project List</title>
+<title>Employee Details</title>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -16,53 +19,51 @@
 				Go To <i class="fa fa-caret-down"></i>
 			</button>
 			<div class="dropdown-content">
-				<a href="employeeView.jsp">Employees</a>
+				<a href="projectView.jsp">Projects</a>
 			</div>
 		</div>
 		<div class="dropdown">
 			<button class="dropbtn">
-				Manage Project <i class="fa fa-caret-down"></i>
+				Manage Employee <i class="fa fa-caret-down"></i>
 			</button>
 			<div class="dropdown-content">
-				<a href="createProject.jsp"> Add New Project</a>
+				<a href="createEmployee.jsp"> Add New Employee</a>
 			</div>
 		</div>
 	</div>
 	<br>
-	<h3>Project Details</h3>
+	<h3>Employee List</h3>
 	<br>
-	<table border="1">
+	<table width="80%" border="1">
 		<thead>
 			<tr>
 				<th>ID</th>
 				<th>Name</th>
-				<th>Start Date</th>
-				<th>End Date</th>
-				<th>Status</th>
-				<th>Domain</th>
+				<th>DOB</th>
+				<th>salary</th>
+				<th>Email</th>
+				<th>Contact</th>
 				<th>Actions</th>
 			</tr>
 		</thead>
 		<tbody>
 			<tr>
-				<td><c:out value="${project.id}" /></td>
-				<td><c:out value="${project.name}" /></td>
-				<td><c:out value="${project.startDate}" /></td>
-				<td><c:out value="${project.endDate}" /></td>
-				<td><c:out value="${project.status}" /></td>
-				<td><c:out value="${project.domain}" /></td>
+				<td><c:out value="${employee.id}" /></td>
+				<td><c:out value="${employee.name}" /></td>
+				<td><c:out value="${employee.dob}" /></td>
+				<td><c:out value="${employee.salary}" /></td>
+				<td><c:out value="${employee.email}" /></td>
+				<td><c:out value="${employee.contact}" /></td>
 				<td><div class="dropdown">
 						<div class="dropBackground">
 							<button class="dropbtn">
 								More <i class="fa fa-caret-down"></i>
 							</button>
 							<div class="dropdown-content">
-								<a
-									href="ProjectServlet?id=<c:out value='${project.id}'/>&servletId=9">Edit</a>
-								<a
-									href="ProjectServlet?id=<c:out value='${project.id}'/>&servletId=4">Delete</a>
-								<a
-									href="ProjectServlet?id=<c:out value='${project.id}'/>&servletId=2">Full Details</a>
+								<a href="viewEmpDetails?id=<c:out value='${employee.id}'/>">View
+									Details</a> <a
+									href="getEmpUpdated?id=<c:out value='${employee.id}'/>">Edit</a>
+								<a href="deleteEmployee?id=<c:out value='${employee.id}'/>">Delete</a>
 							</div>
 						</div>
 					</div></td>

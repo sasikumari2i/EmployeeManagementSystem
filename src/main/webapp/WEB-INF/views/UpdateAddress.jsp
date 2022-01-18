@@ -46,21 +46,19 @@
 		</tbody>
 	</table>
 	<p>Address List</p>
-	<a href="EmployeeServlet?id=<c:out value='${employeeId}'/>&servletId=5">Add
-		Address</a>
+	<a href="getAddress?id=<c:out value='${employeeId}'/>">Add Address</a>
 
 	<c:if test="${addressList.isEmpty()}">
 		<p>Address List is Empty !!</p>
 	</c:if>
 	<c:if test="${!addressList.isEmpty()}">
-		<form method="post" action="EmployeeServlet">
-			<input type="hidden" name="servletId" value="11"> <input
-				type="hidden" name="id" value="<c:out value='${employeeId}' />" />
+		<form method="post" action="deleteAddress">
+			<input type="hidden" name="id"
+				value="<c:out value='${employeeId}' />" />
 			<table border="1">
 				<thead>
 					<tr>
 						<th></th>
-						<th>ID</th>
 						<th>Door No</th>
 						<th>Street</th>
 						<th>Landmark</th>
@@ -72,8 +70,7 @@
 					<c:forEach var="address" items="${addressList}">
 						<tr>
 							<td><input type="checkbox" name="selected"
-								value="${address.addressId}" /></td>
-							<td>${address.serialId}</td>
+								value='${address.addressId}' /></td>
 							<td>${address.doorNo}</td>
 							<td>${address.street}</td>
 							<td>${address.landMark}</td>
@@ -89,12 +86,12 @@
 	</c:if>
 	<p>Assigned Projects</p>
 	<c:if test="${projectDTOSet.isEmpty()}">
-		<p>No Projects available to Assign !!</p>
+		<p>No Projects assigned for the employee !!</p>
 	</c:if>
 	<c:if test="${!projectDTOSet.isEmpty()}">
-		<form method="post" action="EmployeeServlet">
-			<input type="hidden" name="servletId" value='8'> <input
-				type="hidden" name="id" value="<c:out value='${employeeId}' />" />
+		<form method="post" action="unAssignProject">
+			<input type="hidden" name="id"
+				value="<c:out value='${employeeId}' />" />
 			<table border="1">
 				<thead>
 					<tr>
@@ -122,9 +119,9 @@
 		<p>No projects !!</p>
 	</c:if>
 	<c:if test="${!projectDTOList.isEmpty()}">
-		<form method="post" action="EmployeeServlet">
-			<input type="hidden" name="servletId" value='6'> <input
-				type="hidden" name="id" value="<c:out value='${employeeId}' />" />
+		<form method="post" action="assignProject">
+			<input type="hidden" name="id"
+				value="<c:out value='${employeeId}' />" />
 			<table border="1">
 				<thead>
 					<tr>
@@ -136,7 +133,7 @@
 				<c:forEach var="project" items="${projectDTOList}">
 					<tr>
 						<td><input type="checkbox" name="selected"
-							value="${project.id}" /></td>
+							value='${project.id}' /></td>
 						<td>${project.id}</td>
 						<td>${project.name}</td>
 					</tr>
@@ -144,6 +141,9 @@
 			</table>
 			<div class="back">
 				<input type="submit" value="Assign" />
+			</div>
+			<div class="back">
+				<input type="submit" value="Assign" disabled />
 			</div>
 		</form>
 		<br>

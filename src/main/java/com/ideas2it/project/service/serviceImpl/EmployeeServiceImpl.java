@@ -8,7 +8,7 @@ import java.time.Period;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.ideas2it.project.dao.daoImpl.EmployeeDAOImpl;
+import com.ideas2it.project.dao.EmployeeDAO;
 import com.ideas2it.project.exception.CustomException;
 import com.ideas2it.project.model.Employee;
 import com.ideas2it.project.model.dto.AddressDTO;
@@ -26,8 +26,22 @@ import com.ideas2it.project.utils.EmployeeMapper;
  */
 public class EmployeeServiceImpl implements EmployeeService {
 
-	private EmployeeDAOImpl dao = new EmployeeDAOImpl();
-	private ProjectService projectService = null;
+	private EmployeeDAO employeeDAO;
+	private ProjectService projectService;
+
+	/**
+	 * Setter method for EmployeeDAO
+	 */
+	public void setEmployeeDAO(EmployeeDAO employeeDAO) {
+		this.employeeDAO = employeeDAO;
+	}
+
+	/**
+	 * Setter method for ProjectService
+	 */
+	public void setProjectService(ProjectService projectService) {
+		this.projectService = projectService;
+	}
 
 	/**
 	 * To validate the given Choice in correct format using regex
@@ -84,7 +98,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 	public boolean getEmployeeEmailValidated(String employeeEmail) throws CustomException {
 		// String pattern = "[a-zA-Z0-9_\\.\\-]{3,}+[@][a-z]"
 		// + "+([\\.][a-z]{2,3})+";
-		return (null == dao.containsEmployeeEmail(employeeEmail));
+		return (null != employeeDAO.containsEmployeeEmail(employeeEmail));
 	}
 
 	/**
@@ -96,7 +110,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 	public boolean getEmployeeContactValidated(long employeeContact) throws CustomException {
 		String stringEmployeeContact = String.valueOf(employeeContact);
 		// String pattern = "[6-9][0-9]{9}";
-		return (null == dao.containsEmployeeContact(stringEmployeeContact));
+		return (null != employeeDAO.containsEmployeeContact(stringEmployeeContact));
 	}
 
 	/**
@@ -107,7 +121,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 	 */
 	public boolean getValidatedDOB(LocalDate dob) {
 		Period period = Period.between(dob, LocalDate.now());
-		return ((period.getYears() < 60) && (period.getYears() > 18));
+		return !((period.getYears() < 60) && (period.getYears() > 18));
 	}
 
 	/**
@@ -152,7 +166,62 @@ public class EmployeeServiceImpl implements EmployeeService {
 	 */
 	public boolean updateAllDetails(EmployeeDTO employeeDTO) throws CustomException {
 		Employee employee = EmployeeMapper.convertDTOToEmployee(employeeDTO);
-		return (null != dao.updateEmployee(employee));
+		return (null != employeeDAO.updateEmployee(employee));
+	}
+
+	/**
+	 * To validate whether date of birth, contact number and email id is unique to
+	 * update Employee
+	 *
+	 * @param employeeDTO, EmployeeDTO returned for a specific employee from
+	 *                     Database for the Employee Id
+	 * @param employee,    user given employee details to update
+	 * @return String, a string if there is duplicate and null if there is no
+	 *         duplicates available
+	 */
+	public String employeeUniqueUpdate(EmployeeDTO employee, EmployeeDTO employeeDTO) throws CustomException {
+		boolean isDuplicateEmail = getEmployeeEmailValidated(employee.getEmail());
+		boolean isDuplicateContact = getEmployeeContactValidated(employee.getContact());
+		boolean notValidDob = getValidatedDOB(employee.getDob());
+		String duplicateString = null;
+
+		if (notValidDob) {
+			duplicateString = "notValidDob";
+		} else if (isDuplicateEmail && !(employeeDTO.getEmail().equals(employee.getEmail()))) {
+			duplicateString = "isDuplicateEmail";
+		} else if (isDuplicateContact && !(employeeDTO.getContact() == employee.getContact())) {
+			duplicateString = "isDuplicateContact";
+		} else {
+			duplicateString = null;
+		}
+		return duplicateString;
+	}
+
+	/**
+	 * To validate whether date of birth, contact number and email id is unique to
+	 * create Employee
+	 *
+	 * @param employeeDTO, EmployeeDTO containing the employee details
+	 * @return String, a string if there is duplicate and null if there is no
+	 *         duplicates available
+	 */
+	public String employeeUniqueCreate(EmployeeDTO employeeDTO) throws CustomException {
+
+		boolean isDuplicateEmail = getEmployeeEmailValidated(employeeDTO.getEmail());
+		boolean isDuplicateContact = getEmployeeContactValidated(employeeDTO.getContact());
+		boolean notValidDob = getValidatedDOB(employeeDTO.getDob());
+		String duplicateString = null;
+
+		if (notValidDob) {
+			duplicateString = "notValidDob";
+		} else if (isDuplicateEmail) {
+			duplicateString = "isDuplicateEmail";
+		} else if (isDuplicateContact) {
+			duplicateString = "isDuplicateContact";
+		} else {
+			duplicateString = null;
+		}
+		return duplicateString;
 	}
 
 	/**
@@ -161,7 +230,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 	 * @return boolean, true if no employee records available
 	 */
 	public boolean deleteAllEmployee() throws CustomException {
-		return dao.deleteAllEmployee();
+		return employeeDAO.deleteAllEmployee();
 	}
 
 	/**
@@ -171,7 +240,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 	 * @return boolean, true if employee detail is deleted
 	 */
 	public boolean deleteEmployeeById(int employeeId) throws CustomException {
-		return (null != dao.deleteEmployeeById(employeeId));
+		return (null != employeeDAO.deleteEmployeeById(employeeId));
 	}
 
 	/**
@@ -182,18 +251,20 @@ public class EmployeeServiceImpl implements EmployeeService {
 	 */
 	public boolean deleteAddress(EmployeeDTO employeeDTO) throws CustomException {
 		Employee employee = EmployeeMapper.convertDTOToEmployee(employeeDTO);
-		return (null != dao.updateEmployee(employee));
+		return (null != employeeDAO.updateEmployee(employee));
 	}
 
+	/**
+	 * Adds the Address given from the user
+	 * 
+	 * @param employeeDTO, EmployeeDTO for adding address
+	 * @param addressDTO,  Address to be added for the employee
+	 * @return boolean, true if employee address is deleted
+	 */
 	public List<AddressDTO> addAddress(EmployeeDTO employeeDTO, AddressDTO addressDTO) {
 		List<AddressDTO> addressList = new ArrayList<>();
 		addressList = employeeDTO.getAddress();
 		addressList.add(addressDTO);
-		int count = 1;
-		for (AddressDTO address : addressList) {
-			address.setSerialId(count);
-			count++;
-		}
 		return addressList;
 	}
 
@@ -204,7 +275,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 	 * @return boolean, true if employee detail is available
 	 */
 	public boolean containsEmployee(int employeeId) throws CustomException {
-		return (null != dao.viewEmployeeById(employeeId));
+		return (null != employeeDAO.viewEmployeeById(employeeId));
 	}
 
 	/**
@@ -214,7 +285,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 	 * @return employeeDTO of the Employee through EmployeeMapper class
 	 */
 	public EmployeeDTO viewEmployeeById(int employeeId) throws CustomException {
-		return EmployeeMapper.convertEmployeeToDTO(dao.viewEmployeeById(employeeId));
+		return EmployeeMapper.convertEmployeeToDTO(employeeDAO.viewEmployeeById(employeeId));
 	}
 
 	/**
@@ -223,7 +294,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 	 * @return List<EmployeeDTO>, List of employee using EmployeeMapper class
 	 */
 	public List<EmployeeDTO> viewEmployee() throws CustomException {
-		List<Employee> employeeDetails = dao.viewEmployee();
+		List<Employee> employeeDetails = employeeDAO.viewEmployee();
 		List<EmployeeDTO> viewList = new ArrayList<>();
 		for (Employee employee : employeeDetails) {
 			viewList.add(EmployeeMapper.convertEmployeeToDTO(employee));
@@ -238,7 +309,6 @@ public class EmployeeServiceImpl implements EmployeeService {
 	 * @return boolean, true if Project is available
 	 */
 	public boolean containsProject(int projectId) throws CustomException {
-		projectService = new ProjectServiceImpl();
 		return projectService.containsProject(projectId);
 	}
 
@@ -248,7 +318,6 @@ public class EmployeeServiceImpl implements EmployeeService {
 	 * @return List<ProjectDTO>, list of project details
 	 */
 	public List<ProjectDTO> viewAllProject() throws CustomException {
-		projectService = new ProjectServiceImpl();
 		List<ProjectDTO> projectDTOList = projectService.viewProject();
 		return projectDTOList;
 	}
@@ -259,7 +328,6 @@ public class EmployeeServiceImpl implements EmployeeService {
 	 * @return ProjectDTO, retrived Project
 	 */
 	public ProjectDTO viewProjectById(int projectId) throws CustomException {
-		projectService = new ProjectServiceImpl();
 		return projectService.viewProjectById(projectId);
 	}
 
@@ -281,6 +349,6 @@ public class EmployeeServiceImpl implements EmployeeService {
 	 */
 	public boolean createEmployee(EmployeeDTO employeeDTO) throws CustomException {
 		Employee employee = EmployeeMapper.convertDTOToEmployee(employeeDTO);
-		return (null == dao.createEmployee(employee));
+		return (null == employeeDAO.createEmployee(employee));
 	}
 }

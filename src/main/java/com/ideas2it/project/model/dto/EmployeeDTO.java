@@ -4,13 +4,12 @@
 package com.ideas2it.project.model.dto;
 
 import java.time.LocalDate;
-import java.sql.Date;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
-import com.ideas2it.project.model.Address;
+import org.springframework.format.annotation.DateTimeFormat;
 
 /**
  * Data Transfer Object for the Employee Management System
@@ -24,10 +23,21 @@ public class EmployeeDTO {
     private long contact;
     private String name;
     private String email;
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private LocalDate dob;
     private List<AddressDTO> address = new ArrayList<AddressDTO>();
     private Set<ProjectDTO> projects = new HashSet<ProjectDTO>();
+    
+    public EmployeeDTO() {}
 
+    public EmployeeDTO(String name,LocalDate dob,float salary,long contact,String email) {
+    	this.name = name;
+    	this.dob = dob;
+    	this.salary = salary;
+    	this.contact = contact;
+        this.email = email;	
+    }
+    
     /**
      * Override equals method to compare two objects
      */
