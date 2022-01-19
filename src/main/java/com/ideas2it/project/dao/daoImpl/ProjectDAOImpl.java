@@ -39,6 +39,7 @@ public class ProjectDAOImpl implements ProjectDAO {
 			projectID = (Integer) session.save(project);
 			transaction.commit();
 		} catch (HibernateException e) {
+			e.printStackTrace();
 			if (transaction != null) {
 				transaction.rollback();
 			}

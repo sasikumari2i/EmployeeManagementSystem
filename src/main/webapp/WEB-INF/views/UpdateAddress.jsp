@@ -142,9 +142,6 @@
 			<div class="back">
 				<input type="submit" value="Assign" />
 			</div>
-			<div class="back">
-				<input type="submit" value="Assign" disabled />
-			</div>
 		</form>
 		<br>
 	</c:if>

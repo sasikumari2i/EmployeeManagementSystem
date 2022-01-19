@@ -72,6 +72,7 @@ public class EmployeeServlet extends HttpServlet {
 		try {
 			EmployeeDTO employeeDTO = employeeService.viewEmployeeById(id);
 			employee.setAddress(employeeDTO.getAddress());
+			employee.setProjects(employeeDTO.getProjects());
 			String duplicateString = employeeService.employeeUniqueUpdate(employee, employeeDTO);
 			if (null != duplicateString) {
 				boolean isDuplicate = true;

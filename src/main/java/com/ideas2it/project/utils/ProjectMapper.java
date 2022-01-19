@@ -3,17 +3,12 @@
  */
 package com.ideas2it.project.utils;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.HashSet;
 import java.util.Set;
-import org.hibernate.HibernateException;
 
-import com.ideas2it.project.model.Address;
-import com.ideas2it.project.model.dto.AddressDTO;
-import com.ideas2it.project.model.dto.EmployeeDTO; 
 import com.ideas2it.project.model.Employee;
 import com.ideas2it.project.model.Project;
+import com.ideas2it.project.model.dto.EmployeeDTO;
 import com.ideas2it.project.model.dto.ProjectDTO;
 
 /**

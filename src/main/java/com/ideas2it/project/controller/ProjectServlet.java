@@ -40,8 +40,9 @@ public class ProjectServlet extends HttpServlet {
 	public String save(@ModelAttribute("project") ProjectDTO projectDTO, BindingResult result, Model m) {
 		boolean isCreated = false;
 		try {
+			System.out.println("Start DAaaaaaaaaaarer"+projectDTO.getStartDate());
 			isCreated = projectService.createProject(projectDTO);
-		} catch (CustomException e) {
+		} catch (Exception e) {
 			EmployeeManagementLogger.logger.error(e);
 		}
 		m.addAttribute("isCreated", isCreated);
